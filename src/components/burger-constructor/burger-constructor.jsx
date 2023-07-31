@@ -5,21 +5,22 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
+import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = ({ data }) => {
   return (
-    <section className="burgerConsructor mt-25">
-      <ul className="burgerConsructor_group">
+    <section className={styles.burgerConsructor + " mt-25 ml-10"}>
+      <ul className={styles.burgerConsructor_group}>
         {data.map((item, idx) => {
           const type =
             idx === 0 ? "top" : idx === data.length - 1 ? "bottom" : "center";
           return (
             <li
-              className={`${
+              className={
                 type === "center"
-                  ? "burgerConstructor_item_move"
-                  : "burgerConstructor_item"
-              }`}
+                  ? styles.burgerConstructor_item_move
+                  : styles.burgerConstructor_item
+              }
             >
               {type === "center" && (
                 <i>
@@ -37,13 +38,13 @@ const BurgerConstructor = ({ data }) => {
           );
         })}
       </ul>
-      <div className="burgerConstructor_checkout mt-10">
-        <p className="text text_type_digits-default">610</p>
-        <i className="mr-4">
-          <CurrencyIcon type="primary" />
+      <div className={styles.burgerConstructor_checkout + " mt-10"}>
+        <p className="text text_type_digits-medium mr-2">610</p>
+        <i className="mr-10">
+          <CurrencyIcon style={{ width: 33 }} type="primary" />
         </i>
-        <Button htmlType="button" type="primary" size="medium">
-          Нажми на меня
+        <Button htmlType="button" type="primary" size="large">
+          Оформить заказ
         </Button>
       </div>
     </section>

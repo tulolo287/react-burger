@@ -1,0 +1,13 @@
+.burgerItem {
+   list-style: none;
+   position: relative;
+   max-width: 300px;
+ }
+ .burgerItem img {
+   max-inline-size: 100%;
+   block-size: auto;
+ }
+ .burgerItem_price {
+  display: flex;
+  justify-content: center;
+ }
