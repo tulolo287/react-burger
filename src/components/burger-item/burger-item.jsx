@@ -7,7 +7,7 @@ import React from "react";
 const BurgerItem = ({ item }) => {
   const [count, setCount] = React.useState(1);
   return (
-    <div className="burgerItem">
+    <li className="burgerItem">
       {count && <Counter count={count} size="default" extraClass="m-1" />}
 
       <img src={item.image_large} />
@@ -16,7 +16,7 @@ const BurgerItem = ({ item }) => {
         <CurrencyIcon type="primary" />
       </div>
       {item.name}
-    </div>
+    </li>
   );
 };
 

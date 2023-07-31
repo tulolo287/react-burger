@@ -37,12 +37,31 @@
   }
 }
 
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+
+
 .appHeader_profile a {
   margin-right: 0;
 }
 .container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
   max-width: 1900px;
   max-height: calc(100vh - 250px);
@@ -50,6 +69,10 @@
   padding: 20px;
 }
 
+
+.burgerIngredients {
+  max-width: 750px;
+}
 .burgerItems {
   display: flex;
   justify-content: space-around;
@@ -57,15 +80,19 @@
   overflow: scroll;
   max-height: 500px;
 }
+.burgerItems_category {
+  width: 100%;
+}
+.burgerItems_category h3 {
+  float: left;
 
+}
 .burgerIngredients_tab {
   display: flex;
   justify-content: space-around;
 }
-.tab {
-  width: 100% !important;
-}
 .burgerItem {
+  list-style: none;
   position: relative;
   max-width: 300px;
 }
@@ -73,16 +100,24 @@
   max-inline-size: 100%;
   block-size: auto;
 }
-.burgerWrapper {
 
-  min-width: 400px;
-  max-height: calc(100vh - 250px);
-  overflow: scroll;
-}
+
+
+
 .burgerConsructor {
+  min-width: 400px;
+
+}
+.burgerConsructor_group {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-height: calc(100vh - 250px);
+  
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-color: #6969dd #e0e0e0;
+  scrollbar-width: thin;
 }
 .burgerConstructor_item {
   display: flex;
@@ -99,6 +134,9 @@
 .burgerConstructor_item_move i{
   width: 24px;
 }
+
+
+
 @media screen {
   
 }
@@ -120,7 +158,7 @@
 
 @media (width > 768px) {
 .burgerIngredients {
-  width: 50%;
+  
   
 }
 .burgerWrapper {

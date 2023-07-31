@@ -8,13 +8,13 @@ import React from "react";
 
 const BurgerConstructor = ({ data }) => {
   return (
-    <section className="burgerWrapper mt-25">
-      <div className="burgerConsructor">
+    <section className="burgerConsructor mt-25">
+      <ul className="burgerConsructor_group">
         {data.map((item, idx) => {
           const type =
             idx === 0 ? "top" : idx === data.length - 1 ? "bottom" : "center";
           return (
-            <div
+            <li
               className={`${
                 type === "center"
                   ? "burgerConstructor_item_move"
@@ -33,14 +33,13 @@ const BurgerConstructor = ({ data }) => {
                 price={item.price}
                 thumbnail={item.image}
               />
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
       <div className="burgerConstructor_checkout mt-10">
-        
-          <p className="text text_type_digits-default">610</p>
-          <i className="mr-4">
+        <p className="text text_type_digits-default">610</p>
+        <i className="mr-4">
           <CurrencyIcon type="primary" />
         </i>
         <Button htmlType="button" type="primary" size="medium">

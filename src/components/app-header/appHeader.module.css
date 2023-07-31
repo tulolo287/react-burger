@@ -1,7 +1,6 @@
-.appHeader_nav {
+.appHeader_nav ul {
    display: flex;
-   margin: 0 auto;
-   max-width: 1200px;
+  justify-content: space-around;
 }
 
 .appHeader_nav a {
@@ -14,10 +13,10 @@
    margin-right: 8px;
 }
 .appHeader_nav__profile a {
-   float: right;
+   
 }
 .appHeader_nav__constructor a {
-   float: left;
+   
 }
 .appHeader_nav__constructor span {
    color: white;
