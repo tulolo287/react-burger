@@ -1,0 +1,23 @@
+.appHeader_nav ul {
+   display: flex;
+  justify-content: space-around;
+}
+
+.appHeader_nav a {
+   text-decoration: none;
+}
+.appHeader_nav div {
+   width: 33%;
+}
+.appHeader_nav i {
+   margin-right: 8px;
+}
+.appHeader_nav__profile a {
+   
+}
+.appHeader_nav__constructor a {
+   
+}
+.appHeader_nav__constructor span {
+   color: white;
+}

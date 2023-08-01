@@ -24,7 +24,6 @@
 .burgerItems {
   scrollbar-color: #8585ad #2f2f37;
 }
-
 .burgerItems::-webkit-scrollbar-thumb {
   width: 30px;
   background-color: #8585ad;

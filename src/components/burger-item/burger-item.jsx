@@ -11,7 +11,7 @@ const BurgerItem = ({ item }) => {
     <li className={styles.burgerItem}>
       {count && <Counter count={count} size="default" extraClass="m-1" />}
 
-      <img src={item.image_large} />
+      <img src={item.image_large} alt={item.name} />
       <div className={styles.burgerItem_price}>
         <p className="text text_type_digits-default mr-2">{item.price}</p>
         <CurrencyIcon type="primary" />

@@ -4,31 +4,43 @@ import {
   DragIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
+import { dataTypes } from "../../utils/consts";
 
 const BurgerConstructor = ({ data }) => {
+  const [bun, setBuns] = useState({});
+  const [inside, setInside] = useState([]);
+
+  useEffect(() => {
+    const bun = data.find((item) => item.type === "bun");
+    setBuns(bun);
+    const inside = data.filter((item) => item.type !== "bun");
+    setInside(inside);
+  }, []);
+
   return (
     <section className={styles.burgerConsructor + " mt-25 ml-10"}>
+      <ul className={styles.burgerConsructor_top}>
+        <li>
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={`${bun.name} (верх)`}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+        </li>
+      </ul>
       <ul className={styles.burgerConsructor_group}>
-        {data.map((item, idx) => {
-          const type =
-            idx === 0 ? "top" : idx === data.length - 1 ? "bottom" : "center";
+        {inside.map((item) => {
           return (
-            <li
-              className={
-                type === "center"
-                  ? styles.burgerConstructor_item_move
-                  : styles.burgerConstructor_item
-              }
-            >
-              {type === "center" && (
-                <i>
-                  <DragIcon type="primary" />
-                </i>
-              )}
+            <li key={item.id} className={styles.burgerConstructor_item_move}>
+              <i>
+                <DragIcon type="primary" />
+              </i>
               <ConstructorElement
-                type={type}
+                type="center"
                 isLocked={false}
                 text={item.name}
                 price={item.price}
@@ -37,6 +49,17 @@ const BurgerConstructor = ({ data }) => {
             </li>
           );
         })}
+      </ul>
+      <ul className={styles.burgerConsructor_bot}>
+        <li>
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={`${bun.name} (низ)`}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+        </li>
       </ul>
       <div className={styles.burgerConstructor_checkout + " mt-10"}>
         <p className="text text_type_digits-medium mr-2">610</p>
@@ -50,5 +73,7 @@ const BurgerConstructor = ({ data }) => {
     </section>
   );
 };
+
+BurgerConstructor.defaultProps = dataTypes;
 
 export default BurgerConstructor;
