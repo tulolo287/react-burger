@@ -7,6 +7,10 @@ import {
 import React, { useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { dataTypes } from "../../utils/consts";
+import Modal from "../modal/modal";
+import withModal from "../hocs/with-modal";
+
+const ButtonWithModal = withModal(Button)
 
 const BurgerConstructor = ({ data }) => {
   const [bun, setBuns] = useState({});
@@ -66,9 +70,12 @@ const BurgerConstructor = ({ data }) => {
         <i className="mr-10">
           <CurrencyIcon style={{ width: 33 }} type="primary" />
         </i>
-        <Button htmlType="button" type="primary" size="large">
+        <ButtonWithModal 
+        isToggled={false}
+        initialToggleState={false} htmlType="button" type="primary" size="large">
           Оформить заказ
-        </Button>
+        </ButtonWithModal>
+        
       </div>
     </section>
   );
