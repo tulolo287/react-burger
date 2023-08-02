@@ -1,20 +1,25 @@
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import BurgerItem from "../burger-item/burger-item";
-import styles from "./burger-ingredients.module.css";
-import { dataTypes } from "../../utils/consts";
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useRef } from 'react';
+import BurgerItem from '../burger-item/burger-item';
+import styles from './burger-ingredients.module.css';
+import { dataTypes } from '../../utils/consts';
+import withModal from '../hocs/with-modal';
+import OrderDetails from '../order-details/order-details';
 
 const Types = {
-  bun: { name: "Булки" },
-  sauce: { name: "Соусы" },
-  main: { name: "Начинки" },
+  bun: { name: 'Булки' },
+  sauce: { name: 'Соусы' },
+  main: { name: 'Начинки' },
 };
 
+const BurgerItemWithModal = withModal(OrderDetails)(BurgerItem);
+
 const BurgerIngredients = ({ data }) => {
-  const [current, setCurrent] = React.useState("bun");
+  const [current, setCurrent] = React.useState('bun');
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
 
+  let burgerItemRef = useRef()
   let categoryRefs = [];
 
   React.useEffect(() => {
@@ -23,7 +28,7 @@ const BurgerIngredients = ({ data }) => {
     getTypesNames();
   }, []);
 
-  const sortOrder = ["bun", "sauce", "main"];
+  const sortOrder = ['bun', 'sauce', 'main'];
 
   let typesData = [];
 
@@ -36,18 +41,18 @@ const BurgerIngredients = ({ data }) => {
 
   const getTypesNames = () => {
     let bunItems = [];
-    bunItems = data.filter((item) => item.type === "bun");
+    bunItems = data.filter((item) => item.type === 'bun');
 
     let sauceItems = [];
-    sauceItems = data.filter((item) => item.type === "sauce");
+    sauceItems = data.filter((item) => item.type === 'sauce');
 
     let mainItems = [];
-    mainItems = data.filter((item) => item.type === "main");
+    mainItems = data.filter((item) => item.type === 'main');
 
     typesData = [
-      { category: "Булки", items: [...bunItems] },
-      { category: "Соусы", items: [...sauceItems] },
-      { category: "Начинки", items: [...mainItems] },
+      { category: 'Булки', items: [...bunItems] },
+      { category: 'Соусы', items: [...sauceItems] },
+      { category: 'Начинки', items: [...mainItems] },
     ];
     setSortedData(typesData);
     // console.log(typesData)
@@ -74,7 +79,7 @@ const BurgerIngredients = ({ data }) => {
       <h1
         className={
           styles.burgerIngredients_header +
-          " text text_type_main-large mt-10 mb-5"
+          ' text text_type_main-large mt-10 mb-5'
         }
       >
         Соберите бургер
@@ -92,11 +97,11 @@ const BurgerIngredients = ({ data }) => {
           </React.Fragment>
         ))}
       </div>
-      <ul className={styles.burgerItems + " mt-10 pr-5"}>
+      <ul className={styles.burgerItems + ' mt-10 pr-5'}>
         {sortedData.map((types, idx) => {
           return (
             <React.Fragment key={`${types.category}_${idx}`}>
-              <li className={styles.burgerItems_category + " mb-6 mt-10"}>
+              <li className={styles.burgerItems_category + ' mb-6 mt-10'}>
                 <h3
                   ref={(ref) => (categoryRefs[idx] = ref)}
                   id={types.category}
@@ -105,7 +110,7 @@ const BurgerIngredients = ({ data }) => {
                 </h3>
               </li>
               {types.items.map((item) => {
-                return <BurgerItem key={item.id} item={item} />;
+                return <BurgerItemWithModal blas="lll"  key={item.id} item={item} />;
               })}
             </React.Fragment>
           );

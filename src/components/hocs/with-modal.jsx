@@ -4,18 +4,17 @@ import {
   DragIcon,
   CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useEffect, useState } from 'react';
-import styles from '../modal/modal.module.css';
-import { dataTypes } from '../../utils/consts';
+import React, { createRef, useEffect, useState } from 'react';
 import Modal from '../modal/modal';
-
 import { createPortal } from 'react-dom';
-import OrderDetails from '../order-details/order-details.jsx';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 
-const withModal = (WrappedComponent) => {
+const withModal = (props) => (WrappedComponent) => {
   return class extends React.Component {
     constructor(props) {
       super(props);
+
+      this.burgerItemRef = createRef();
 
       this.onButtonClick = this.onButtonClick.bind(this);
       this.state = {
@@ -23,8 +22,22 @@ const withModal = (WrappedComponent) => {
       };
     }
 
+    componentDidMount() {
+      if (this.burgerItemRef && this.burgerItemRef.current) {
+        this.burgerItemRef.current.addEventListener('click', this.handleClick);
+      }
+    }
+    componentWillUnmount() {
+      window.removeEventListener('click', this.handleClick);
+    }
+
+    handleClick = () => {
+      this.setState({
+        isToggled: !this.state.isToggled,
+      });
+    };
+
     onButtonClick() {
-      console.log(this.state);
       this.setState({
         isToggled: !this.state.isToggled,
       });
@@ -38,17 +51,16 @@ const withModal = (WrappedComponent) => {
           {this.state.isToggled &&
             createPortal(
               <>
-                <div
-                  onClick={this.onButtonClick}
-                  className={styles.modal_bg}
-                ></div>
-                <div className={styles.modal_content}>
-                  <OrderDetails />
-                </div>
+                <ModalOverlay modalHandler={this.onButtonClick} />
+                <Modal modalHandler={this.onButtonClick}>{props}</Modal>
               </>,
               document.body
             )}
-          <WrappedComponent {...props} onClick={this.onButtonClick}>
+          <WrappedComponent
+            {...props}
+            ref={this.burgerItemRef}
+            onClick={this.onButtonClick}
+          >
             {this.props.children}
           </WrappedComponent>
         </>

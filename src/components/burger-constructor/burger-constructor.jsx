@@ -7,10 +7,10 @@ import {
 import React, { useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { dataTypes } from "../../utils/consts";
-import Modal from "../modal/modal";
 import withModal from "../hocs/with-modal";
+import OrderDetails from "../order-details/order-details";
 
-const ButtonWithModal = withModal(Button)
+const ButtonWithModal = withModal(OrderDetails)(Button)
 
 const BurgerConstructor = ({ data }) => {
   const [bun, setBuns] = useState({});

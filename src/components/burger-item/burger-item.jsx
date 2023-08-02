@@ -1,15 +1,16 @@
 import {
   Counter,
   CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import styles from "./burger-item.module.css";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { forwardRef } from 'react';
+import styles from './burger-item.module.css';
 
-const BurgerItem = ({ item }) => {
-  const [count, setCount] = React.useState(1);
+const BurgerItem = forwardRef((props, ref) => {
+  const { item, qty } = props;
+  
   return (
-    <li className={styles.burgerItem}>
-      {count && <Counter count={count} size="default" extraClass="m-1" />}
+    <li ref={ref} className={styles.burgerItem}>
+      {qty && <Counter count={qty} size="default" extraClass="m-1" />}
 
       <img src={item.image_large} alt={item.name} />
       <div className={styles.burgerItem_price}>
@@ -19,6 +20,6 @@ const BurgerItem = ({ item }) => {
       {item.name}
     </li>
   );
-};
+});
 
 export default BurgerItem;
