@@ -1,0 +1,60 @@
+.burgerConsructor {
+  min-width: 400px;
+}
+.burgerConsructor_group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+}
+.burgerConsructor_group {
+  scrollbar-color: #8585ad #2f2f37;
+}
+.burgerConsructor_group::-webkit-scrollbar-thumb {
+  width: 30px;
+  background-color: #8585ad;
+  border: 3px;
+}
+.burgerConsructor_group::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.burgerConsructor_group::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+.burgerConstructor_item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 32px;
+}
+.burgerConstructor_item_move {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.burgerConstructor_item_move i {
+  width: 24px;
+}
+.burgerConstructor_checkout {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.burgerConstructor_checkout i {
+  display: flex;
+}
+.burgerConstructor_checkout svg {
+  width: 33px;
+  height: 33px;
+}
+.burgerConsructor_top li {
+  margin-bottom: 10px;
+  margin-left: 22px;
+}
+.burgerConsructor_bot li {
+  margin-top: 10px;
+  margin-left: 22px;
+}
