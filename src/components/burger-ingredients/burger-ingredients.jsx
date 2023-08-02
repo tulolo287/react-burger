@@ -19,7 +19,6 @@ const BurgerIngredients = ({ data }) => {
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
 
-  let burgerItemRef = useRef()
   let categoryRefs = [];
 
   React.useEffect(() => {
@@ -57,6 +56,28 @@ const BurgerIngredients = ({ data }) => {
     setSortedData(typesData);
     // console.log(typesData)
   };
+
+  React.useEffect(() => {
+    if (categoryRefs) {
+      let scrollable;
+      switch (current) {
+        case 'bun':
+          scrollable = categoryRefs[0];
+          break;
+        case 'sauce':
+          scrollable = categoryRefs[1];
+          break;
+        case 'main':
+          scrollable = categoryRefs[2];
+          break;
+      }
+      scrollable.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      });
+    }
+  }, [current]);
 
   const getTypes = () => {
     let types = [];
@@ -110,7 +131,7 @@ const BurgerIngredients = ({ data }) => {
                 </h3>
               </li>
               {types.items.map((item) => {
-                return <BurgerItemWithModal blas="lll"  key={item.id} item={item} />;
+                return <BurgerItemWithModal key={item.id} item={item} />;
               })}
             </React.Fragment>
           );
