@@ -1,5 +1,3 @@
-import React from 'react';
-import styles from './modal.module.css';
 import { createPortal } from 'react-dom';
 import OrderDetails from '../order-details/order-details.jsx';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';

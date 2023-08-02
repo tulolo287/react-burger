@@ -18,6 +18,7 @@ const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState('bun');
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
+  //const [scrollable, setScrollable] =
 
   let categoryRefs = [];
 
@@ -58,7 +59,7 @@ const BurgerIngredients = ({ data }) => {
   };
 
   React.useEffect(() => {
-    if (categoryRefs) {
+    if (categoryRefs.length) {
       let scrollable;
       switch (current) {
         case 'bun':
@@ -71,6 +72,7 @@ const BurgerIngredients = ({ data }) => {
           scrollable = categoryRefs[2];
           break;
       }
+
       scrollable.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
