@@ -4,7 +4,7 @@ import BurgerItem from '../burger-item/burger-item';
 import styles from './burger-ingredients.module.css';
 import { dataTypes } from '../../utils/consts';
 import withModal from '../hocs/with-modal';
-import OrderDetails from '../order-details/order-details';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 const Types = {
   bun: { name: 'Булки' },
@@ -12,7 +12,7 @@ const Types = {
   main: { name: 'Начинки' },
 };
 
-const BurgerItemWithModal = withModal(OrderDetails)(BurgerItem);
+const BurgerItemWithModal = withModal(IngredientDetails)(BurgerItem);
 
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState('bun');

@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 
 const OrderDetails = () => {
   return (
-  <>
+  <div className={styles.orderDetails}>
   Order det
   <p className="text text_type_digits-large">1234567890</p>
   <p className="text text_type_main-medium">
@@ -28,7 +28,7 @@ The quick brown fox jumps over the lazy dog.
 <p className="text text_type_main-default text_color_inactive">
 The quick brown fox jumps over the lazy dog.
 </p>
-  </>
+  </div>
   )
   }
   export default OrderDetails

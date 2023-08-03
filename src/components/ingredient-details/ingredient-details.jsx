@@ -10,10 +10,10 @@ import styles from "./order-details.module.css";
 import PropTypes from 'prop-types'
 
 
-const IngredientDetails = () => {
+const IngredientDetails = ({item}) => {
   return (
   <>
-  Ingr det
+  {item.name}
   
   </>
   )
