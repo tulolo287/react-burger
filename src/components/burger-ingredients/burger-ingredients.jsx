@@ -5,6 +5,8 @@ import styles from './burger-ingredients.module.css';
 import { dataTypes } from '../../utils/consts';
 import withModal from '../hocs/with-modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetails from "../order-details/order-details";
+
 
 const Types = {
   bun: { name: 'Булки' },

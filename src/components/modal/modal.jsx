@@ -4,18 +4,12 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './modal.module.css';
 
 const Modal = ({modalHandler, children} ) => {
- // const {modalHandler} = props
-console.log(children)
   return (
-    <>
-      
-        <div className={styles.modal}>
-          <CloseIcon onClick={modalHandler} type="primary" />
+        <section className={styles.modal}>
+          <div className={styles.modal_close}>
+          <CloseIcon onClick={modalHandler} type="primary" /></div>
           {children}
-        </div>
-        
-      
-    </>
+        </section>
   );
 };
 export default Modal;

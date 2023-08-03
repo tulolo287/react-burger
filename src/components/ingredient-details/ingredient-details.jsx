@@ -13,6 +13,7 @@ import PropTypes from 'prop-types'
 const IngredientDetails = ({item}) => {
   return (
   <>
+  {item.image}
   {item.name}
   
   </>
