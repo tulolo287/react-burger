@@ -31,7 +31,7 @@ function App() {
             <BurgerConstructor data={data} />
           </>
         ) : (
-          'Loading'
+          'Loading...'
         )}
       </main>
     </div>
