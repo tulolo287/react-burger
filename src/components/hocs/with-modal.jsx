@@ -45,7 +45,7 @@ const withModal = (El) => (WrappedComponent) => {
 
     render() {
       const { initialToggleState, ...props } = this.props;
-console.log(El)
+//console.log(El)
       return (
         <>
           {this.state.isToggled &&

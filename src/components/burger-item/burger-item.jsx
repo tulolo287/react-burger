@@ -6,9 +6,12 @@ import React, { forwardRef } from 'react';
 import styles from './burger-item.module.css';
 
 const BurgerItem = forwardRef((props, ref) => {
-  const { item, qty } = props;
+  const { item, currentType, showTitle, setCurrentType, qty } = props;
+
   
   return (
+    <>
+    
     <li ref={ref} className={styles.burgerItem}>
       {qty && <Counter count={qty} size="default" extraClass="m-1" />}
 
@@ -19,6 +22,7 @@ const BurgerItem = forwardRef((props, ref) => {
       </div>
       {item.name}
     </li>
+    </>
   );
 });
 
