@@ -7,14 +7,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 import PropTypes from "prop-types";
+import styles from './ingredient-details.module.css'
 
 const IngredientDetails = ({ item }) => {
   return (
-    <>
+    <section className={styles.ingredientDetails}>
       <p className="text text_type_main-large">
         The quick brown fox jumps over the lazy dog.
       </p>
-      <img src={item.image} alt={item.name} />
+      <img src={item.image_large} alt={item.name} />
       {item.name}
 
       <p className="text text_type_main-medium">
@@ -23,7 +24,7 @@ const IngredientDetails = ({ item }) => {
       <p className="text text_type_main-default text_color_inactive">
         The quick brown fox jumps over the lazy dog.
       </p>
-    </>
+    </section>
   );
 };
 export default IngredientDetails;
