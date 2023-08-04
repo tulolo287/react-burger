@@ -8,6 +8,7 @@ import {
 import React from "react";
 import PropTypes from "prop-types";
 import styles from './ingredient-details.module.css'
+import { DATA_ITEM } from "../../utils/consts";
 
 const IngredientDetails = ({ item }) => {
   return (
@@ -30,4 +31,6 @@ const IngredientDetails = ({ item }) => {
     </section>
   );
 };
+
+IngredientDetails.defaultProps = DATA_ITEM
 export default IngredientDetails;
