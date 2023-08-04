@@ -1,12 +1,3 @@
-import {
-  Button,
-  ConstructorElement,
-  DragIcon,
-  CurrencyIcon,
-  CheckMarkIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import PropTypes from "prop-types";
 import styles from "./ingredient-details.module.css";
 import { DATA_ITEM } from "../../utils/consts";
 
@@ -22,7 +13,6 @@ const IngredientDetails = ({ item }) => {
             Калории, ккал
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {" "}
             {item.calories}
           </p>
         </li>
@@ -31,7 +21,6 @@ const IngredientDetails = ({ item }) => {
             Белки, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {" "}
             {item.proteins}
           </p>
         </li>
@@ -48,7 +37,6 @@ const IngredientDetails = ({ item }) => {
             Углеводы, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {" "}
             {item.carbohydrates}
           </p>
         </li>
