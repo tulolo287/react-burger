@@ -10,7 +10,7 @@ import { DATA_TYPES } from "../../utils/consts";
 import withModal from "../hocs/with-modal";
 import OrderDetails from "../order-details/order-details";
 
-const ButtonWithModal = withModal(OrderDetails)(Button)
+const ButtonWithModal = withModal(OrderDetails)(Button);
 
 const BurgerConstructor = ({ data }) => {
   const [bun, setBuns] = useState({});
@@ -70,12 +70,15 @@ const BurgerConstructor = ({ data }) => {
         <i className="mr-10">
           <CurrencyIcon style={{ width: 33 }} type="primary" />
         </i>
-        <ButtonWithModal 
-        isToggled={false}
-        initialToggleState={false} htmlType="button" type="primary" size="large">
+        <ButtonWithModal
+          isToggled={false}
+          initialToggleState={false}
+          htmlType="button"
+          type="primary"
+          size="large"
+        >
           Оформить заказ
         </ButtonWithModal>
-        
       </div>
     </section>
   );

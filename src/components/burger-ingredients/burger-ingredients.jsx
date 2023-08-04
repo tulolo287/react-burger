@@ -2,17 +2,9 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useRef } from "react";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
-import { DATA_TYPES } from "../../utils/consts";
+import { DATA_TYPES, SORT_ORDER, TYPES } from "../../utils/consts";
 import withModal from "../hocs/with-modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-
-const Types = {
-  bun: { name: "Булки" },
-  sauce: { name: "Соусы" },
-  main: { name: "Начинки" },
-};
-//const category = { bun: "Булки", sauce: "Соусы", main: "Начинки" };
-const sortOrder = ["bun", "sauce", "main"];
 
 let currentType = "";
 let categoryRefs = [];
@@ -30,7 +22,7 @@ const BurgerIngredients = ({ data }) => {
 
   const sortData = () => {
     const sortedData = data.sort((a, b) => {
-      return sortOrder.indexOf(a.type) - sortOrder.indexOf(b.type);
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
     setSortedData(sortedData);
   };
@@ -52,7 +44,7 @@ const BurgerIngredients = ({ data }) => {
       .map((item) => item.type)
       .filter((val, idx, arr) => {
         if (arr.indexOf(val) === idx) {
-          types.push({ type: val, name: Types[val].name });
+          types.push({ type: val, name: TYPES[val].name });
         }
       });
     setTypes(types);
@@ -64,14 +56,14 @@ const BurgerIngredients = ({ data }) => {
 
   return (
     <section className={styles.burgerIngredients}>
-      <h1
+      <p
         className={
           styles.burgerIngredients_header +
           " text text_type_main-large mt-10 mb-5"
         }
       >
         Соберите бургер
-      </h1>
+      </p>
       <div className={styles.burgerIngredients_tab}>
         {types.map((item, idx) => (
           <React.Fragment key={idx}>
@@ -98,8 +90,11 @@ const BurgerIngredients = ({ data }) => {
             <React.Fragment key={item._id}>
               {showTitle && (
                 <li className={styles.burgerItems_category + " mb-6 mt-10"}>
-                  <h3 ref={(ref) => (categoryRefs[item.type] = ref)}>
-                    {Types[item.type].name}
+                  <h3
+                    className="text text_type_main-medium"
+                    ref={(ref) => (categoryRefs[item.type] = ref)}
+                  >
+                    {TYPES[item.type].name}
                   </h3>
                 </li>
               )}
@@ -107,6 +102,7 @@ const BurgerIngredients = ({ data }) => {
                 showTitle={showTitle}
                 key={item._id}
                 item={item}
+                qty={1}
               />
             </React.Fragment>
           );

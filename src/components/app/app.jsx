@@ -1,10 +1,9 @@
-import styles from './app.module.css';
-import AppHeader from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { useEffect, useState } from 'react';
-import { getData } from '../../api/api';
-import { URL } from '../../utils/consts';
+import styles from "./app.module.css";
+import AppHeader from "../app-header/app-header";
+import BurgerIngredients from "../burger-ingredients/burger-ingredients";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
+import { useEffect, useState } from "react";
+import { URL } from "../../utils/consts";
 
 function App() {
   const [data, setData] = useState();
@@ -13,6 +12,7 @@ function App() {
       try {
         const { data } = await (await fetch(URL)).json();
         setData(data);
+        console.log(data);
       } catch (e) {
         console.log(e.message);
       }
@@ -31,7 +31,7 @@ function App() {
             <BurgerConstructor data={data} />
           </>
         ) : (
-          'Loading...'
+          "Loading..."
         )}
       </main>
     </div>

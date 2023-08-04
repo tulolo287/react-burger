@@ -1,7 +1,7 @@
 .ingredientDetails {
    display: flex;
    flex-direction: column;
-   align-items: center;
+   text-align: center;
    gap: 20px;
 }
 .ingredientDetails_nutr {
@@ -10,8 +10,12 @@
    justify-content: space-around;
    gap: 10px;
 }
-.ingredientDetails_nutr li {
+.ingredientDetails_nutr ul {
    display: flex;
    flex-direction: column;
-   justify-content: center;
+   justify-content: space-around;
+}
+.ingredientDetails_nutr li {
+   margin: 20px;
+   text-align: center;
 }

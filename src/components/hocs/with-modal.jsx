@@ -1,13 +1,7 @@
-import {
-  Button,
-  ConstructorElement,
-  DragIcon,
-  CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { createRef, useEffect, useState } from 'react';
-import Modal from '../modal/modal';
-import { createPortal } from 'react-dom';
-import ModalOverlay from '../modal-overlay/modal-overlay';
+import React, { createRef, useEffect, useState } from "react";
+import Modal from "../modal/modal";
+import { createPortal } from "react-dom";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 
 const withModal = (WrappedComponent1) => (WrappedComponent2) => {
   return class extends React.Component {
@@ -24,11 +18,11 @@ const withModal = (WrappedComponent1) => (WrappedComponent2) => {
 
     componentDidMount() {
       if (this.burgerItemRef && this.burgerItemRef.current) {
-        this.burgerItemRef.current.addEventListener('click', this.handleClick);
+        this.burgerItemRef.current.addEventListener("click", this.handleClick);
       }
     }
     componentWillUnmount() {
-      window.removeEventListener('click', this.handleClick);
+      window.removeEventListener("click", this.handleClick);
     }
 
     handleClick = () => {
@@ -52,7 +46,9 @@ const withModal = (WrappedComponent1) => (WrappedComponent2) => {
             createPortal(
               <>
                 <ModalOverlay modalHandler={this.onButtonClick} />
-                <Modal modalHandler={this.onButtonClick}><WrappedComponent1 {...props}/></Modal>
+                <Modal modalHandler={this.onButtonClick}>
+                  <WrappedComponent1 {...props} />
+                </Modal>
               </>,
               document.body
             )}

@@ -1,28 +1,24 @@
 .modal {
   overflow: hidden;
-  border-radius: 10px;
   width: 700px;
   height: 700px;
   background-color: #1c1c21;
-  position: fixed;
-  top: 75px;
-  z-index: 9;
-  max-height: calc(100% - 200px);
-  left: calc(50% - 250px);
-  display: flex;
-  flex-direction: column;
-  width: 720px;
-  height: 718px;
+  z-index: 999;
   padding: 40px 40px 614px 40px;
   border-radius: 40px;
   border: 1px;
-  gap: 10px;
+  position: fixed;
+  float: left;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
   @media (max-width: 500px) {
     left: 0px;
     margin: 0px 10px;
   }
 }
+
 .modal_close i {
   float: right;
   text-align: end;

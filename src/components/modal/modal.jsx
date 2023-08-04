@@ -5,21 +5,18 @@ import styles from "./modal.module.css";
 import { useEffect } from "react";
 
 const Modal = ({ modalHandler, children }) => {
-
-  useEffect(()=>{
-    const handleEsc = evt => {
-      if(evt.kecode === 'Escape') {
-        modalHandler(false)
-        console.log('Esc')
+  useEffect(() => {
+    const handleEsc = (evt) => {
+      if (evt.key === "Escape") {
+        modalHandler(false);
       }
-    }
-    window.addEventListener('keydown', handleEsc)
-    return ()=>{
-      window.removeEventListener('keydown', handleEsc)
-    }
-  },[])
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => {
+      window.removeEventListener("keydown", handleEsc);
+    };
+  }, []);
 
-  
   return (
     <section className={styles.modal}>
       <div className={styles.modal_close}>
