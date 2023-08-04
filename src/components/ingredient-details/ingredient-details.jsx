@@ -22,7 +22,10 @@ const IngredientDetails = ({ item }) => {
         The quick brown fox jumps over the lazy dog.
       </p>
       <p className="text text_type_main-default text_color_inactive">
-        The quick brown fox jumps over the lazy dog.
+        {item.calories}
+        {item.proteins}
+        {item.fat}
+        {item.carbohydrates}
       </p>
     </section>
   );

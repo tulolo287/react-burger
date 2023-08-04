@@ -2,10 +2,9 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useRef } from "react";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
-import { dataTypes } from "../../utils/consts";
+import { DATA_TYPES } from "../../utils/consts";
 import withModal from "../hocs/with-modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import OrderDetails from "../order-details/order-details";
 
 const Types = {
   bun: { name: "Булки" },
@@ -96,7 +95,7 @@ const BurgerIngredients = ({ data }) => {
             showTitle = false;
           }
           return (
-            <React.Fragment key={`${item.name}_${idx}}`}>
+            <React.Fragment key={item._id}>
               {showTitle && (
                 <li className={styles.burgerItems_category + " mb-6 mt-10"}>
                   <h3 ref={(ref) => (categoryRefs[item.type] = ref)}>
@@ -106,7 +105,7 @@ const BurgerIngredients = ({ data }) => {
               )}
               <BurgerItemWithModal
                 showTitle={showTitle}
-                key={item.id}
+                key={item._id}
                 item={item}
               />
             </React.Fragment>
@@ -117,6 +116,6 @@ const BurgerIngredients = ({ data }) => {
   );
 };
 
-BurgerIngredients.defaultProps = dataTypes;
+BurgerIngredients.defaultProps = DATA_TYPES;
 
 export default BurgerIngredients;

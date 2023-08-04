@@ -9,7 +9,7 @@ import Modal from '../modal/modal';
 import { createPortal } from 'react-dom';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
-const withModal = (El) => (WrappedComponent) => {
+const withModal = (WrappedComponent1) => (WrappedComponent2) => {
   return class extends React.Component {
     constructor(props) {
       super(props);
@@ -45,24 +45,24 @@ const withModal = (El) => (WrappedComponent) => {
 
     render() {
       const { initialToggleState, ...props } = this.props;
-//console.log(El)
+
       return (
         <>
           {this.state.isToggled &&
             createPortal(
               <>
                 <ModalOverlay modalHandler={this.onButtonClick} />
-                <Modal modalHandler={this.onButtonClick}><El {...props}/></Modal>
+                <Modal modalHandler={this.onButtonClick}><WrappedComponent1 {...props}/></Modal>
               </>,
               document.body
             )}
-          <WrappedComponent
+          <WrappedComponent2
             {...props}
             ref={this.burgerItemRef}
             onClick={this.onButtonClick}
           >
             {this.props.children}
-          </WrappedComponent>
+          </WrappedComponent2>
         </>
       );
     }

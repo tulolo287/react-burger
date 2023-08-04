@@ -6,7 +6,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
-import { dataTypes } from "../../utils/consts";
+import { DATA_TYPES } from "../../utils/consts";
 import withModal from "../hocs/with-modal";
 import OrderDetails from "../order-details/order-details";
 
@@ -39,7 +39,7 @@ const BurgerConstructor = ({ data }) => {
       <ul className={styles.burgerConsructor_group}>
         {inside.map((item) => {
           return (
-            <li key={item.id} className={styles.burgerConstructor_item_move}>
+            <li key={item._id} className={styles.burgerConstructor_item_move}>
               <i>
                 <DragIcon type="primary" />
               </i>
@@ -81,6 +81,6 @@ const BurgerConstructor = ({ data }) => {
   );
 };
 
-BurgerConstructor.defaultProps = dataTypes;
+BurgerConstructor.defaultProps = DATA_TYPES;
 
 export default BurgerConstructor;
