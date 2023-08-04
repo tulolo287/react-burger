@@ -13,21 +13,33 @@ import { DATA_ITEM } from "../../utils/consts";
 const IngredientDetails = ({ item }) => {
   return (
     <section className={styles.ingredientDetails}>
-      <p className="text text_type_main-large">
-        The quick brown fox jumps over the lazy dog.
-      </p>
+        
+       
       <img src={item.image_large} alt={item.name} />
-      {item.name}
+      <p className="text text_type_main-large">
+      {item.name} </p>
 
-      <p className="text text_type_main-medium">
-        The quick brown fox jumps over the lazy dog.
-      </p>
-      <p className="text text_type_main-default text_color_inactive">
-        {item.calories}
-        {item.proteins}
-        {item.fat}
-        {item.carbohydrates}
-      </p>
+      <span className="text text_type_main-medium">
+        {item.text}
+      </span>
+      <ul className={styles.ingredientDetails_nutr}>
+        <li>
+      <p className="text text_type_main-default text_color_inactive">Калории, ккал</p>
+       <p className="text text_type_main-default text_color_inactive"> {item.calories}</p>
+       </li>
+       <li>
+        <p className="text text_type_main-default text_color_inactive">Белки, г</p>
+     <p className="text text_type_main-default text_color_inactive"> {item.proteins}</p>
+     </li>
+     <li>
+      <p className="text text_type_main-default text_color_inactive">Жиры, г</p>
+      <p className="text text_type_main-default text_color_inactive">{item.fat}</p>
+      </li>
+      <li>
+      <p className="text text_type_main-default text_color_inactive">Углеводы, г</p>
+      <p className="text text_type_main-default text_color_inactive"> {item.carbohydrates}</p>
+       </li>
+      </ul>
     </section>
   );
 };
