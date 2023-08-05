@@ -28,7 +28,6 @@ const BurgerIngredients = ({ data }) => {
   };
 
   React.useEffect(() => {
-    console.log(categoryRefs);
     if (categoryRefs[current]) {
       categoryRefs[current].scrollIntoView({
         behavior: "smooth",

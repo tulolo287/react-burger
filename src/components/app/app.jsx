@@ -7,17 +7,16 @@ import { URL } from "../../utils/consts";
 
 function App() {
   const [data, setData] = useState();
+
   useEffect(() => {
     const dataFetch = async () => {
       try {
         const { data } = await (await fetch(URL)).json();
         setData(data);
-        console.log(data);
       } catch (e) {
         console.log(e.message);
       }
     };
-
     dataFetch();
   }, []);
 
