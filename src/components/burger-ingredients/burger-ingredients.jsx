@@ -1,19 +1,22 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
-import { DATA_TYPES, SORT_ORDER, TYPES } from "../../utils/consts";
-import withModal from "../hocs/with-modal";
+import { SORT_ORDER, TYPES, data } from "../../utils/consts";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+import useModal from "../../hooks/useModal";
 
 let currentType = "";
 let categoryRefs = [];
-const BurgerItemWithModal = withModal(IngredientDetails)(BurgerItem);
 
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
+  const [item, setItem] = React.useState();
+  const { isModal, modalHandler } = useModal();
 
   React.useEffect(() => {
     getTypes();
@@ -53,64 +56,82 @@ const BurgerIngredients = ({ data }) => {
     currentType = type;
   };
 
+  const onItemClick = (item) => {
+    setItem(item);
+    modalHandler(true);
+  };
+
   return (
-    <section className={styles.burgerIngredients}>
-      <p
-        className={
-          styles.burgerIngredients_header +
-          " text text_type_main-large mt-10 mb-5"
-        }
-      >
-        Соберите бургер
-      </p>
-      <div className={styles.burgerIngredients_tab}>
-        {types.map((item, idx) => (
-          <React.Fragment key={idx}>
-            <Tab
-              value="bun"
-              active={current === item.type}
-              onClick={() => setCurrent(item.type)}
-            >
-              {item.name}
-            </Tab>
-          </React.Fragment>
-        ))}
-      </div>
-      <ul className={styles.burgerItems + " mt-10 pr-5"}>
-        {sortedData.map((item, idx) => {
-          let showTitle = false;
-          if (currentType != item.type) {
-            showTitle = true;
-            setCurrentType(item.type);
-          } else {
-            showTitle = false;
+    <>
+      <section className={styles.burgerIngredients}>
+        <p
+          className={
+            styles.burgerIngredients_header +
+            " text text_type_main-large mt-10 mb-5"
           }
-          return (
-            <React.Fragment key={item._id}>
-              {showTitle && (
-                <li className={styles.burgerItems_category + " mb-6 mt-10"}>
-                  <h3
-                    className="text text_type_main-medium"
-                    ref={(ref) => (categoryRefs[item.type] = ref)}
-                  >
-                    {TYPES[item.type].name}
-                  </h3>
-                </li>
-              )}
-              <BurgerItemWithModal
-                showTitle={showTitle}
-                key={item._id}
-                item={item}
-                qty={1}
-              />
+        >
+          Соберите бургер
+        </p>
+        <div className={styles.burgerIngredients_tab}>
+          {types.map((item, idx) => (
+            <React.Fragment key={idx}>
+              <Tab
+                value="bun"
+                active={current === item.type}
+                onClick={() => setCurrent(item.type)}
+              >
+                {item.name}
+              </Tab>
             </React.Fragment>
-          );
-        })}
-      </ul>
-    </section>
+          ))}
+        </div>
+        <ul className={styles.burgerItems + " mt-10 pr-5"}>
+          {sortedData.map((item, idx) => {
+            let showTitle = false;
+            if (currentType != item.type) {
+              showTitle = true;
+              setCurrentType(item.type);
+            } else {
+              showTitle = false;
+            }
+            return (
+              <React.Fragment key={item._id}>
+                {showTitle && (
+                  <li className={styles.burgerItems_category + " mb-6 mt-10"}>
+                    <h3
+                      className="text text_type_main-medium"
+                      ref={(ref) => (categoryRefs[item.type] = ref)}
+                    >
+                      {TYPES[item.type].name}
+                    </h3>
+                  </li>
+                )}
+                <BurgerItem
+                  onItemClick={onItemClick}
+                  showTitle={showTitle}
+                  key={item._id}
+                  item={item}
+                  qty={1}
+                />
+              </React.Fragment>
+            );
+          })}
+        </ul>
+      </section>
+
+      <Modal
+        modalHandler={modalHandler}
+        modalHeader={"Детали ингредиента"}
+        isModal={isModal}
+      >
+        <IngredientDetails item={item} />
+      </Modal>
+    </>
   );
 };
 
-BurgerIngredients.defaultProps = DATA_TYPES;
+BurgerIngredients.propTypes = {
+  data,
+};
 
 export default BurgerIngredients;

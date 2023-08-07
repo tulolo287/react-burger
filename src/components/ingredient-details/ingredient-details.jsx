@@ -1,5 +1,5 @@
 import styles from "./ingredient-details.module.css";
-import { DATA_ITEM } from "../../utils/consts";
+import { item } from "../../utils/consts";
 
 const IngredientDetails = ({ item }) => {
   return (
@@ -45,5 +45,7 @@ const IngredientDetails = ({ item }) => {
   );
 };
 
-IngredientDetails.defaultProps = DATA_ITEM;
+IngredientDetails.propTypes = {
+  item,
+};
 export default IngredientDetails;
