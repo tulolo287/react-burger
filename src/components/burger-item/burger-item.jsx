@@ -4,10 +4,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-item.module.css";
 import PropTypes from "prop-types";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 const BurgerItem = ({ item, qty, onItemClick }) => {
   return (
-    <li onClick={() => onItemClick(item)} className={styles.burgerItem}>
+    <li
+      onClick={() => onItemClick(<IngredientDetails item={item} />)}
+      className={styles.burgerItem}
+    >
       {qty && <Counter count={qty} size="default" extraClass="m-1" />}
 
       <img src={item.image_large} alt={item.name} />

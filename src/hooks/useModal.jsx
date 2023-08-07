@@ -13,4 +13,6 @@ const useModal = (Wrapper) => {
   };
 };
 
+
+
 export default useModal;

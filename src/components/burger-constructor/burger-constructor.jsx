@@ -12,10 +12,9 @@ import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ data }) => {
+const BurgerConstructor = ({ data, onItemClick }) => {
   const [bun, setBuns] = useState({});
   const [inside, setInside] = useState([]);
-  const { isModal, modalHandler } = useModal();
 
   useEffect(() => {
     const bun = data.find((item) => item.type === "bun");
@@ -23,10 +22,6 @@ const BurgerConstructor = ({ data }) => {
     const inside = data.filter((item) => item.type !== "bun");
     setInside(inside);
   }, []);
-
-  const onItemClick = () => {
-    modalHandler(true);
-  };
 
   return (
     <>
@@ -77,7 +72,7 @@ const BurgerConstructor = ({ data }) => {
             <CurrencyIcon style={{ width: 33 }} type="primary" />
           </i>
           <Button
-            onClick={onItemClick}
+            onClick={() => onItemClick(<OrderDetails />)}
             htmlType="button"
             type="primary"
             size="large"
@@ -86,16 +81,12 @@ const BurgerConstructor = ({ data }) => {
           </Button>
         </div>
       </section>
-
-      <Modal modalHandler={modalHandler} isModal={isModal}>
-        <OrderDetails />
-      </Modal>
     </>
   );
 };
 
 BurgerConstructor.propTypes = {
-  data
+  data,
 };
 
 export default BurgerConstructor;

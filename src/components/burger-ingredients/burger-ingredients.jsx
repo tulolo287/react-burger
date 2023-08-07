@@ -11,12 +11,10 @@ import useModal from "../../hooks/useModal";
 let currentType = "";
 let categoryRefs = [];
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = ({ data, onItemClick }) => {
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
-  const [item, setItem] = React.useState();
-  const { isModal, modalHandler } = useModal();
 
   React.useEffect(() => {
     getTypes();
@@ -54,11 +52,6 @@ const BurgerIngredients = ({ data }) => {
 
   const setCurrentType = (type) => {
     currentType = type;
-  };
-
-  const onItemClick = (item) => {
-    setItem(item);
-    modalHandler(true);
   };
 
   return (
@@ -118,14 +111,6 @@ const BurgerIngredients = ({ data }) => {
           })}
         </ul>
       </section>
-
-      <Modal
-        modalHandler={modalHandler}
-        modalHeader={"Детали ингредиента"}
-        isModal={isModal}
-      >
-        <IngredientDetails item={item} />
-      </Modal>
     </>
   );
 };

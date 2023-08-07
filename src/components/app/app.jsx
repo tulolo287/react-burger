@@ -4,10 +4,14 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useEffect, useRef, useState } from "react";
 import { URL } from "../../utils/consts";
+import Modal from "../modal/modal";
+import useModal from "../../hooks/useModal";
 
 function App() {
   const [data, setData] = useState();
   const [error, setError] = useState(false);
+  const [details, setDetails] = useState();
+  const { isModal, modalHandler } = useModal();
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -26,6 +30,11 @@ function App() {
     dataFetch();
   }, []);
 
+  const onItemClick = (detail) => {
+    modalHandler(true);
+    setDetails(detail);
+  };
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -34,11 +43,15 @@ function App() {
         {error && "Sorry server error"}
         {data && !error && (
           <>
-            <BurgerIngredients data={data} />
-            <BurgerConstructor data={data} />
+            <BurgerIngredients data={data} onItemClick={onItemClick} />
+            <BurgerConstructor data={data} onItemClick={onItemClick} />
           </>
         )}
       </main>
+
+      <Modal isModal={isModal} modalHandler={modalHandler}>
+        {details}
+      </Modal>
     </div>
   );
 }
