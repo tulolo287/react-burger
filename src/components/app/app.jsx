@@ -11,7 +11,7 @@ function App() {
   const [data, setData] = useState();
   const [error, setError] = useState(false);
   const [details, setDetails] = useState();
-  const { isModal, modalHandler } = useModal();
+  const { isModal, modalHandler, modalHeader, setModalHeader } = useModal();
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -43,13 +43,13 @@ function App() {
         {error && "Sorry server error"}
         {data && !error && (
           <>
-            <BurgerIngredients data={data} onItemClick={onItemClick} />
-            <BurgerConstructor data={data} onItemClick={onItemClick} />
+            <BurgerIngredients data={data} onItemClick={onItemClick} setModalHeader={setModalHeader} />
+            <BurgerConstructor data={data} onItemClick={onItemClick} setModalHeader={setModalHeader}/>
           </>
         )}
       </main>
 
-      <Modal isModal={isModal} modalHandler={modalHandler}>
+      <Modal isModal={isModal} modalHandler={modalHandler} modalHeader={modalHeader} setModalHeader={setModalHeader}>
         {details}
       </Modal>
     </div>

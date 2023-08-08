@@ -11,7 +11,7 @@ import useModal from "../../hooks/useModal";
 let currentType = "";
 let categoryRefs = [];
 
-const BurgerIngredients = ({ data, onItemClick }) => {
+const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
@@ -101,6 +101,7 @@ const BurgerIngredients = ({ data, onItemClick }) => {
                 )}
                 <BurgerItem
                   onItemClick={onItemClick}
+                  setModalHeader={setModalHeader}
                   showTitle={showTitle}
                   key={item._id}
                   item={item}

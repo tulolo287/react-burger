@@ -8,11 +8,9 @@ import React, { useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { DATA_TYPES, DATA_ITEM, data } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
-import Modal from "../modal/modal";
-import useModal from "../../hooks/useModal";
-import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ data, onItemClick }) => {
+
+const BurgerConstructor = ({ data, onItemClick, setModalHeader }) => {
   const [bun, setBuns] = useState({});
   const [inside, setInside] = useState([]);
 
@@ -22,6 +20,11 @@ const BurgerConstructor = ({ data, onItemClick }) => {
     const inside = data.filter((item) => item.type !== "bun");
     setInside(inside);
   }, []);
+
+  const buttonHandler = () => {
+    setModalHeader(null)
+    onItemClick(<OrderDetails />)
+  }
 
   return (
     <>
@@ -72,7 +75,7 @@ const BurgerConstructor = ({ data, onItemClick }) => {
             <CurrencyIcon style={{ width: 33 }} type="primary" />
           </i>
           <Button
-            onClick={() => onItemClick(<OrderDetails />)}
+            onClick={buttonHandler}
             htmlType="button"
             type="primary"
             size="large"

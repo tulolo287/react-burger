@@ -2,6 +2,8 @@ import { useState } from "react";
 
 const useModal = (Wrapper) => {
   const [isModal, setIsModal] = useState(false);
+  const [modalHeader, setModalHeader] = useState(false);
+
 
   function modalHandler(modal) {
     setIsModal(modal);
@@ -10,6 +12,8 @@ const useModal = (Wrapper) => {
   return {
     isModal,
     modalHandler,
+    modalHeader,
+    setModalHeader
   };
 };
 
