@@ -6,11 +6,11 @@ const useModal = () => {
 
   const closeModal = useCallback(() => {
     setIsModal(false);
-  });
+  }, []);
 
   const openModal = useCallback(() => {
     setIsModal(true);
-  });
+  }, []);
 
   return {
     isModal,
