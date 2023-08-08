@@ -6,14 +6,6 @@ import styles from "./burger-item.module.css";
 import PropTypes from "prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
-import {
-  Counter,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./burger-item.module.css";
-import PropTypes from "prop-types";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-
 const BurgerItem = ({ item, qty, onItemClick, setModalHeader }) => {
   const onItemHandler = () => {
     setModalHeader("Детали ингредиента")
