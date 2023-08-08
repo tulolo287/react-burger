@@ -1,17 +1,18 @@
-import styles from "./app.module.css";
-import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { useEffect, useRef, useState } from "react";
-import { URL } from "../../utils/consts";
-import Modal from "../modal/modal";
-import useModal from "../../hooks/useModal";
+import styles from './app.module.css';
+import AppHeader from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { useEffect, useRef, useState } from 'react';
+import { URL } from '../../utils/consts';
+import Modal from '../modal/modal';
+import useModal from '../../hooks/useModal';
 
 function App() {
   const [data, setData] = useState();
   const [error, setError] = useState(false);
   const [details, setDetails] = useState();
-  const { isModal, modalHandler, modalHeader, setModalHeader } = useModal();
+  const { isModal, openModal, closeModal, modalHeader, setModalHeader } =
+    useModal();
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -31,7 +32,7 @@ function App() {
   }, []);
 
   const onItemClick = (detail) => {
-    modalHandler(true);
+    openModal();
     setDetails(detail);
   };
 
@@ -39,19 +40,33 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.container}>
-        {!data && !error && "Loading..."}
-        {error && "Sorry server error"}
+        {!data && !error && 'Loading...'}
+        {error && 'Sorry server error'}
         {data && !error && (
           <>
-            <BurgerIngredients data={data} onItemClick={onItemClick} setModalHeader={setModalHeader} />
-            <BurgerConstructor data={data} onItemClick={onItemClick} setModalHeader={setModalHeader}/>
+            <BurgerIngredients
+              data={data}
+              onItemClick={onItemClick}
+              setModalHeader={setModalHeader}
+            />
+            <BurgerConstructor
+              data={data}
+              onItemClick={onItemClick}
+              setModalHeader={setModalHeader}
+            />
           </>
         )}
       </main>
 
-      <Modal isModal={isModal} modalHandler={modalHandler} modalHeader={modalHeader} setModalHeader={setModalHeader}>
-        {details}
-      </Modal>
+      {isModal && (
+        <Modal
+          closeModal={closeModal}
+          modalHeader={modalHeader}
+          setModalHeader={setModalHeader}
+        >
+          {details}
+        </Modal>
+      )}
     </div>
   );
 }

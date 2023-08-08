@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useCallback, useState } from 'react';
 
-const useModal = (Wrapper) => {
+const useModal = () => {
   const [isModal, setIsModal] = useState(false);
   const [modalHeader, setModalHeader] = useState(false);
 
+  const closeModal = useCallback(() => {
+    setIsModal(false);
+  });
 
-  function modalHandler(modal) {
-    setIsModal(modal);
-  }
+  const openModal = useCallback(() => {
+    setIsModal(true);
+  });
 
   return {
     isModal,
-    modalHandler,
+    openModal,
+    closeModal,
     modalHeader,
-    setModalHeader
+    setModalHeader,
   };
 };
-
-
 
 export default useModal;
