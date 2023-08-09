@@ -22,7 +22,7 @@ const Modal = ({ closeModal, children, modalHeader }) => {
       <ModalOverlay closeModal={closeModal} />
       <section className={styles.modal}>
         <div className={styles.modal_close}>
-          {modalHeader && <span>{modalHeader}</span>}
+          {modalHeader && <h2>{modalHeader}</h2>}
           <i>
             <CloseIcon onClick={() => closeModal()} type="primary" />
           </i>

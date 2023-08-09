@@ -5,11 +5,15 @@ import {
 import styles from "./burger-item.module.css";
 import PropTypes from "prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { useContext, useReducer } from "react";
+import { DataContext, actions } from "../app/app";
 
 const BurgerItem = ({ item, qty, onItemClick, setModalHeader }) => {
+  const [state, diispatch] = useContext(DataContext)
   const onItemHandler = () => {
     setModalHeader("Детали ингредиента")
     onItemClick(<IngredientDetails item={item}/>)
+    diispatch({type: actions.ADD_ITEM_TO_CART, payload: item})
   }
   return (
     <li
