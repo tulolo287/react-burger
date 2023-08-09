@@ -2,23 +2,36 @@ import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
 import styles from "./burger-item.module.css";
+import PropTypes from "prop-types";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
-const BurgerItem = ({ item }) => {
-  const [count, setCount] = React.useState(1);
+const BurgerItem = ({ item, qty, onItemClick, setModalHeader }) => {
+  const onItemHandler = () => {
+    setModalHeader("Детали ингредиента")
+    onItemClick(<IngredientDetails item={item}/>)
+  }
   return (
-    <li className={styles.burgerItem}>
-      {count && <Counter count={count} size="default" extraClass="m-1" />}
+    <li
+      onClick={onItemHandler}
+      className={styles.burgerItem}
+    >
+      {qty && <Counter count={qty} size="default" extraClass="m-1" />}
 
       <img src={item.image_large} alt={item.name} />
       <div className={styles.burgerItem_price}>
         <p className="text text_type_digits-default mr-2">{item.price}</p>
         <CurrencyIcon type="primary" />
       </div>
-      {item.name}
+      <p className="text text_type_main-default">{item.name}</p>
     </li>
   );
+};
+
+BurgerItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  qty: PropTypes.number,
+  onItemClick: PropTypes.func.isRequired,
 };
 
 export default BurgerItem;

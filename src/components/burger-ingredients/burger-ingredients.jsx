@@ -1,57 +1,42 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import PropTypes from "prop-types";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
-import { dataTypes } from "../../utils/consts";
+import { SORT_ORDER, TYPES, data } from "../../utils/consts";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+import useModal from "../../hooks/useModal";
 
-const Types = {
-  bun: { name: "Булки" },
-  sauce: { name: "Соусы" },
-  main: { name: "Начинки" },
-};
+let currentType = "";
+let categoryRefs = [];
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
 
-  let categoryRefs = [];
-
   React.useEffect(() => {
     getTypes();
     sortData();
-    getTypesNames();
   }, []);
 
-  const sortOrder = ["bun", "sauce", "main"];
-
-  let typesData = [];
-
   const sortData = () => {
-    const sortedData2 = data.sort((a, b) => {
-      return sortOrder.indexOf(a.type) - sortOrder.indexOf(b.type);
+    const sortedData = data.sort((a, b) => {
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
-    setSortedData(sortedData2);
+    setSortedData(sortedData);
   };
 
-  const getTypesNames = () => {
-    let bunItems = [];
-    bunItems = data.filter((item) => item.type === "bun");
-
-    let sauceItems = [];
-    sauceItems = data.filter((item) => item.type === "sauce");
-
-    let mainItems = [];
-    mainItems = data.filter((item) => item.type === "main");
-
-    typesData = [
-      { category: "Булки", items: [...bunItems] },
-      { category: "Соусы", items: [...sauceItems] },
-      { category: "Начинки", items: [...mainItems] },
-    ];
-    setSortedData(typesData);
-    // console.log(typesData)
-  };
+  React.useEffect(() => {
+    if (categoryRefs[current]) {
+      categoryRefs[current].scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    }
+  }, [current]);
 
   const getTypes = () => {
     let types = [];
@@ -59,62 +44,80 @@ const BurgerIngredients = ({ data }) => {
       .map((item) => item.type)
       .filter((val, idx, arr) => {
         if (arr.indexOf(val) === idx) {
-          types.push({ type: val, name: Types[val].name });
+          types.push({ type: val, name: TYPES[val].name });
         }
       });
     setTypes(types);
   };
 
-  const getCurrentTabItems = () => {
-    return data.filter((item) => item.type === current);
+  const setCurrentType = (type) => {
+    currentType = type;
   };
 
   return (
-    <section className={styles.burgerIngredients}>
-      <h1
-        className={
-          styles.burgerIngredients_header +
-          " text text_type_main-large mt-10 mb-5"
-        }
-      >
-        Соберите бургер
-      </h1>
-      <div className={styles.burgerIngredients_tab}>
-        {types.map((item, idx) => (
-          <React.Fragment key={idx}>
-            <Tab
-              value="bun"
-              active={current === item.type}
-              onClick={() => setCurrent(item.type)}
-            >
-              {item.name}
-            </Tab>
-          </React.Fragment>
-        ))}
-      </div>
-      <ul className={styles.burgerItems + " mt-10 pr-5"}>
-        {sortedData.map((types, idx) => {
-          return (
-            <React.Fragment key={`${types.category}_${idx}`}>
-              <li className={styles.burgerItems_category + " mb-6 mt-10"}>
-                <h3
-                  ref={(ref) => (categoryRefs[idx] = ref)}
-                  id={types.category}
-                >
-                  {types.category}
-                </h3>
-              </li>
-              {types.items.map((item) => {
-                return <BurgerItem key={item.id} item={item} />;
-              })}
+    <>
+      <section className={styles.burgerIngredients}>
+        <p
+          className={
+            styles.burgerIngredients_header +
+            " text text_type_main-large mt-10 mb-5"
+          }
+        >
+          Соберите бургер
+        </p>
+        <div className={styles.burgerIngredients_tab}>
+          {types.map((item, idx) => (
+            <React.Fragment key={idx}>
+              <Tab
+                value="bun"
+                active={current === item.type}
+                onClick={() => setCurrent(item.type)}
+              >
+                {item.name}
+              </Tab>
             </React.Fragment>
-          );
-        })}
-      </ul>
-    </section>
+          ))}
+        </div>
+        <ul className={styles.burgerItems + " mt-10 pr-5"}>
+          {sortedData.map((item, idx) => {
+            let showTitle = false;
+            if (currentType != item.type) {
+              showTitle = true;
+              setCurrentType(item.type);
+            } else {
+              showTitle = false;
+            }
+            return (
+              <React.Fragment key={item._id}>
+                {showTitle && (
+                  <li className={styles.burgerItems_category + " mb-6 mt-10"}>
+                    <h3
+                      className="text text_type_main-medium"
+                      ref={(ref) => (categoryRefs[item.type] = ref)}
+                    >
+                      {TYPES[item.type].name}
+                    </h3>
+                  </li>
+                )}
+                <BurgerItem
+                  onItemClick={onItemClick}
+                  setModalHeader={setModalHeader}
+                  showTitle={showTitle}
+                  key={item._id}
+                  item={item}
+                  qty={1}
+                />
+              </React.Fragment>
+            );
+          })}
+        </ul>
+      </section>
+    </>
   );
 };
 
-BurgerIngredients.defaultProps = dataTypes;
+BurgerIngredients.propTypes = {
+  data,
+};
 
 export default BurgerIngredients;

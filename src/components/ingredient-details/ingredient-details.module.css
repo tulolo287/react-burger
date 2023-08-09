@@ -1,0 +1,21 @@
+.ingredientDetails {
+   display: flex;
+   flex-direction: column;
+   text-align: center;
+   gap: 20px;
+}
+.ingredientDetails_nutr {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   gap: 10px;
+}
+.ingredientDetails_nutr ul {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-around;
+}
+.ingredientDetails_nutr li {
+   margin: 20px;
+   text-align: center;
+}
