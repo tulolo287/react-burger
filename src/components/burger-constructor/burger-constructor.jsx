@@ -6,25 +6,55 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import styles from "./burger-constructor.module.css";
-import { DATA_TYPES, DATA_ITEM, data } from "../../utils/consts";
+import { data, URL, ORDER_URL } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
 import { DataContext, actions } from "../app/app";
 
 const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
   const [state, dispatch] = useContext(DataContext);
 
-  const [bun, setBuns] = useState({});
-  const [inside, setInside] = useState([]);
+  const [bun, setBun] = useState({});
+
+  const postOrder = async (items) => {
+    const ids = items.map((item) => item._id);
+
+    const request = {
+      ingredients: ids,
+    };
+    try {
+      const response = await fetch(ORDER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(request),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        dispatch({ type: actions.POST_ORDER, payload: result });
+      } else {
+        alert("Sorry order error");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    const bun = state.data.find((item) => item.type === "bun");
-    setBuns(bun);
-    const inside = state.data.filter((item) => item.type !== "bun");
-    setInside(inside);
-  }, []);
+    if (bun) {
+     // dispatch({ type: actions.ADD_ITEM_TO_CART, payload: bun });
+    }
+  }, [bun]);
 
   useEffect(() => {
-    console.log(state);
+    if (state.data) {
+      // dispatch({ type: actions.ADD_ITEMS_TO_CART, payload: state.ingredients });
+      dispatch({ type: actions.SET_BUN, payload: state.buns });
+      console.log(state);
+    }
+  }, [state.data]);
+
+  useEffect(() => {
     if (state.cart.length) {
       dispatch({ type: actions.CALCULATE_TOTAL_CART });
     }
@@ -33,6 +63,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
   const buttonHandler = () => {
     setModalHeader(null);
     onItemClick(<OrderDetails />);
+    postOrder(state.cart);
   };
 
   return (
@@ -43,14 +74,14 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${state.bun.name} (верх)`}
+              price={state.bun.price}
+              thumbnail={state.bun.image}
             />
           </li>
         </ul>
         <ul className={styles.burgerConsructor_group}>
-          {state.cart.length != 0 &&
+          {state.cart.length &&
             state.cart.map((item) => {
               return (
                 <li
@@ -76,9 +107,9 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${state.bun.name} (низ)`}
+              price={state.bun.price}
+              thumbnail={state.bun.image}
             />
           </li>
         </ul>

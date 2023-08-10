@@ -14,6 +14,7 @@ const BurgerItem = ({ item, qty, onItemClick, setModalHeader }) => {
     setModalHeader("Детали ингредиента")
     onItemClick(<IngredientDetails item={item}/>)
     diispatch({type: actions.ADD_ITEM_TO_CART, payload: item})
+    console.log(state.cart)
   }
   return (
     <li

@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 
 const URL = "https://norma.nomoreparties.space/api/ingredients"
 
+export const ORDER_URL = "https://norma.nomoreparties.space/api/orders"
+
 const TYPES = {
   bun: { name: "Булки" },
   sauce: { name: "Соусы" },

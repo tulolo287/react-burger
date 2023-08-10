@@ -3,19 +3,28 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { createContext, useEffect, useReducer, useRef, useState } from "react";
-import { URL } from "../../utils/consts";
+import { URL, item } from "../../utils/consts";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 
 export const actions = {
   CALCULATE_TOTAL_CART: "CALCULATE_TOTAL_CART",
   ADD_ITEM_TO_CART: "ADD_ITEM_TO_CART",
+  ADD_ITEMS_TO_CART: "ADD_ITEMS_TO_CART",
   SET_DATA_FROM_SERVER: "SET_DATA_FROM_SERVER",
+  SET_BUNS: "SET_BUNS",
+  SET_BUN: "SET_BUN",
+  SET_INGREDIENTS: "SET_INGREDIENTS",
+  POST_ORDER: "POST_ORDER",
 };
 
 const initialState = {
   data: [],
   cart: [],
+  buns: [],
+  bun: {},
+  ingredients: [],
+  order: [],
   totalCartPrice: 0,
   loading: false,
 };
@@ -31,13 +40,40 @@ const reducer = (state, action) => {
       return state;
     case actions.SET_DATA_FROM_SERVER:
       return { ...state, data: action.payload };
+    case actions.SET_BUNS:
+      const buns = state.data.filter((item) => item.type === "bun");
+      return { ...state, buns };
+    case actions.SET_BUN:
+      const bun = action.payload.find((item) => item.type === "bun");
+      if (bun) {
+        return { ...state, bun };
+      } else return state;
+    case actions.SET_INGREDIENTS:
+      const ingredients = state.data.filter((item) => item.type !== "bun");
+      return { ...state, ingredients };
     case actions.CALCULATE_TOTAL_CART:
-      const newTotalPrice = state.cart
+      const newTotalPrice = state.ingredients
         .map((item) => item.price)
-        .reduce((val, acc) => val + acc);
-      return { ...state, totalCartPrice: newTotalPrice };
+        .reduce((val, acc) => val + acc * item.qty);
+      return { ...state, totalCartPrice: newTotalPrice + state.bun.price * 2 };
     case actions.ADD_ITEM_TO_CART:
-      return { ...state, cart: [...state.cart, action.payload] };
+      if (state.cart.length) {
+        state.cart.map((item) => {
+          if (item.id === action.payload.id) {
+            return {
+              ...state,
+              cart: { ...state.cart, qty: item.qty ? ++item.qty : 1 },
+            };
+          }
+        });
+      } else {
+        return { ...state, cart: [...state.cart, action.payload] };
+      }
+
+    case actions.ADD_ITEMS_TO_CART:
+      return { ...state, cart: action.payload };
+    case actions.POST_ORDER:
+      return { ...state, order: [...state.order, action.payload] };
     default:
       return state;
   }
@@ -49,7 +85,7 @@ function App() {
   const [details, setDetails] = useState();
   const { isModal, openModal, closeModal, modalHeader, setModalHeader } =
     useModal();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -60,7 +96,8 @@ function App() {
         if (response.ok) {
           const { data } = await response.json();
           dispatch({ type: actions.SET_DATA_FROM_SERVER, payload: data });
-          console.log(state.data);
+          dispatch({ type: actions.SET_BUNS });
+          dispatch({ type: actions.SET_INGREDIENTS });
           setLoading(false);
           dispatch({ type: "loaded" });
         } else {
@@ -84,7 +121,7 @@ function App() {
       <main className={styles.container}>
         {loading && "Loading..."}
         {error && "Sorry server error"}
-        {!loading && !error && (
+        {state.data && !loading && !error && (
           <DataContext.Provider value={[state, dispatch]}>
             <BurgerIngredients
               onItemClick={onItemClick}
