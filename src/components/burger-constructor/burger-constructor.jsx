@@ -3,12 +3,12 @@ import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useEffect, useReducer, useState } from "react";
-import styles from "./burger-constructor.module.css";
-import { data, URL, ORDER_URL } from "../../utils/consts";
-import OrderDetails from "../order-details/order-details";
-import { DataContext, actions } from "../app/app";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
+import styles from './burger-constructor.module.css';
+import { data, URL, ORDER_URL } from '../../utils/consts';
+import OrderDetails from '../order-details/order-details';
+import { DataContext, actions } from '../app/app';
 
 const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
   const [state, dispatch] = useContext(DataContext);
@@ -23,9 +23,9 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
     };
     try {
       const response = await fetch(ORDER_URL, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json;charset=utf-8",
+          'Content-Type': 'application/json;charset=utf-8',
         },
         body: JSON.stringify(request),
       });
@@ -33,7 +33,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
         const result = await response.json();
         dispatch({ type: actions.POST_ORDER, payload: result });
       } else {
-        alert("Sorry order error");
+        alert('Sorry order error');
       }
     } catch (err) {
       console.log(err);
@@ -42,7 +42,8 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
 
   useEffect(() => {
     if (bun) {
-     // dispatch({ type: actions.ADD_ITEM_TO_CART, payload: bun });
+      //dispatch({ type: actions.ADD_ITEM_TO_CART, payload: bun });
+     //dispatch({ type: actions.CALCULATE_TOTAL_CART });
     }
   }, [bun]);
 
@@ -68,7 +69,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
 
   return (
     <>
-      <section className={styles.burgerConsructor + " mt-25 ml-10"}>
+      <section className={styles.burgerConsructor + ' mt-25 ml-10'}>
         <ul className={styles.burgerConsructor_top}>
           <li>
             <ConstructorElement
@@ -81,7 +82,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
           </li>
         </ul>
         <ul className={styles.burgerConsructor_group}>
-          {state.cart.length &&
+          {state.cart &&
             state.cart.map((item) => {
               return (
                 <li
@@ -113,7 +114,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
             />
           </li>
         </ul>
-        <div className={styles.burgerConstructor_checkout + " mt-10"}>
+        <div className={styles.burgerConstructor_checkout + ' mt-10'}>
           <p className="text text_type_digits-medium mr-2">
             {state.totalCartPrice}
           </p>
