@@ -3,57 +3,51 @@ import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import styles from './burger-constructor.module.css';
-import { data, URL, ORDER_URL } from '../../utils/consts';
-import OrderDetails from '../order-details/order-details';
-import { DataContext, actions } from '../app/app';
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import styles from "./burger-constructor.module.css";
+import { data, URL, ORDER_URL } from "../../utils/consts";
+import OrderDetails from "../order-details/order-details";
+import { DataContext } from "../app/app";
+import { actions } from "../../reducer";
 
 const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
   const [state, dispatch] = useContext(DataContext);
 
-  const [bun, setBun] = useState({});
-
-  const postOrder = async (items) => {
-    const ids = items.map((item) => item._id);
+  const postOrder = async () => {
+    dispatch({ type: actions.SET_LOADING, payload: true });
+    const ids = state.cart.map((item) => item._id);
 
     const request = {
       ingredients: ids,
     };
     try {
       const response = await fetch(ORDER_URL, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json;charset=utf-8',
+          "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify(request),
       });
       if (response.ok) {
         const result = await response.json();
-        dispatch({ type: actions.POST_ORDER, payload: result });
+        if (result) {
+          dispatch({ type: actions.POST_ORDER, payload: result });
+          setModalHeader(null);
+          onItemClick(<OrderDetails order={result} />);
+          dispatch({ type: actions.SET_LOADING, payload: false });
+        }
       } else {
-        alert('Sorry order error');
+        dispatch({ type: actions.SET_LOADING, payload: false });
+        alert("Sorry order error");
       }
     } catch (err) {
-      console.log(err);
+      dispatch({ type: actions.SET_LOADING, payload: false });
+      alert(err.message);
+      console.log(err.message);
     }
   };
-
-  useEffect(() => {
-    if (bun) {
-      //dispatch({ type: actions.ADD_ITEM_TO_CART, payload: bun });
-     //dispatch({ type: actions.CALCULATE_TOTAL_CART });
-    }
-  }, [bun]);
-
-  useEffect(() => {
-    if (state.data) {
-      // dispatch({ type: actions.ADD_ITEMS_TO_CART, payload: state.ingredients });
-      dispatch({ type: actions.SET_BUN, payload: state.buns });
-      console.log(state);
-    }
-  }, [state.data]);
 
   useEffect(() => {
     if (state.cart.length) {
@@ -62,14 +56,12 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
   }, [state.cart]);
 
   const buttonHandler = () => {
-    setModalHeader(null);
-    onItemClick(<OrderDetails />);
     postOrder(state.cart);
   };
 
   return (
     <>
-      <section className={styles.burgerConsructor + ' mt-25 ml-10'}>
+      <section className={styles.burgerConsructor + " mt-25 ml-10"}>
         <ul className={styles.burgerConsructor_top}>
           <li>
             <ConstructorElement
@@ -82,11 +74,11 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
           </li>
         </ul>
         <ul className={styles.burgerConsructor_group}>
-          {state.cart &&
-            state.cart.map((item) => {
+          {state.ingredients &&
+            state.ingredients.map((item) => {
               return (
                 <li
-                  key={item._id}
+                  key={uuidv4()}
                   className={styles.burgerConstructor_item_move}
                 >
                   <i>
@@ -114,7 +106,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
             />
           </li>
         </ul>
-        <div className={styles.burgerConstructor_checkout + ' mt-10'}>
+        <div className={styles.burgerConstructor_checkout + " mt-10"}>
           <p className="text text_type_digits-medium mr-2">
             {state.totalCartPrice}
           </p>

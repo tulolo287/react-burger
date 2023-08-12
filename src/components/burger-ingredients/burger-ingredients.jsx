@@ -79,7 +79,7 @@ const BurgerIngredients = ({ onItemClick, setModalHeader }) => {
         <ul className={styles.burgerItems + " mt-10 pr-5"}>
           {sortedData.map((item, idx) => {
             let showTitle = false;
-            if (currentType != item.type) {
+            if (currentType !== item.type) {
               showTitle = true;
               setCurrentType(item.type);
             } else {
@@ -101,9 +101,7 @@ const BurgerIngredients = ({ onItemClick, setModalHeader }) => {
                   onItemClick={onItemClick}
                   setModalHeader={setModalHeader}
                   showTitle={showTitle}
-                  key={item._id}
                   item={item}
-                  qty={1}
                 />
               </React.Fragment>
             );
