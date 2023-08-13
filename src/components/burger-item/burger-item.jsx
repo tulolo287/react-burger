@@ -18,13 +18,13 @@ const BurgerItem = ({ item, onItemClick, setModalHeader }) => {
     onItemClick(<IngredientDetails item={item} />);
     if (item.type === "bun") {
       dispatch({ type: actions.SET_BUN, payload: item });
-      dispatch({ type: actions.ADD_BUN_TO_CART, payload: item });
+      dispatch({ type: actions.ADD_BUN_TO_ORDER, payload: item });
     } else {
-      dispatch({ type: actions.ADD_ITEM_TO_CART, payload: item });
-      dispatch({ type: actions.ADD_INGREDIENT, payload: item });
+      dispatch({ type: actions.ADD_ITEM_TO_ORDER, payload: item });
+      dispatch({ type: actions.ADD_INGREDIENT_TO_BURGER, payload: item });
       setQty((prevQty) => (prevQty ? ++prevQty : 1));
     }
-    dispatch({ type: actions.CALCULATE_TOTAL_CART });
+    dispatch({ type: actions.CALCULATE_TOTAL_ORDER });
   };
   return (
     <li onClick={onItemHandler} className={styles.burgerItem}>

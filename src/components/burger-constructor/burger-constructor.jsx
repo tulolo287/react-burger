@@ -7,56 +7,41 @@ import {
 import React, { useContext, useEffect, useReducer, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./burger-constructor.module.css";
-import { data, URL, ORDER_URL } from "../../utils/consts";
+import { data, URL, ORDER_URL, API_URL } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
 import { DataContext } from "../app/app";
 import { actions } from "../../reducer";
+import { postOrder } from "../../utils/api";
 
 const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
   const [state, dispatch] = useContext(DataContext);
 
-  const postOrder = async () => {
-    dispatch({ type: actions.SET_LOADING, payload: true });
-    const ids = state.cart.map((item) => item._id);
+  useEffect(() => {
+    if (state.order.length) {
+      dispatch({ type: actions.CALCULATE_TOTAL_ORDER });
+    }
+  }, [state.order]);
+
+  const buttonHandler = async () => {
+    const ingredientsId = state.order.map((item) => item._id);
 
     const request = {
-      ingredients: ids,
+      ingredients: ingredientsId,
     };
-    try {
-      const response = await fetch(ORDER_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(request),
-      });
-      if (response.ok) {
-        const result = await response.json();
-        if (result) {
-          dispatch({ type: actions.POST_ORDER, payload: result });
-          setModalHeader(null);
-          onItemClick(<OrderDetails order={result} />);
-          dispatch({ type: actions.SET_LOADING, payload: false });
-        }
-      } else {
-        dispatch({ type: actions.SET_LOADING, payload: false });
-        alert("Sorry order error");
-      }
-    } catch (err) {
+
+    dispatch({ type: actions.SET_LOADING, payload: true });
+    const data = await postOrder(request, "orders");
+
+    if (data) {
+      dispatch({ type: actions.POST_ORDER, payload: data });
+      setModalHeader(null);
+      onItemClick(<OrderDetails orderNumber={data} />);
       dispatch({ type: actions.SET_LOADING, payload: false });
-      alert(err.message);
-      console.log(err.message);
+    } else {
+      dispatch({ type: actions.SET_LOADING, payload: false });
+      alert("Sorry order error");
     }
-  };
-
-  useEffect(() => {
-    if (state.cart.length) {
-      dispatch({ type: actions.CALCULATE_TOTAL_CART });
-    }
-  }, [state.cart]);
-
-  const buttonHandler = () => {
-    postOrder(state.cart);
+    dispatch({ type: actions.CLEAR_ORDER });
   };
 
   return (
@@ -74,26 +59,22 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
           </li>
         </ul>
         <ul className={styles.burgerConsructor_group}>
-          {state.ingredients &&
-            state.ingredients.map((item) => {
-              return (
-                <li
-                  key={uuidv4()}
-                  className={styles.burgerConstructor_item_move}
-                >
-                  <i>
-                    <DragIcon type="primary" />
-                  </i>
-                  <ConstructorElement
-                    type="center"
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </li>
-              );
-            })}
+          {state.ingredients?.map((item) => {
+            return (
+              <li key={uuidv4()} className={styles.burgerConstructor_item_move}>
+                <i>
+                  <DragIcon type="primary" />
+                </i>
+                <ConstructorElement
+                  type="center"
+                  isLocked={false}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </li>
+            );
+          })}
         </ul>
         <ul className={styles.burgerConsructor_bot}>
           <li>

@@ -1,17 +1,11 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext } from "react";
 import styles from "./order-details.module.css";
-import { DataContext } from "../app/app";
 
-
-const OrderDetails = ({order}) => {
-  
-  //const [state, dispatch] = useContext(DataContext);
- 
+const OrderDetails = ({ orderNumber }) => {
   return (
     <div className={styles.orderDetails}>
       <p className="text text_type_digits-large">
-        {order && order.order.number}
+        {orderNumber && orderNumber.order.number}
       </p>
       <p className="text text_type_main-medium">идентификатор заказа</p>
       <div className={styles.order_checkCircle}>

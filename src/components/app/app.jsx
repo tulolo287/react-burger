@@ -3,10 +3,10 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { createContext, useEffect, useReducer, useRef, useState } from "react";
-import { URL, item } from "../../utils/consts";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 import { actions, initialState, reducer } from "../../reducer";
+import { getData } from "../../utils/api";
 
 export const DataContext = createContext();
 
@@ -16,33 +16,28 @@ function App() {
   const [details, setDetails] = useState();
   const { isModal, openModal, closeModal, modalHeader, setModalHeader } =
     useModal();
-  /* 
+
   useEffect(() => {
-    console.log("STATE ----------------------------------- ", state);
-  }, [state]); 
-  */
-  useEffect(() => {
-    const dataFetch = async () => {
-      dispatch({ type: actions.SET_LOADING, payload: true });
-      try {
-        const response = await fetch(URL);
-        if (response.ok) {
-          const { data } = await response.json();
-          dispatch({ type: actions.SET_DATA_FROM_SERVER, payload: data });
-          const bun = data.find((item) => item.type === "bun");
-          dispatch({ type: actions.SET_BUN, payload: bun });
-          dispatch({ type: actions.ADD_BUN_TO_CART, payload: bun });
-          dispatch({ type: actions.SET_LOADING, payload: false });
-        } else {
-          setError(true);
-        }
-      } catch (e) {
-        console.log(e.message);
+    dispatch({ type: actions.SET_LOADING, payload: true });
+
+    const fetchData = async () => {
+      const data = await getData("ingredients");
+      if (data) {
+        dispatch({ type: actions.SET_DATA_FROM_SERVER, payload: data });
+        dispatch({ type: actions.SET_LOADING, payload: false });
+      } else {
+        setError(true);
+        dispatch({ type: actions.SET_LOADING, payload: false });
       }
     };
-    dataFetch();
-  }, []);
 
+    fetchData();
+  }, []);
+useEffect(() => {
+  console.log('STATEE________', state)
+
+}, [state])
+  
   const onItemClick = (detail) => {
     openModal();
     setDetails(detail);
@@ -53,7 +48,7 @@ function App() {
       <AppHeader />
       <main className={styles.container}>
         {error && "Sorry server error"}
-        {state.data && !state.loading && (
+        {state.data && !state.loading && !error && (
           <DataContext.Provider value={[state, dispatch]}>
             <BurgerIngredients
               onItemClick={onItemClick}
