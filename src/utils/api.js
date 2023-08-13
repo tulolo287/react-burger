@@ -1,8 +1,8 @@
 import { API_URL } from "./consts";
 
-export const getData = async (endpoint) => {
+export const getData = async () => {
    try {
-      const response = await fetch(API_URL + endpoint)
+      const response = await fetch(`${API_URL}/ingredients`)
       const result = await checkResponse(response)
       return result.success ? result.data : false
    } catch (err) {
@@ -10,9 +10,9 @@ export const getData = async (endpoint) => {
    }
 };
 
-export const postOrder = async (request, endpoint) => {
+export const postOrder = async (request) => {
    try {
-      const response = await fetch(API_URL + endpoint, {
+      const response = await fetch(`${API_URL}/orders`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json;charset=utf-8",

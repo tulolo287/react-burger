@@ -14,37 +14,10 @@ export const actions = {
 };
 
 export const initialState = {
-   order: [{
-      "_id": "60666c42cc7b410027a1a9b1",
-      "name": "Краторная булка N-200i",
-      "type": "bun",
-      "proteins": 80,
-      "fat": 24,
-      "carbohydrates": 53,
-      "calories": 420,
-      "price": 1255,
-      "image": "https://code.s3.yandex.net/react/code/bun-02.png",
-      "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-      "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
-      "__v": 0,
-      "qty": 2
-   }],
+   order: [],
    data: [],
    buns: [],
-   bun: {
-      "_id": "60666c42cc7b410027a1a9b1",
-      "name": "Краторная булка N-200i",
-      "type": "bun",
-      "proteins": 80,
-      "fat": 24,
-      "carbohydrates": 53,
-      "calories": 420,
-      "price": 1255,
-      "image": "https://code.s3.yandex.net/react/code/bun-02.png",
-      "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-      "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
-      "__v": 0
-   },
+   bun: {},
    ingredients: [],
    orderNumber: {},
    totalCartPrice: 0,
@@ -65,7 +38,7 @@ export const reducer = (state, action) => {
          const buns = state.data.filter((item) => item.type === "bun");
          return { ...state, buns };
       case actions.SET_BUN:
-         return { ...state, bun: { ...action.payload, qty: 1 } };
+         return { ...state, bun: action.payload };
       case actions.SET_INGREDIENTS:
          const ingredients = state.data.filter((item) => item.type !== "bun");
          return { ...state, ingredients: ingredients };
@@ -98,7 +71,7 @@ export const reducer = (state, action) => {
       case actions.POST_ORDER:
          return { ...state, orderNumber: action.payload };
       case actions.CLEAR_ORDER:
-         return { ...state, ingredients: [], bun: initialState.bun, order: initialState.order };
+         return { ...state, ingredients: [], order: [] };
       case actions.SET_LOADING:
          return { ...state, loading: action.payload };
       default:

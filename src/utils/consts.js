@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export const API_URL = "https://norma.nomoreparties.space/api/"
+export const API_URL = "https://norma.nomoreparties.space/api"
 
 export const TYPES = {
   bun: { name: "Булки" },

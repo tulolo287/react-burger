@@ -30,8 +30,8 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
     };
 
     dispatch({ type: actions.SET_LOADING, payload: true });
-    const data = await postOrder(request, "orders");
 
+    const data = await postOrder(request);
     if (data) {
       dispatch({ type: actions.POST_ORDER, payload: data });
       setModalHeader(null);
@@ -42,6 +42,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
       alert("Sorry order error");
     }
     dispatch({ type: actions.CLEAR_ORDER });
+    dispatch({ type: actions.ADD_BUN_TO_ORDER, payload: state.bun });
   };
 
   return (

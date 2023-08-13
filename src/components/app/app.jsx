@@ -21,9 +21,12 @@ function App() {
     dispatch({ type: actions.SET_LOADING, payload: true });
 
     const fetchData = async () => {
-      const data = await getData("ingredients");
+      const data = await getData();
       if (data) {
         dispatch({ type: actions.SET_DATA_FROM_SERVER, payload: data });
+        const bun = data.find((item) => item.type === "bun");
+        dispatch({ type: actions.SET_BUN, payload: bun });
+        dispatch({ type: actions.ADD_BUN_TO_ORDER, payload: bun });
         dispatch({ type: actions.SET_LOADING, payload: false });
       } else {
         setError(true);
@@ -33,11 +36,7 @@ function App() {
 
     fetchData();
   }, []);
-useEffect(() => {
-  console.log('STATEE________', state)
 
-}, [state])
-  
   const onItemClick = (detail) => {
     openModal();
     setDetails(detail);
