@@ -5,16 +5,18 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useContext, useEffect, useReducer, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import styles from "./burger-constructor.module.css";
-import { data, URL, ORDER_URL, API_URL } from "../../utils/consts";
+import { data } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
 import { DataContext } from "../app/app";
-import { actions } from "../../reducer";
-import { postOrder } from "../../utils/api";
+import { actions } from "../../services/reducer";
+import { postOrder } from "../../services/actions/ingredients";
+import Modal from "../modal/modal";
+import useModal from "../../hooks/useModal";
 
-const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
+const BurgerConstructor = () => {
   const [state, dispatch] = useContext(DataContext);
+  const { isModal, openModal, closeModal, title, setTitle } = useModal();
 
   useEffect(() => {
     if (state.order.length) {
@@ -29,20 +31,9 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
       ingredients: ingredientsId,
     };
 
-    dispatch({ type: actions.SET_LOADING, payload: true });
-
-    const data = await postOrder(request);
-    if (data) {
-      dispatch({ type: actions.POST_ORDER, payload: data });
-      setModalHeader(null);
-      onItemClick(<OrderDetails orderNumber={data} />);
-      dispatch({ type: actions.SET_LOADING, payload: false });
-    } else {
-      dispatch({ type: actions.SET_LOADING, payload: false });
-      alert("Sorry order error");
-    }
-    dispatch({ type: actions.CLEAR_ORDER });
-    dispatch({ type: actions.ADD_BUN_TO_ORDER, payload: state.bun });
+    await postOrder(request)(dispatch);
+    openModal();
+    
   };
 
   return (
@@ -62,7 +53,7 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
         <ul className={styles.burgerConsructor_group}>
           {state.ingredients?.map((item) => {
             return (
-              <li key={uuidv4()} className={styles.burgerConstructor_item_move}>
+              <li key={item.key} className={styles.burgerConstructor_item_move}>
                 <i>
                   <DragIcon type="primary" />
                 </i>
@@ -105,6 +96,12 @@ const BurgerConstructor = ({ onItemClick, setModalHeader }) => {
           </Button>
         </div>
       </section>
+
+      {isModal && (
+        <Modal closeModal={closeModal}>
+          <OrderDetails orderNumber={state.orderNumber} />
+        </Modal>
+      )}
     </>
   );
 };

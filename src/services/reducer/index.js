@@ -4,7 +4,8 @@ export const actions = {
    ADD_ITEMS_TO_ORDER: "ADD_ITEMS_TO_ORDER",
    ADD_BUN_TO_ORDER: "ADD_BUN_TO_ORDER",
    CLEAR_ORDER: "CLEAR_ORDER",
-   SET_DATA_FROM_SERVER: "SET_DATA_FROM_SERVER",
+   GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
+   GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED",
    GET_BUNS: "GET_BUNS",
    SET_BUN: "SET_BUN",
    SET_INGREDIENTS: "SET_INGREDIENTS",
@@ -21,7 +22,8 @@ export const initialState = {
    ingredients: [],
    orderNumber: {},
    totalCartPrice: 0,
-   loading: true,
+   isLoading: true,
+   fetchError: false,
 };
 
 export const reducer = (state, action) => {
@@ -32,8 +34,10 @@ export const reducer = (state, action) => {
          });
          return { ...state, order: newOrder };
       }
-      case actions.SET_DATA_FROM_SERVER:
+      case actions.GET_INGREDIENTS_SUCCESS:
          return { ...state, data: action.payload };
+      case actions.GET_INGREDIENTS_FAILED:
+         return { ...state, fetchError: action.payload }
       case actions.GET_BUNS:
          const buns = state.data.filter((item) => item.type === "bun");
          return { ...state, buns };
@@ -73,7 +77,7 @@ export const reducer = (state, action) => {
       case actions.CLEAR_ORDER:
          return { ...state, ingredients: [], order: [] };
       case actions.SET_LOADING:
-         return { ...state, loading: action.payload };
+         return { ...state, isLoading: action.payload };
       default:
          return state;
    }

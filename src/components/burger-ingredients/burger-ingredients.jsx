@@ -8,7 +8,7 @@ import { DataContext } from "../app/app";
 let currentType = "";
 let categoryRefs = [];
 
-const BurgerIngredients = ({ onItemClick, setModalHeader }) => {
+const BurgerIngredients = () => {
   const [state] = useContext(DataContext);
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
@@ -97,12 +97,7 @@ const BurgerIngredients = ({ onItemClick, setModalHeader }) => {
                     </h3>
                   </li>
                 )}
-                <BurgerItem
-                  onItemClick={onItemClick}
-                  setModalHeader={setModalHeader}
-                  showTitle={showTitle}
-                  item={item}
-                />
+                <BurgerItem item={item} />
               </React.Fragment>
             );
           })}

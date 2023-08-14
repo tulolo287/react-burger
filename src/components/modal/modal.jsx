@@ -4,7 +4,7 @@ import styles from './modal.module.css';
 import { forwardRef, useEffect } from 'react';
 import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
 
-const Modal = ({ closeModal, children, modalHeader }) => {
+const Modal = ({ closeModal, children, title }) => {
   useEffect(() => {
     const handleEsc = (evt) => {
       if (evt.key === 'Escape') {
@@ -22,7 +22,7 @@ const Modal = ({ closeModal, children, modalHeader }) => {
       <ModalOverlay closeModal={closeModal} />
       <section className={styles.modal}>
         <div className={styles.modal_close}>
-          {modalHeader && <h2>{modalHeader}</h2>}
+          {title && <h2>{title}</h2>}
           <i>
             <CloseIcon onClick={() => closeModal()} type="primary" />
           </i>

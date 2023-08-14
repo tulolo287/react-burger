@@ -1,8 +1,8 @@
 import { API_URL } from "./consts";
 
-export const getData = async () => {
+export const getIngredientsApi = async (url) => {
    try {
-      const response = await fetch(`${API_URL}/ingredients`)
+      const response = await fetch(url)
       const result = await checkResponse(response)
       return result.success ? result.data : false
    } catch (err) {
@@ -10,7 +10,7 @@ export const getData = async () => {
    }
 };
 
-export const postOrder = async (request) => {
+export const postOrderApi = async (request) => {
    try {
       const response = await fetch(`${API_URL}/orders`, {
          method: "POST",
