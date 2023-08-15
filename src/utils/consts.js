@@ -1,16 +1,16 @@
 import PropTypes from "prop-types";
 
-const URL = "https://norma.nomoreparties.space/api/ingredients"
+export const API_URL = "https://norma.nomoreparties.space/api"
 
-const TYPES = {
+export const TYPES = {
   bun: { name: "Булки" },
   sauce: { name: "Соусы" },
   main: { name: "Начинки" },
 };
 
-const SORT_ORDER = ["bun", "sauce", "main"];
+export const SORT_ORDER = ["bun", "sauce", "main"];
 
-const item = PropTypes.shape({
+export const item = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
@@ -25,6 +25,4 @@ const item = PropTypes.shape({
   image_mobile: PropTypes.string.isRequired,
 })
 
-const data = PropTypes.arrayOf(item)
-
-export { URL, SORT_ORDER, TYPES, data, item }
+export const data = PropTypes.arrayOf(item)

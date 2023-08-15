@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 
 const useModal = () => {
   const [isModal, setIsModal] = useState(false);
-  const [modalHeader, setModalHeader] = useState(false);
+  const [title, setTitle] = useState("");
 
   const closeModal = useCallback(() => {
     setIsModal(false);
@@ -16,8 +16,8 @@ const useModal = () => {
     isModal,
     openModal,
     closeModal,
-    modalHeader,
-    setModalHeader,
+    title,
+    setTitle,
   };
 };
 

@@ -4,27 +4,37 @@ import {
   DragIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import styles from "./burger-constructor.module.css";
-import { DATA_TYPES, DATA_ITEM, data } from "../../utils/consts";
+import { data } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
+import { DataContext } from "../app/app";
+import { actions } from "../../services/reducer";
+import { postOrder } from "../../services/actions/ingredients";
+import Modal from "../modal/modal";
+import useModal from "../../hooks/useModal";
 
-
-const BurgerConstructor = ({ data, onItemClick, setModalHeader }) => {
-  const [bun, setBuns] = useState({});
-  const [inside, setInside] = useState([]);
+const BurgerConstructor = () => {
+  const [state, dispatch] = useContext(DataContext);
+  const { isModal, openModal, closeModal, title, setTitle } = useModal();
 
   useEffect(() => {
-    const bun = data.find((item) => item.type === "bun");
-    setBuns(bun);
-    const inside = data.filter((item) => item.type !== "bun");
-    setInside(inside);
-  }, []);
+    if (state.order.length) {
+      dispatch({ type: actions.CALCULATE_TOTAL_ORDER });
+    }
+  }, [state.order]);
 
-  const buttonHandler = () => {
-    setModalHeader(null)
-    onItemClick(<OrderDetails />)
-  }
+  const buttonHandler = async () => {
+    const ingredientsId = state.order.map((item) => item._id);
+
+    const request = {
+      ingredients: ingredientsId,
+    };
+
+    await postOrder(request)(dispatch);
+    openModal();
+    
+  };
 
   return (
     <>
@@ -34,16 +44,16 @@ const BurgerConstructor = ({ data, onItemClick, setModalHeader }) => {
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${state.bun.name} (верх)`}
+              price={state.bun.price}
+              thumbnail={state.bun.image}
             />
           </li>
         </ul>
         <ul className={styles.burgerConsructor_group}>
-          {inside.map((item) => {
+          {state.ingredients?.map((item) => {
             return (
-              <li key={item._id} className={styles.burgerConstructor_item_move}>
+              <li key={item.key} className={styles.burgerConstructor_item_move}>
                 <i>
                   <DragIcon type="primary" />
                 </i>
@@ -63,14 +73,16 @@ const BurgerConstructor = ({ data, onItemClick, setModalHeader }) => {
             <ConstructorElement
               type="bottom"
               isLocked={true}
-              text={`${bun.name} (низ)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${state.bun.name} (низ)`}
+              price={state.bun.price}
+              thumbnail={state.bun.image}
             />
           </li>
         </ul>
         <div className={styles.burgerConstructor_checkout + " mt-10"}>
-          <p className="text text_type_digits-medium mr-2">610</p>
+          <p className="text text_type_digits-medium mr-2">
+            {state.totalCartPrice}
+          </p>
           <i className="mr-10">
             <CurrencyIcon style={{ width: 33 }} type="primary" />
           </i>
@@ -84,6 +96,12 @@ const BurgerConstructor = ({ data, onItemClick, setModalHeader }) => {
           </Button>
         </div>
       </section>
+
+      {isModal && (
+        <Modal closeModal={closeModal}>
+          <OrderDetails orderNumber={state.orderNumber} />
+        </Modal>
+      )}
     </>
   );
 };

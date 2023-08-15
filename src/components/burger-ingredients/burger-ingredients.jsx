@@ -1,17 +1,15 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useEffect, useRef } from "react";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
 import { SORT_ORDER, TYPES, data } from "../../utils/consts";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
-import useModal from "../../hooks/useModal";
+import { DataContext } from "../app/app";
 
 let currentType = "";
 let categoryRefs = [];
 
-const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
+const BurgerIngredients = () => {
+  const [state] = useContext(DataContext);
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
   const [sortedData, setSortedData] = React.useState([]);
@@ -22,7 +20,7 @@ const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
   }, []);
 
   const sortData = () => {
-    const sortedData = data.sort((a, b) => {
+    const sortedData = state.data.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
     setSortedData(sortedData);
@@ -40,7 +38,7 @@ const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
 
   const getTypes = () => {
     let types = [];
-    data
+    state.data
       .map((item) => item.type)
       .filter((val, idx, arr) => {
         if (arr.indexOf(val) === idx) {
@@ -81,7 +79,7 @@ const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
         <ul className={styles.burgerItems + " mt-10 pr-5"}>
           {sortedData.map((item, idx) => {
             let showTitle = false;
-            if (currentType != item.type) {
+            if (currentType !== item.type) {
               showTitle = true;
               setCurrentType(item.type);
             } else {
@@ -99,14 +97,7 @@ const BurgerIngredients = ({ data, onItemClick, setModalHeader }) => {
                     </h3>
                   </li>
                 )}
-                <BurgerItem
-                  onItemClick={onItemClick}
-                  setModalHeader={setModalHeader}
-                  showTitle={showTitle}
-                  key={item._id}
-                  item={item}
-                  qty={1}
-                />
+                <BurgerItem item={item} />
               </React.Fragment>
             );
           })}
