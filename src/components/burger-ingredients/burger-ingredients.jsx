@@ -3,16 +3,20 @@ import React, { useContext, useEffect, useRef } from "react";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
 import { SORT_ORDER, TYPES, data } from "../../utils/consts";
-import { DataContext } from "../app/app";
+import { useSelector, useDispatch } from "react-redux";
+import { actions } from "../../services/reducer/index";
 
 let currentType = "";
 let categoryRefs = [];
 
 const BurgerIngredients = () => {
-  const [state] = useContext(DataContext);
+  const { data, allIngredients } = useSelector((state) => ({
+    data: state.ingredientsReducer.data,
+    allIngredients: state.ingredientsReducer.allIngredients,
+  }));
+  const dispatch = useDispatch();
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);
-  const [sortedData, setSortedData] = React.useState([]);
 
   React.useEffect(() => {
     getTypes();
@@ -20,10 +24,10 @@ const BurgerIngredients = () => {
   }, []);
 
   const sortData = () => {
-    const sortedData = state.data.sort((a, b) => {
+    const sortedData = data.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
-    setSortedData(sortedData);
+    dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });
   };
 
   React.useEffect(() => {
@@ -38,7 +42,7 @@ const BurgerIngredients = () => {
 
   const getTypes = () => {
     let types = [];
-    state.data
+    data
       .map((item) => item.type)
       .filter((val, idx, arr) => {
         if (arr.indexOf(val) === idx) {
@@ -77,7 +81,7 @@ const BurgerIngredients = () => {
           ))}
         </div>
         <ul className={styles.burgerItems + " mt-10 pr-5"}>
-          {sortedData.map((item, idx) => {
+          {allIngredients?.map((item, idx) => {
             let showTitle = false;
             if (currentType !== item.type) {
               showTitle = true;

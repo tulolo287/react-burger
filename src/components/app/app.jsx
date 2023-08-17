@@ -2,19 +2,23 @@ import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { createContext, useEffect, useReducer, useRef, useState } from "react";
-import { actions, initialState, reducer } from "../../services/reducer";
+import { useEffect } from "react";
 import { API_URL } from "../../utils/consts";
 import { getIngredients } from "../../services/actions/ingredients";
-
-export const DataContext = createContext();
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { data, fetchError, isLoading } = useSelector((state) => ({
+    data: state.ingredientsReducer.data,
+    fetchError: state.ingredientsReducer.fetchError,
+    isLoading: state.ingredientsReducer.isLoading,
+    burgerIngredients: state.constructorReducer.burgerIngredients,
+  }));
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      getIngredients(`${API_URL}/ingredients`)(dispatch);
+      dispatch(getIngredients(`${API_URL}/ingredients`));
     };
 
     fetchData();
@@ -24,15 +28,15 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.container}>
-        {state.data.length && (
-          <DataContext.Provider value={[state, dispatch]}>
+        {data && (
+          <>
             <BurgerIngredients />
             <BurgerConstructor />
-          </DataContext.Provider>
+          </>
         )}
       </main>
-      {state.fetchError && "Sorry server error"}
-      {state.isLoading && "Loading..."}
+      {fetchError && "Sorry server error"}
+      {isLoading && "Loading..."}
     </div>
   );
 }

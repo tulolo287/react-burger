@@ -1,12 +1,18 @@
 .burgerConsructor {
   min-width: 400px;
 }
+.burgerConsructor_drop {
+  border: 1px solid transparent;
+  border-radius: 25px;
+}
 .burgerConsructor_group {
   display: flex;
   flex-direction: column;
   gap: 10px;
   max-height: calc(100vh - 250px);
   overflow-y: auto;
+  border: 1px solid transparent;
+  border-radius: 25px;
 }
 .burgerConsructor_group {
   scrollbar-color: #8585ad #2f2f37;
@@ -22,21 +28,6 @@
 }
 .burgerConsructor_group::-webkit-scrollbar-track {
   background: #2f2f37;
-}
-
-.burgerConstructor_item {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-left: 32px;
-}
-.burgerConstructor_item_move {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.burgerConstructor_item_move i {
-  width: 24px;
 }
 .burgerConstructor_checkout {
   display: flex;
