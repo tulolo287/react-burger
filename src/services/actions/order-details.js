@@ -5,7 +5,7 @@ export const postOrder = (request) => async (dispatch) => {
    dispatch({ type: actions.SET_LOADING, payload: true })
    return postOrderApi(request)
       .then(order => {
-         dispatch({ type: actions.SET_ORDER_DETAIL, payload: order })
+         dispatch({ type: actions.SET_ORDER_DETAILS, payload: order })
          dispatch({ type: actions.SET_LOADING, payload: false })
       }).catch((err) => {
          dispatch({

@@ -1,5 +1,6 @@
 import { actions } from "../reducer";
 import { getIngredientsApi } from "../../utils/api";
+import { v4 as uuidv4 } from "uuid";
 
 
 export const getIngredients = (url) => async (dispatch) => {
@@ -12,7 +13,7 @@ export const getIngredients = (url) => async (dispatch) => {
          });
          const bun = ingredients.find((item) => item.type === "bun");
          dispatch({ type: actions.SET_BUN, payload: bun });
-         dispatch({ type: actions.ADD_BUN_TO_BURGER, payload: bun });
+         dispatch({ type: actions.ADD_BUN_TO_BURGER, payload: { ...bun, key: uuidv4() } });
          dispatch({ type: actions.SET_LOADING, payload: false });
       }).catch((err) => {
          dispatch({

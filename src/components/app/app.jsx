@@ -12,7 +12,6 @@ function App() {
     data: state.ingredientsReducer.data,
     fetchError: state.ingredientsReducer.fetchError,
     isLoading: state.ingredientsReducer.isLoading,
-    burgerIngredients: state.constructorReducer.burgerIngredients,
   }));
   const dispatch = useDispatch();
 

@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 
 const BurgerItem = ({ item }) => {
-  const { ingredientDetail } = useSelector((state) => state.ingredientsReducer);
+  
   const dispatch = useDispatch();
   const { isModal, openModal, closeModal, title, setTitle } = useModal();
 
@@ -25,7 +25,7 @@ const BurgerItem = ({ item }) => {
   });
 
   const onItemHandler = () => {
-    dispatch({ type: actions.SET_INGREDIENT_DETAIL, payload: item });
+    dispatch({ type: actions.SET_INGREDIENT_DETAILS, payload: item });
     setTitle("Детали ингредиента");
     openModal();
   };
@@ -45,7 +45,7 @@ const BurgerItem = ({ item }) => {
 
       {isModal && (
         <Modal closeModal={closeModal} title={title}>
-          <IngredientDetails item={ingredientDetail} />
+          <IngredientDetails />
         </Modal>
       )}
     </>

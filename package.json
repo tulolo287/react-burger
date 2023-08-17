@@ -52,11 +52,6 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.2",
-    "eslint": "^8.46.0",
-    "eslint-plugin-react": "^7.33.1",
     "uuid": "^9.0.0"
-  },
-  "xo": {
-    "prettier": true
   }
 }

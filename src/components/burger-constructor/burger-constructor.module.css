@@ -31,7 +31,7 @@
 }
 .burgerConstructor_checkout {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
 }
 .burgerConstructor_checkout i {

@@ -1,21 +1,14 @@
 import {
   Button,
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, {
-  useContext,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect } from "react";
 import styles from "./burger-constructor.module.css";
 import { data } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
 import { actions } from "../../services/reducer";
-import { postOrder } from "../../services/actions/order";
+import { postOrder } from "../../services/actions/order-details";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 import { useSelector, useDispatch } from "react-redux";
@@ -25,16 +18,9 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const {
-    burgerIngredients,
-    bun,
-    totalCartPrice,
-    orderDetail,
-  } = useSelector((state) => ({
-    data: state.ingredientsReducer.data,
+  const { burgerIngredients, bun, totalCartPrice } = useSelector((state) => ({
     bun: state.constructorReducer.bun,
     totalCartPrice: state.constructorReducer.totalCartPrice,
-    orderDetail: state.constructorReducer.orderDetail,
     burgerIngredients: state.constructorReducer.burgerIngredients,
   }));
 
@@ -55,7 +41,10 @@ const BurgerConstructor = () => {
   const onDropHandler = (item) => {
     if (item.type === "bun") {
       dispatch({ type: actions.SET_BUN, payload: item });
-      dispatch({ type: actions.ADD_BUN_TO_BURGER, payload: item });
+      dispatch({
+        type: actions.ADD_BUN_TO_BURGER,
+        payload: { ...item, key: uuidv4() },
+      });
     } else {
       dispatch({
         type: actions.ADD_INGREDIENT_TO_BURGER,
@@ -105,7 +94,9 @@ const BurgerConstructor = () => {
           <ul className={styles.burgerConsructor_group}>
             {burgerIngredients?.map((item, idx) => {
               if (item.type !== "bun") {
-                return <BurgerConstructorItem item={item} idx={idx} />;
+                return (
+                  <BurgerConstructorItem key={item.key} item={item} idx={idx} />
+                );
               }
             })}
           </ul>
@@ -139,7 +130,7 @@ const BurgerConstructor = () => {
 
       {isModal && (
         <Modal closeModal={closeModal}>
-          <OrderDetails orderDetail={orderDetail} />
+          <OrderDetails />
         </Modal>
       )}
     </>

@@ -7,7 +7,7 @@ export const actions = {
    CHANGE_BURGER_INGREDIENT: "CHANGE_BURGER_INGREDIENT",
    CALCULATE_TOTAL_ORDER: "CALCULATE_TOTAL_ORDER",
    CLEAR_ORDER: "CLEAR_ORDER",
-   SET_ORDER_DETAIL: "SET_ORDER_DETAIL",
+   SET_ORDER_DETAILS: "SET_ORDER_DETAILS",
    SET_BUN: "SET_BUN",
 };
 
@@ -15,10 +15,9 @@ export const initialState = {
    bun: {},
    burgerIngredients: [],
    totalCartPrice: 0,
-   orderDetail: {},
 };
 
-export const constructor = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action) => {
    switch (action.type) {
       case actions.SET_BUN:
          return { ...state, bun: action.payload };
@@ -46,8 +45,8 @@ export const constructor = (state = initialState, action) => {
             0
          );
          return { ...state, totalCartPrice: newTotalPrice };
-      case actions.SET_ORDER_DETAIL:
-         return { ...state, orderDetail: action.payload };
+      case actions.SET_ORDER_DETAILS:
+         return { ...state, orderDetails: action.payload };
       case actions.CLEAR_ORDER:
          return { ...state, burgerIngredients: [], order: [] };
       default:

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import {
   Button,
   ConstructorElement,
@@ -53,7 +53,6 @@ const BurgerConstructorItem = ({ item, idx }) => {
     <li
       style={{ opacity, borderColor }}
       ref={ref}
-      key={item.key}
       className={styles.burgerConstructor_item_move}
     >
       <i>

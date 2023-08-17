@@ -31,11 +31,11 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <DndProvider backend={HTML5Backend}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <DndProvider backend={HTML5Backend}>
         <App />
-      </Provider>
-    </DndProvider>
+      </DndProvider>
+    </Provider>
   </React.StrictMode>
 );
 
