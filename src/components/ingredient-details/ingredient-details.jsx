@@ -3,9 +3,9 @@ import { item } from "../../utils/consts";
 import { useSelector } from "react-redux";
 
 const IngredientDetails = () => {
-  const { ingredientDetails } = useSelector((state) => ({
-    ingredientDetails: state.ingredientDetailsReducer.ingredientDetails,
-  }));
+  const ingredientDetails = useSelector(
+    (state) => state.ingredientsReducer.ingredientDetails
+  );
 
   return (
     <section className={styles.ingredientDetails}>

@@ -12,8 +12,8 @@ import { actions } from "../../services/reducer";
 
 const BurgerConstructorItem = ({ item, idx }) => {
   const dispatch = useDispatch();
-
   const ref = useRef(null);
+
   const [{ isHover }, drop] = useDrop({
     accept: "ingredient2",
     collect: (monitor) => ({

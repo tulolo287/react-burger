@@ -8,11 +8,11 @@ import { getIngredients } from "../../services/actions/ingredients";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const { data, fetchError, isLoading } = useSelector((state) => ({
-    data: state.ingredientsReducer.data,
-    fetchError: state.ingredientsReducer.fetchError,
-    isLoading: state.ingredientsReducer.isLoading,
-  }));
+  const data = useSelector((state) => state.ingredientsReducer.data);
+  const fetchError = useSelector(
+    (state) => state.ingredientsReducer.fetchError
+  );
+  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {

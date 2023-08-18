@@ -22,7 +22,7 @@ export const postOrderApi = async (request) => {
       const result = await checkResponse(response)
       return result.success ? result : false
    } catch (err) {
-      console.log(err.message);
+      return Promise.reject(err)
    }
 };
 

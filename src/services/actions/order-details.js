@@ -2,17 +2,14 @@ import { actions } from "../reducer";
 import { postOrderApi } from "../../utils/api";
 
 export const postOrder = (request) => async (dispatch) => {
-   dispatch({ type: actions.SET_LOADING, payload: true })
+   dispatch({ type: actions.POST_ORDER_FETCHING })
    return postOrderApi(request)
       .then(order => {
-         dispatch({ type: actions.SET_ORDER_DETAILS, payload: order })
-         dispatch({ type: actions.SET_LOADING, payload: false })
+         dispatch({ type: actions.POST_ORDER_SUCCES, payload: order })
       }).catch((err) => {
          dispatch({
-            type: actions.GET_INGREDIENTS_FAILED,
+            type: actions.POST_ORDER_FAILED,
             payload: err,
          });
-         dispatch({ type: actions.SET_LOADING, payload: false })
-         alert("Sorry order error");
       })
 }

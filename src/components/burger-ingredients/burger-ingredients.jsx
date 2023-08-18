@@ -10,10 +10,10 @@ let currentType = "";
 let categoryRefs = [];
 
 const BurgerIngredients = () => {
-  const { data, allIngredients } = useSelector((state) => ({
-    data: state.ingredientsReducer.data,
-    allIngredients: state.ingredientsReducer.allIngredients,
-  }));
+  const data = useSelector((state) => state.ingredientsReducer.data);
+  const allIngredients = useSelector(
+    (state) => state.ingredientsReducer.allIngredients
+  );
   const dispatch = useDispatch();
   const [current, setCurrent] = React.useState("bun");
   const [types, setTypes] = React.useState([]);

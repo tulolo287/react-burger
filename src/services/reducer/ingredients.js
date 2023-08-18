@@ -6,7 +6,7 @@ export const actions = {
    SET_INGREDIENT_DETAILS: "SET_INGREDIENT_DETAILS",
    INCREASE_INGREDIET_QTY: "INCREASE_INGREDIET_QTY",
    DECREASE_INGREDIET_QTY: "DECREASE_INGREDIET_QTY",
-   SET_LOADING: "SET_LOADING",
+   DATA_FETCHING: "DATA_FETCHING",
 };
 
 export const initialState = {
@@ -20,7 +20,7 @@ export const initialState = {
 export const ingredientsReducer = (state = initialState, action) => {
    switch (action.type) {
       case actions.GET_INGREDIENTS_SUCCESS:
-         return { ...state, data: action.payload };
+         return { ...state, data: action.payload, isLoading: false, fetchError: false };
       case actions.GET_INGREDIENTS_FAILED:
          return { ...state, fetchError: action.payload }
       case actions.SET_SORTED_INGREDIENTS:
@@ -42,8 +42,8 @@ export const ingredientsReducer = (state = initialState, action) => {
          });
          return { ...state, allIngredients: newAllIngredients }
       }
-      case actions.SET_LOADING:
-         return { ...state, isLoading: action.payload };
+      case actions.DATA_FETCHING:
+         return { ...state, isLoading: true, fetchError: false };
 
       default:
          return state;

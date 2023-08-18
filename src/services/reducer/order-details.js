@@ -1,16 +1,25 @@
 
 export const actions = {
-   SET_ORDER_DETAILS: "SET_ORDER_DETAILS",
+   POST_ORDER_SUCCES: "POST_ORDER_SUCCES",
+   POST_ORDER_FAILED: "POST_ORDER_FAILED",
+   POST_ORDER_FETCHING: "POST_ORDER_FETCHING"
 };
 
 export const initialState = {
-   orderDetails: {},
+   orderDetails: null,
+   isOrderFetching: false,
+   postOrderError: false
 };
 
 export const orderDetailsReducer = (state = initialState, action) => {
    switch (action.type) {
-      case actions.SET_ORDER_DETAILS:
-         return { ...state, orderDetails: action.payload };
+      case actions.POST_ORDER_SUCCES:
+         return { ...state, orderDetails: action.payload, isOrderFetching: false, postOrderError: false };
+      case actions.POST_ORDER_FAILED:
+         return { ...state, isOrderFetching: false, postOrderError: action.payload };
+      case actions.POST_ORDER_FETCHING:
+         return { ...state, isOrderFetching: true, postOrderError: false };
+
       default:
          return state;
    }

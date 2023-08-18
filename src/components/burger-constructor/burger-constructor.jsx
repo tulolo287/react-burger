@@ -18,11 +18,14 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const { burgerIngredients, bun, totalCartPrice } = useSelector((state) => ({
-    bun: state.constructorReducer.bun,
-    totalCartPrice: state.constructorReducer.totalCartPrice,
-    burgerIngredients: state.constructorReducer.burgerIngredients,
-  }));
+
+  const bun = useSelector((state) => state.constructorReducer.bun);
+  const totalCartPrice = useSelector(
+    (state) => state.constructorReducer.totalCartPrice
+  );
+  const burgerIngredients = useSelector(
+    (state) => state.constructorReducer.burgerIngredients
+  );
 
   const { isModal, openModal, closeModal } = useModal();
 
@@ -67,9 +70,8 @@ const BurgerConstructor = () => {
     const request = {
       ingredients: ingredientsId,
     };
-
-    await dispatch(postOrder(request));
     openModal();
+    dispatch(postOrder(request));
   };
 
   return (
@@ -92,13 +94,11 @@ const BurgerConstructor = () => {
             </li>
           </ul>
           <ul className={styles.burgerConsructor_group}>
-            {burgerIngredients?.map((item, idx) => {
-              if (item.type !== "bun") {
-                return (
-                  <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-                );
-              }
-            })}
+            {burgerIngredients?.map((item, idx) =>
+              item.type !== "bun" ? (
+                <BurgerConstructorItem key={item.key} item={item} idx={idx} />
+              ) : null
+            )}
           </ul>
           <ul className={styles.burgerConsructor_bot}>
             <li>
