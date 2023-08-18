@@ -1,9 +1,5 @@
+import { actions } from "../actions";
 
-export const actions = {
-   POST_ORDER_SUCCES: "POST_ORDER_SUCCES",
-   POST_ORDER_FAILED: "POST_ORDER_FAILED",
-   POST_ORDER_FETCHING: "POST_ORDER_FETCHING"
-};
 
 export const initialState = {
    orderDetails: null,

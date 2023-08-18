@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import styles from "./burger-constructor.module.css";
 import { data } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
-import { actions } from "../../services/reducer";
+import { actions } from "../../services/actions";
 import { postOrder } from "../../services/actions/order-details";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";

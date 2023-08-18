@@ -4,7 +4,7 @@ import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
 import { SORT_ORDER, TYPES, data } from "../../utils/consts";
 import { useSelector, useDispatch } from "react-redux";
-import { actions } from "../../services/reducer/index";
+import { actions } from "../../services/actions";
 
 let currentType = "";
 let categoryRefs = [];

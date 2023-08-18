@@ -5,7 +5,7 @@ import {
 import styles from "./burger-item.module.css";
 import PropTypes from "prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { actions } from "../../services/reducer";
+import { actions } from "../../services/actions";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 import { useSelector, useDispatch } from "react-redux";

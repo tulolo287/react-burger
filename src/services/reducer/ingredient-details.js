@@ -1,7 +1,5 @@
+import { actions } from "../actions";
 
-export const actions = {
-   SET_INGREDIENT_DETAILS: "SET_INGREDIENT_DETAILS",
-};
 
 export const initialState = {
    ingredientDetails: {},

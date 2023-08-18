@@ -8,7 +8,7 @@ import {
 import { useDrop, useDrag } from "react-dnd";
 import styles from "./burger-constructor-item.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { actions } from "../../services/reducer";
+import { actions } from "../../services/actions";
 
 const BurgerConstructorItem = ({ item, idx }) => {
   const dispatch = useDispatch();
