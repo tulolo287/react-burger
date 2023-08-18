@@ -12,7 +12,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 
 const BurgerItem = ({ item }) => {
-  
   const dispatch = useDispatch();
   const { isModal, openModal, closeModal, title, setTitle } = useModal();
 

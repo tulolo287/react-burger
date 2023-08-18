@@ -1,21 +1,36 @@
 .ingredientDetails {
-   display: flex;
-   flex-direction: column;
-   text-align: center;
-   gap: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  align-items: center;
+}
+.imgContainer {
+  display: flex;
+  width: 520px;
+  height: 240px;
+  padding: 0px 20px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+.imgContainer img {
+  width: 480px;
+  height: 240px;
+  flex-shrink: 0;
 }
 .ingredientDetails_nutr {
-   display: flex;
-   flex-direction: row;
-   justify-content: space-around;
-   gap: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 10px;
 }
 .ingredientDetails_nutr ul {
-   display: flex;
-   flex-direction: column;
-   justify-content: space-around;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .ingredientDetails_nutr li {
-   margin: 20px;
-   text-align: center;
+  margin: 20px;
+  text-align: center;
 }

@@ -10,14 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 function App() {
   const data = useSelector((state) => state.ingredientsReducer.data);
   const fetchError = useSelector(
-    (state) => state.ingredientsReducer.fetchError
+    (state) => state.ingredientsReducer.fetchError,
   );
   const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(getIngredients(`${API_URL}/ingredients`));
+      dispatch(getIngredients());
     };
 
     fetchData();

@@ -12,7 +12,7 @@ let categoryRefs = [];
 const BurgerIngredients = () => {
   const data = useSelector((state) => state.ingredientsReducer.data);
   const allIngredients = useSelector(
-    (state) => state.ingredientsReducer.allIngredients
+    (state) => state.ingredientsReducer.allIngredients,
   );
   const dispatch = useDispatch();
   const [current, setCurrent] = React.useState("bun");
@@ -69,15 +69,14 @@ const BurgerIngredients = () => {
         </p>
         <div className={styles.burgerIngredients_tab}>
           {types.map((item, idx) => (
-            <React.Fragment key={idx}>
-              <Tab
-                value="bun"
-                active={current === item.type}
-                onClick={() => setCurrent(item.type)}
-              >
-                {item.name}
-              </Tab>
-            </React.Fragment>
+            <Tab
+              key={idx}
+              value="bun"
+              active={current === item.type}
+              onClick={() => setCurrent(item.type)}
+            >
+              {item.name}
+            </Tab>
           ))}
         </div>
         <ul className={styles.burgerItems + " mt-10 pr-5"}>

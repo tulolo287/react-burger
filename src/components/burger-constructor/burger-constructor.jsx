@@ -3,7 +3,7 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { data } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
@@ -18,16 +18,21 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-
   const bun = useSelector((state) => state.constructorReducer.bun);
-  const totalCartPrice = useSelector(
-    (state) => state.constructorReducer.totalCartPrice
-  );
   const burgerIngredients = useSelector(
-    (state) => state.constructorReducer.burgerIngredients
+    (state) => state.constructorReducer.burgerIngredients,
   );
-
+  const [totalOrderPrice, setTotalOrderPrice] = useState(0);
+  const [disableOrder, setDisableOrder] = useState(true);
   const { isModal, openModal, closeModal } = useModal();
+
+  const calculateTotalOrder = useCallback(() => {
+    const newTotalOrderPrice = burgerIngredients.reduce(
+      (val, acc) => (val += acc.qty * acc.price),
+      0,
+    );
+    setTotalOrderPrice(newTotalOrderPrice);
+  }, [totalOrderPrice, burgerIngredients]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -61,7 +66,8 @@ const BurgerConstructor = () => {
   };
 
   useEffect(() => {
-    dispatch({ type: actions.CALCULATE_TOTAL_ORDER });
+    burgerIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
+    calculateTotalOrder();
   }, [burgerIngredients]);
 
   const makeOrder = async () => {
@@ -82,7 +88,7 @@ const BurgerConstructor = () => {
           style={{ borderColor }}
           className={styles.burgerConsructor_drop}
         >
-          <ul className={styles.burgerConsructor_top}>
+          <ul>
             <li>
               <ConstructorElement
                 type="top"
@@ -97,10 +103,10 @@ const BurgerConstructor = () => {
             {burgerIngredients?.map((item, idx) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-              ) : null
+              ) : null,
             )}
           </ul>
-          <ul className={styles.burgerConsructor_bot}>
+          <ul>
             <li>
               <ConstructorElement
                 type="bottom"
@@ -113,11 +119,12 @@ const BurgerConstructor = () => {
           </ul>
         </div>
         <div className={styles.burgerConstructor_checkout + " mt-10"}>
-          <p className="text text_type_digits-medium mr-2">{totalCartPrice}</p>
+          <p className="text text_type_digits-medium mr-2">{totalOrderPrice}</p>
           <i className="mr-10">
             <CurrencyIcon style={{ width: 33 }} type="primary" />
           </i>
           <Button
+            disabled={disableOrder}
             onClick={makeOrder}
             htmlType="button"
             type="primary"
@@ -129,7 +136,7 @@ const BurgerConstructor = () => {
       </section>
 
       {isModal && (
-        <Modal closeModal={closeModal}>
+        <Modal closeModal={closeModal} height={718}>
           <OrderDetails />
         </Modal>
       )}

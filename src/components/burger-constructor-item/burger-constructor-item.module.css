@@ -10,7 +10,9 @@
   align-items: center;
   border: 1px solid transparent;
   border-radius: 25px;
+  position: relative;
 }
 .burgerConstructor_item_move i {
-  width: 24px;
+  position: absolute;
+  left: -24px;
 }

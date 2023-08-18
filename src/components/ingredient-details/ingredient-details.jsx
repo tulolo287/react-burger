@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 
 const IngredientDetails = () => {
   const ingredientDetails = useSelector(
-    (state) => state.ingredientsReducer.ingredientDetails
+    (state) => state.ingredientsReducer.ingredientDetails,
   );
 
   return (
     <section className={styles.ingredientDetails}>
-      <img src={ingredientDetails.image_large} alt={ingredientDetails.name} />
+      <div className={styles.imgContainer}>
+        <img src={ingredientDetails.image_large} alt={ingredientDetails.name} />
+      </div>
       <p className="text text_type_main-large">{ingredientDetails.name} </p>
       <span className="text text_type_main-medium">
         {ingredientDetails.text}
