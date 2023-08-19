@@ -1,7 +1,7 @@
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./modal.module.css";
-import { forwardRef, useEffect } from "react";
+import { useEffect } from "react";
 import ModalOverlay from "../modal-overlay/modal-overlay.jsx";
 
 const Modal = ({ closeModal, children, title, height }) => {

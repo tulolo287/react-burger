@@ -3,12 +3,13 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { useEffect } from "react";
-import { API_URL } from "../../utils/consts";
 import { getIngredients } from "../../services/actions/ingredients";
 import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  const data = useSelector((state) => state.ingredientsReducer.data);
+  const ingredients = useSelector(
+    (state) => state.ingredientsReducer.ingredients,
+  );
   const fetchError = useSelector(
     (state) => state.ingredientsReducer.fetchError,
   );
@@ -27,7 +28,7 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={styles.container}>
-        {data && (
+        {ingredients && (
           <>
             <BurgerIngredients />
             <BurgerConstructor />

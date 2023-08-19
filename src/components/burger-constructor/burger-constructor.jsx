@@ -3,36 +3,36 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./burger-constructor.module.css";
-import { data } from "../../utils/consts";
+import { ingredients } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
 import { actions } from "../../services/actions";
 import { postOrder } from "../../services/actions/order-details";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 import { useSelector, useDispatch } from "react-redux";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const bun = useSelector((state) => state.constructorReducer.bun);
-  const burgerIngredients = useSelector(
-    (state) => state.constructorReducer.burgerIngredients,
+  const constructorIngredients = useSelector(
+    (state) => state.constructorReducer.constructorIngredients,
   );
   const [totalOrderPrice, setTotalOrderPrice] = useState(0);
   const [disableOrder, setDisableOrder] = useState(true);
   const { isModal, openModal, closeModal } = useModal();
 
   const calculateTotalOrder = useCallback(() => {
-    const newTotalOrderPrice = burgerIngredients.reduce(
+    const newTotalOrderPrice = constructorIngredients.reduce(
       (val, acc) => (val += acc.qty * acc.price),
       0,
     );
     setTotalOrderPrice(newTotalOrderPrice);
-  }, [totalOrderPrice, burgerIngredients]);
+  }, [totalOrderPrice, constructorIngredients]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -50,12 +50,12 @@ const BurgerConstructor = () => {
     if (item.type === "bun") {
       dispatch({ type: actions.SET_BUN, payload: item });
       dispatch({
-        type: actions.ADD_BUN_TO_BURGER,
+        type: actions.ADD_BUN_TO_CONSTRUCTOR,
         payload: { ...item, key: uuidv4() },
       });
     } else {
       dispatch({
-        type: actions.ADD_INGREDIENT_TO_BURGER,
+        type: actions.ADD_INGREDIENT_TO_CONSTRUCTOR,
         payload: { ...item, key: uuidv4(), qty: 1 },
       });
       dispatch({
@@ -66,12 +66,12 @@ const BurgerConstructor = () => {
   };
 
   useEffect(() => {
-    burgerIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
+    constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
     calculateTotalOrder();
-  }, [burgerIngredients]);
+  }, [constructorIngredients]);
 
   const makeOrder = async () => {
-    const ingredientsId = burgerIngredients.map((item) => item._id);
+    const ingredientsId = constructorIngredients.map((item) => item._id);
 
     const request = {
       ingredients: ingredientsId,
@@ -100,7 +100,7 @@ const BurgerConstructor = () => {
             </li>
           </ul>
           <ul className={styles.burgerConsructor_group}>
-            {burgerIngredients?.map((item, idx) =>
+            {constructorIngredients?.map((item, idx) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />
               ) : null,
@@ -145,7 +145,7 @@ const BurgerConstructor = () => {
 };
 
 BurgerConstructor.propTypes = {
-  data,
+  ingredients,
 };
 
 export default BurgerConstructor;

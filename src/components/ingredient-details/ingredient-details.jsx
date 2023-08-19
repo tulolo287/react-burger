@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const IngredientDetails = () => {
   const ingredientDetails = useSelector(
-    (state) => state.ingredientsReducer.ingredientDetails,
+    (state) => state.ingredientDetailsReducer.ingredientDetails,
   );
 
   return (
@@ -12,11 +12,10 @@ const IngredientDetails = () => {
       <div className={styles.imgContainer}>
         <img src={ingredientDetails.image_large} alt={ingredientDetails.name} />
       </div>
-      <p className="text text_type_main-large">{ingredientDetails.name} </p>
-      <span className="text text_type_main-medium">
-        {ingredientDetails.text}
-      </span>
-      <ul className={styles.ingredientDetails_nutr}>
+      <p className={styles.name + " text text_type_main-large mt-4"}>
+        {ingredientDetails.name}{" "}
+      </p>
+      <ul className={styles.ingredientDetails_nutr + " mt-8 mb-15"}>
         <li>
           <p className="text text_type_main-default text_color_inactive">
             Калории, ккал

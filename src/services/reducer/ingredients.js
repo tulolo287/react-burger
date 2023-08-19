@@ -1,9 +1,8 @@
 import { actions } from "../actions";
 
 export const initialState = {
-  data: null,
-  allIngredients: [],
-  ingredientDetails: {},
+  ingredients: null,
+  sortedIngredients: [],
   isLoading: true,
   fetchError: false,
 };
@@ -13,37 +12,35 @@ export const ingredientsReducer = (state = initialState, action) => {
     case actions.GET_INGREDIENTS_SUCCESS:
       return {
         ...state,
-        data: action.payload,
+        ingredients: action.payload,
         isLoading: false,
         fetchError: false,
       };
     case actions.GET_INGREDIENTS_FAILED:
       return { ...state, fetchError: action.payload };
     case actions.SET_SORTED_INGREDIENTS:
-      return { ...state, allIngredients: action.payload };
-    case actions.SET_INGREDIENT_DETAILS:
-      return { ...state, ingredientDetails: action.payload };
+      return { ...state, sortedIngredients: action.payload };
     case actions.DECREASE_INGREDIET_QTY: {
-      const newAllIngredients = state.allIngredients.map((item) =>
+      const newSortedIngredients = state.sortedIngredients.map((item) =>
         item._id === action.payload._id
           ? { ...item, qty: item.qty <= 1 ? null : item.qty - 1 }
           : item,
       );
       return {
         ...state,
-        allIngredients: newAllIngredients,
+        sortedIngredients: newSortedIngredients,
       };
     }
     case actions.INCREASE_INGREDIET_QTY: {
-      let newAllIngredients = state.allIngredients.map((item) => {
+      let newSortedIngredients = state.sortedIngredients.map((item) => {
         if (item._id === action.payload._id) {
           return { ...item, qty: item.qty ? item.qty + 1 : action.payload.qty };
         }
         return item;
       });
-      return { ...state, allIngredients: newAllIngredients };
+      return { ...state, sortedIngredients: newSortedIngredients };
     }
-    case actions.DATA_FETCHING:
+    case actions.INGREDIENTS_FETCHING:
       return { ...state, isLoading: true, fetchError: false };
 
     default:

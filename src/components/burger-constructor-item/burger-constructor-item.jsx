@@ -1,13 +1,12 @@
-import React, { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 import {
-  Button,
   ConstructorElement,
   DragIcon,
-  CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrop, useDrag } from "react-dnd";
 import styles from "./burger-constructor-item.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 import { actions } from "../../services/actions";
 
 const BurgerConstructorItem = ({ item, idx }) => {
@@ -19,11 +18,11 @@ const BurgerConstructorItem = ({ item, idx }) => {
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop(item, monitor) {
+    drop(item) {
       const dragIndex = item.idx;
       const hoverIndex = idx;
       dispatch({
-        type: actions.CHANGE_BURGER_INGREDIENT,
+        type: actions.CHANGE_CONSTRUCTOR_INGREDIENT,
         payload: { dragIndex, hoverIndex },
       });
     },
@@ -42,7 +41,10 @@ const BurgerConstructorItem = ({ item, idx }) => {
   drag(drop(ref));
 
   const removeBurgerIngredient = (e, item) => {
-    dispatch({ type: actions.REMOVE_INGREDIENT_FROM_BURGER, payload: item });
+    dispatch({
+      type: actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
+      payload: item,
+    });
     dispatch({
       type: actions.DECREASE_INGREDIET_QTY,
       payload: item,
@@ -68,6 +70,11 @@ const BurgerConstructorItem = ({ item, idx }) => {
       />
     </li>
   );
+};
+
+BurgerConstructorItem.propTypes = {
+  item: PropTypes.object.isRequired,
+  idx: PropTypes.number,
 };
 
 export default BurgerConstructorItem;

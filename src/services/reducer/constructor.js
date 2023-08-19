@@ -2,52 +2,52 @@ import { actions } from "../actions";
 
 export const initialState = {
   bun: {},
-  burgerIngredients: [],
+  constructorIngredients: [],
 };
 
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.SET_BUN:
       return { ...state, bun: action.payload };
-    case actions.REMOVE_INGREDIENT_FROM_BURGER: {
-      const newBurgerIngredients = state.burgerIngredients.filter(
+    case actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR: {
+      const newBurgerIngredients = state.constructorIngredients.filter(
         (item) => item.key !== action.payload.key,
       );
       return {
         ...state,
-        burgerIngredients: newBurgerIngredients,
+        constructorIngredients: newBurgerIngredients,
       };
     }
-    case actions.CHANGE_BURGER_INGREDIENT: {
-      const sortCards = state.burgerIngredients.filter(
+    case actions.CHANGE_CONSTRUCTOR_INGREDIENT: {
+      const sortCards = state.constructorIngredients.filter(
         (item, idx) => idx !== action.payload.dragIndex,
       );
       sortCards.splice(
         action.payload.hoverIndex,
         0,
-        state.burgerIngredients[action.payload.dragIndex],
+        state.constructorIngredients[action.payload.dragIndex],
       );
-      return { ...state, burgerIngredients: sortCards };
+      return { ...state, constructorIngredients: sortCards };
     }
-    case actions.ADD_INGREDIENT_TO_BURGER: {
+    case actions.ADD_INGREDIENT_TO_CONSTRUCTOR: {
       return {
         ...state,
-        burgerIngredients: [...state.burgerIngredients, action.payload],
+        constructorIngredients: [...state.constructorIngredients, action.payload],
       };
     }
-    case actions.ADD_BUN_TO_BURGER: {
-      const removedBun = state.burgerIngredients.filter(
+    case actions.ADD_BUN_TO_CONSTRUCTOR: {
+      const removedBun = state.constructorIngredients.filter(
         (item) => item.type !== "bun",
       );
       return {
         ...state,
-        burgerIngredients: [...removedBun, { ...action.payload, qty: 2 }],
+        constructorIngredients: [...removedBun, { ...action.payload, qty: 2 }],
       };
     }
     case actions.SET_ORDER_DETAILS:
       return { ...state, orderDetails: action.payload };
     case actions.CLEAR_ORDER:
-      return { ...state, burgerIngredients: [], order: [] };
+      return { ...state, constructorIngredients: [], order: [] };
     default:
       return state;
   }

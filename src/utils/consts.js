@@ -25,4 +25,4 @@ export const item = PropTypes.shape({
   image_mobile: PropTypes.string.isRequired,
 });
 
-export const data = PropTypes.arrayOf(item);
+export const ingredients = PropTypes.arrayOf(item);

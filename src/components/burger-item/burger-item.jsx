@@ -8,19 +8,16 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import { actions } from "../../services/actions";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
 
 const BurgerItem = ({ item }) => {
   const dispatch = useDispatch();
   const { isModal, openModal, closeModal, title, setTitle } = useModal();
 
-  const [{ isDrag }, dragRef] = useDrag({
+  const [ , dragRef] = useDrag({
     type: "ingredient",
     item: item,
-    collect: (monitor) => ({
-      isDrag: monitor.isDragging(),
-    }),
   });
 
   const onItemHandler = () => {
@@ -39,7 +36,7 @@ const BurgerItem = ({ item }) => {
           <p className="text text_type_digits-default mr-2">{item.price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <p className="text text_type_main-default">{item.name}</p>
+        <p className="text text_type_main-default mt-2 mb-6">{item.name}</p>
       </li>
 
       {isModal && (

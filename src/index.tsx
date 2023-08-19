@@ -9,7 +9,7 @@ import {
   applyMiddleware,
 } from "redux";
 import thunk from "redux-thunk";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { rootReducer } from "./services/reducer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

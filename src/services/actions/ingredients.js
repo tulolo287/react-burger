@@ -9,11 +9,11 @@ export const ingredientsActions = {
   SET_INGREDIENT_DETAILS: "SET_INGREDIENT_DETAILS",
   INCREASE_INGREDIET_QTY: "INCREASE_INGREDIET_QTY",
   DECREASE_INGREDIET_QTY: "DECREASE_INGREDIET_QTY",
-  DATA_FETCHING: "DATA_FETCHING",
+  INGREDIENTS_FETCHING: "INGREDIENTS_FETCHING",
 };
 
 export const getIngredients = () => async (dispatch) => {
-  dispatch({ type: actions.DATA_FETCHING, payload: true });
+  dispatch({ type: actions.INGREDIENTS_FETCHING, payload: true });
   return getIngredientsApi()
     .then((ingredients) => {
       dispatch({
@@ -23,7 +23,7 @@ export const getIngredients = () => async (dispatch) => {
       const bun = ingredients.find((item) => item.type === "bun");
       dispatch({ type: actions.SET_BUN, payload: bun });
       dispatch({
-        type: actions.ADD_BUN_TO_BURGER,
+        type: actions.ADD_BUN_TO_CONSTRUCTOR,
         payload: { ...bun, key: uuidv4() },
       });
     })
