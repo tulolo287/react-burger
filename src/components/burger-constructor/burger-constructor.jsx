@@ -3,7 +3,7 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { ingredients } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
@@ -22,17 +22,16 @@ const BurgerConstructor = () => {
   const constructorIngredients = useSelector(
     (state) => state.constructorReducer.constructorIngredients,
   );
-  const [totalOrderPrice, setTotalOrderPrice] = useState(0);
   const [disableOrder, setDisableOrder] = useState(true);
   const { isModal, openModal, closeModal } = useModal();
 
-  const calculateTotalOrder = useCallback(() => {
-    const newTotalOrderPrice = constructorIngredients.reduce(
+  const totalOrderPrice = useMemo(() => {
+    constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
+    return constructorIngredients.reduce(
       (val, acc) => (val += acc.qty * acc.price),
       0,
     );
-    setTotalOrderPrice(newTotalOrderPrice);
-  }, [totalOrderPrice, constructorIngredients]);
+  }, [constructorIngredients]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -64,11 +63,6 @@ const BurgerConstructor = () => {
       });
     }
   };
-
-  useEffect(() => {
-    constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
-    calculateTotalOrder();
-  }, [constructorIngredients]);
 
   const makeOrder = async () => {
     const ingredientsId = constructorIngredients.map((item) => item._id);
