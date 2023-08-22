@@ -34,7 +34,7 @@ export const ingredientsReducer = (state = initialState, action) => {
     case actions.INCREASE_INGREDIET_QTY: {
       let newSortedIngredients = state.sortedIngredients.map((item) => {
         if (item._id === action.payload._id) {
-          return { ...item, qty: item.qty ? item.qty + 1 : action.payload.qty };
+          return { ...item, qty: item.qty ? item.qty + 1 : 1};
         }
         return item;
       });

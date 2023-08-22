@@ -3,7 +3,7 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { ingredients } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
@@ -55,11 +55,11 @@ const BurgerConstructor = () => {
     } else {
       dispatch({
         type: actions.ADD_INGREDIENT_TO_CONSTRUCTOR,
-        payload: { ...item, key: uuidv4(), qty: 1 },
+        payload: { ...item, key: uuidv4() },
       });
       dispatch({
         type: actions.INCREASE_INGREDIET_QTY,
-        payload: { ...item, qty: 1 },
+        payload: item,
       });
     }
   };

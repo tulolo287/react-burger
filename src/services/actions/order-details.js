@@ -12,6 +12,7 @@ export const postOrder = (request) => async (dispatch) => {
   return postOrderApi(request)
     .then((order) => {
       dispatch({ type: actions.POST_ORDER_SUCCES, payload: order });
+      dispatch({ type: actions.CLEAR_ORDER })
     })
     .catch((err) => {
       dispatch({

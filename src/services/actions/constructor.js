@@ -6,4 +6,5 @@ export const constructorActions = {
   CLEAR_ORDER: "CLEAR_ORDER",
   SET_ORDER_DETAILS: "SET_ORDER_DETAILS",
   SET_BUN: "SET_BUN",
+  INIT_CONSTRUCTOR: "INIT_CONSTRUCTOR",
 };

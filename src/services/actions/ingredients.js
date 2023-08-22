@@ -20,12 +20,6 @@ export const getIngredients = () => async (dispatch) => {
         type: actions.GET_INGREDIENTS_SUCCESS,
         payload: ingredients,
       });
-      const bun = ingredients.find((item) => item.type === "bun");
-      dispatch({ type: actions.SET_BUN, payload: bun });
-      dispatch({
-        type: actions.ADD_BUN_TO_CONSTRUCTOR,
-        payload: { ...bun, key: uuidv4() },
-      });
     })
     .catch((err) => {
       dispatch({
