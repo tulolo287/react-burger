@@ -1,40 +1,36 @@
-import { actions } from "../reducer";
-import { getIngredientsApi, postOrderApi } from "../../utils/api";
+import { actions } from "../actions";
+import { getIngredientsApi } from "../../utils/api";
+import { v4 as uuidv4 } from "uuid";
 
-
-export const getIngredients = (url) => async (dispatch) => {
-   dispatch({ type: actions.SET_LOADING, payload: true });
-   return getIngredientsApi(url)
-      .then((ingredients) => {
-         dispatch({
-            type: actions.GET_INGREDIENTS_SUCCESS,
-            payload: ingredients,
-         });
-         const bun = ingredients.find((item) => item.type === "bun");
-         dispatch({ type: actions.SET_BUN, payload: bun });
-         dispatch({ type: actions.ADD_BUN_TO_ORDER, payload: bun });
-         dispatch({ type: actions.SET_LOADING, payload: false });
-      }).catch((err) => {
-         dispatch({
-            type: actions.GET_INGREDIENTS_FAILED,
-            payload: err,
-         });
-         dispatch({ type: actions.SET_LOADING, payload: false });
-      });
+export const ingredientsActions = {
+  GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
+  GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED",
+  SET_SORTED_INGREDIENTS: "SET_All_INGREDIENTS",
+  SET_INGREDIENT_DETAILS: "SET_INGREDIENT_DETAILS",
+  INCREASE_INGREDIET_QTY: "INCREASE_INGREDIET_QTY",
+  DECREASE_INGREDIET_QTY: "DECREASE_INGREDIET_QTY",
+  INGREDIENTS_FETCHING: "INGREDIENTS_FETCHING",
 };
 
-export const postOrder = (request) => async (dispatch) => {
-   dispatch({ type: actions.SET_LOADING, payload: true })
-   return postOrderApi(request)
-      .then(order => {
-         dispatch({ type: actions.POST_ORDER, payload: order })
-         dispatch({ type: actions.SET_LOADING, payload: false })
-      }).catch((err) => {
-         dispatch({
-            type: actions.GET_INGREDIENTS_FAILED,
-            payload: err,
-         });
-         dispatch({ type: actions.SET_LOADING, payload: false })
-         alert("Sorry order error");
-      })
-}
+export const getIngredients = () => async (dispatch) => {
+  dispatch({ type: actions.INGREDIENTS_FETCHING, payload: true });
+  return getIngredientsApi()
+    .then((ingredients) => {
+      dispatch({
+        type: actions.GET_INGREDIENTS_SUCCESS,
+        payload: ingredients,
+      });
+      const bun = ingredients.find((item) => item.type === "bun");
+      dispatch({ type: actions.SET_BUN, payload: bun });
+      dispatch({
+        type: actions.ADD_BUN_TO_CONSTRUCTOR,
+        payload: { ...bun, key: uuidv4() },
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: actions.GET_INGREDIENTS_FAILED,
+        payload: err,
+      });
+    });
+};

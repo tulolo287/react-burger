@@ -1,4 +1,4 @@
-.burgerIngredients {
+.constructorIngredients {
   max-width: 750px;
 }
 .burgerItems {
@@ -9,7 +9,7 @@
   max-height: 500px;
 }
 .burgerIngredients_header {
-   text-align: start;
+  text-align: start;
 }
 .burgerItems_category {
   width: 100%;

@@ -5,50 +5,43 @@ import {
 import styles from "./burger-item.module.css";
 import PropTypes from "prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import { useContext, useReducer, useState } from "react";
-import { DataContext } from "../app/app";
-import { actions } from "../../services/reducer";
+import { actions } from "../../services/actions";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
-import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { useDrag } from "react-dnd";
 
 const BurgerItem = ({ item }) => {
-  const [qty, setQty] = useState(null);
-  const [state, dispatch] = useContext(DataContext);
+  const dispatch = useDispatch();
   const { isModal, openModal, closeModal, title, setTitle } = useModal();
 
+  const [ , dragRef] = useDrag({
+    type: "ingredient",
+    item: item,
+  });
+
   const onItemHandler = () => {
+    dispatch({ type: actions.SET_INGREDIENT_DETAILS, payload: item });
     setTitle("Детали ингредиента");
     openModal();
-
-    if (item.type === "bun") {
-      dispatch({ type: actions.SET_BUN, payload: item });
-      dispatch({ type: actions.ADD_BUN_TO_ORDER, payload: item });
-    } else {
-      dispatch({ type: actions.ADD_ITEM_TO_ORDER, payload: item });
-      dispatch({
-        type: actions.ADD_INGREDIENT_TO_BURGER,
-        payload: { ...item, key: uuidv4() },
-      });
-      setQty((prevQty) => (prevQty ? ++prevQty : 1));
-    }
-    dispatch({ type: actions.CALCULATE_TOTAL_ORDER });
   };
   return (
     <>
-      <li onClick={onItemHandler} className={styles.burgerItem}>
-        {qty && <Counter count={qty} size="default" extraClass="m-1" />}
+      <li ref={dragRef} onClick={onItemHandler} className={styles.burgerItem}>
+        {item.qty && (
+          <Counter count={item.qty} size="default" extraClass="m-1" />
+        )}
         <img src={item.image_large} alt={item.name} />
         <div className={styles.burgerItem_price}>
           <p className="text text_type_digits-default mr-2">{item.price}</p>
           <CurrencyIcon type="primary" />
         </div>
-        <p className="text text_type_main-default">{item.name}</p>
+        <p className="text text_type_main-default mt-2 mb-6">{item.name}</p>
       </li>
 
       {isModal && (
         <Modal closeModal={closeModal} title={title}>
-          <IngredientDetails item={item} />
+          <IngredientDetails />
         </Modal>
       )}
     </>

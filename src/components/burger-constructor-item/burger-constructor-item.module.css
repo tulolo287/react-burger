@@ -1,0 +1,18 @@
+.burgerConstructor_item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 32px;
+}
+.burgerConstructor_item_move {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 25px;
+  position: relative;
+}
+.burgerConstructor_item_move i {
+  position: absolute;
+  left: -24px;
+}

@@ -1,93 +1,125 @@
 import {
   Button,
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
-import { data } from "../../utils/consts";
+import { ingredients } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
-import { DataContext } from "../app/app";
-import { actions } from "../../services/reducer";
-import { postOrder } from "../../services/actions/ingredients";
+import { actions } from "../../services/actions";
+import { postOrder } from "../../services/actions/order-details";
 import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
+import { v4 as uuidv4 } from "uuid";
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 
 const BurgerConstructor = () => {
-  const [state, dispatch] = useContext(DataContext);
-  const { isModal, openModal, closeModal, title, setTitle } = useModal();
+  const dispatch = useDispatch();
+  const bun = useSelector((state) => state.constructorReducer.bun);
+  const constructorIngredients = useSelector(
+    (state) => state.constructorReducer.constructorIngredients,
+  );
+  const [disableOrder, setDisableOrder] = useState(true);
+  const { isModal, openModal, closeModal } = useModal();
 
-  useEffect(() => {
-    if (state.order.length) {
-      dispatch({ type: actions.CALCULATE_TOTAL_ORDER });
+  const totalOrderPrice = useMemo(() => {
+    constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
+    return constructorIngredients.reduce(
+      (val, acc) => (val += acc.qty * acc.price),
+      0,
+    );
+  }, [constructorIngredients]);
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      onDropHandler(item);
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
+
+  const borderColor = isHover ? "lightgrey" : "transparent";
+
+  const onDropHandler = (item) => {
+    if (item.type === "bun") {
+      dispatch({ type: actions.SET_BUN, payload: item });
+      dispatch({
+        type: actions.ADD_BUN_TO_CONSTRUCTOR,
+        payload: { ...item, key: uuidv4() },
+      });
+    } else {
+      dispatch({
+        type: actions.ADD_INGREDIENT_TO_CONSTRUCTOR,
+        payload: { ...item, key: uuidv4(), qty: 1 },
+      });
+      dispatch({
+        type: actions.INCREASE_INGREDIET_QTY,
+        payload: { ...item, qty: 1 },
+      });
     }
-  }, [state.order]);
+  };
 
-  const buttonHandler = async () => {
-    const ingredientsId = state.order.map((item) => item._id);
+  const makeOrder = async () => {
+    const ingredientsId = constructorIngredients.map((item) => item._id);
 
     const request = {
       ingredients: ingredientsId,
     };
-
-    await postOrder(request)(dispatch);
     openModal();
-    
+    dispatch(postOrder(request));
   };
 
   return (
     <>
       <section className={styles.burgerConsructor + " mt-25 ml-10"}>
-        <ul className={styles.burgerConsructor_top}>
-          <li>
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${state.bun.name} (верх)`}
-              price={state.bun.price}
-              thumbnail={state.bun.image}
-            />
-          </li>
-        </ul>
-        <ul className={styles.burgerConsructor_group}>
-          {state.ingredients?.map((item) => {
-            return (
-              <li key={item.key} className={styles.burgerConstructor_item_move}>
-                <i>
-                  <DragIcon type="primary" />
-                </i>
-                <ConstructorElement
-                  type="center"
-                  isLocked={false}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                />
-              </li>
-            );
-          })}
-        </ul>
-        <ul className={styles.burgerConsructor_bot}>
-          <li>
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${state.bun.name} (низ)`}
-              price={state.bun.price}
-              thumbnail={state.bun.image}
-            />
-          </li>
-        </ul>
+        <div
+          ref={dropTarget}
+          style={{ borderColor }}
+          className={styles.burgerConsructor_drop}
+        >
+          <ul>
+            <li>
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${bun.name} (верх)`}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+            </li>
+          </ul>
+          <ul className={styles.burgerConsructor_group}>
+            {constructorIngredients?.map((item, idx) =>
+              item.type !== "bun" ? (
+                <BurgerConstructorItem key={item.key} item={item} idx={idx} />
+              ) : null,
+            )}
+          </ul>
+          <ul>
+            <li>
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={`${bun.name} (низ)`}
+                price={bun.price}
+                thumbnail={bun.image}
+              />
+            </li>
+          </ul>
+        </div>
         <div className={styles.burgerConstructor_checkout + " mt-10"}>
-          <p className="text text_type_digits-medium mr-2">
-            {state.totalCartPrice}
-          </p>
+          <p className="text text_type_digits-medium mr-2">{totalOrderPrice}</p>
           <i className="mr-10">
             <CurrencyIcon style={{ width: 33 }} type="primary" />
           </i>
           <Button
-            onClick={buttonHandler}
+            disabled={disableOrder}
+            onClick={makeOrder}
             htmlType="button"
             type="primary"
             size="large"
@@ -98,8 +130,8 @@ const BurgerConstructor = () => {
       </section>
 
       {isModal && (
-        <Modal closeModal={closeModal}>
-          <OrderDetails orderNumber={state.orderNumber} />
+        <Modal closeModal={closeModal} height={718}>
+          <OrderDetails />
         </Modal>
       )}
     </>
@@ -107,7 +139,7 @@ const BurgerConstructor = () => {
 };
 
 BurgerConstructor.propTypes = {
-  data,
+  ingredients,
 };
 
 export default BurgerConstructor;

@@ -1,19 +1,27 @@
 import styles from "./ingredient-details.module.css";
 import { item } from "../../utils/consts";
+import { useSelector } from "react-redux";
 
-const IngredientDetails = ({ item }) => {
+const IngredientDetails = () => {
+  const ingredientDetails = useSelector(
+    (state) => state.ingredientDetailsReducer.ingredientDetails,
+  );
+
   return (
     <section className={styles.ingredientDetails}>
-      <img src={item.image_large} alt={item.name} />
-      <p className="text text_type_main-large">{item.name} </p>
-      <span className="text text_type_main-medium">{item.text}</span>
-      <ul className={styles.ingredientDetails_nutr}>
+      <div className={styles.imgContainer}>
+        <img src={ingredientDetails.image_large} alt={ingredientDetails.name} />
+      </div>
+      <p className={styles.name + " text text_type_main-large mt-4"}>
+        {ingredientDetails.name}{" "}
+      </p>
+      <ul className={styles.ingredientDetails_nutr + " mt-8 mb-15"}>
         <li>
           <p className="text text_type_main-default text_color_inactive">
             Калории, ккал
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {item.calories}
+            {ingredientDetails.calories}
           </p>
         </li>
         <li>
@@ -21,7 +29,7 @@ const IngredientDetails = ({ item }) => {
             Белки, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {item.proteins}
+            {ingredientDetails.proteins}
           </p>
         </li>
         <li>
@@ -29,7 +37,7 @@ const IngredientDetails = ({ item }) => {
             Жиры, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {item.fat}
+            {ingredientDetails.fat}
           </p>
         </li>
         <li>
@@ -37,7 +45,7 @@ const IngredientDetails = ({ item }) => {
             Углеводы, г
           </p>
           <p className="text text_type_main-default text_color_inactive">
-            {item.carbohydrates}
+            {ingredientDetails.carbohydrates}
           </p>
         </li>
       </ul>

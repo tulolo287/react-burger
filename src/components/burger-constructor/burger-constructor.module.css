@@ -1,12 +1,19 @@
 .burgerConsructor {
   min-width: 400px;
 }
+.burgerConsructor_drop {
+  border: 1px solid transparent;
+  border-radius: 25px;
+}
 .burgerConsructor_group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
   max-height: calc(100vh - 250px);
   overflow-y: auto;
+  border: 1px solid transparent;
+  border-radius: 25px;
+  padding-left: 20px;
 }
 .burgerConsructor_group {
   scrollbar-color: #8585ad #2f2f37;
@@ -23,24 +30,9 @@
 .burgerConsructor_group::-webkit-scrollbar-track {
   background: #2f2f37;
 }
-
-.burgerConstructor_item {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-left: 32px;
-}
-.burgerConstructor_item_move {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.burgerConstructor_item_move i {
-  width: 24px;
-}
 .burgerConstructor_checkout {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
 }
 .burgerConstructor_checkout i {
@@ -50,11 +42,9 @@
   width: 33px;
   height: 33px;
 }
-.burgerConsructor_top li {
-  margin-bottom: 10px;
-  margin-left: 22px;
+.burgerConsructor ul {
+  padding-left: 30px;
 }
-.burgerConsructor_bot li {
-  margin-top: 10px;
-  margin-left: 22px;
+.burgerConsructor li {
+  margin-top: 16px;
 }
