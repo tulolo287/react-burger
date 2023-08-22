@@ -18,10 +18,11 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const bun = useSelector((state) => state.constructorReducer.bun);
+ 
   const constructorIngredients = useSelector(
     (state) => state.constructorReducer.constructorIngredients,
   );
+  const bun = constructorIngredients[0]
   const [disableOrder, setDisableOrder] = useState(true);
   const { isModal, openModal, closeModal } = useModal();
 
@@ -31,7 +32,7 @@ const BurgerConstructor = () => {
       (val, acc) => (val += acc.qty * acc.price),
       0,
     );
-  }, [constructorIngredients]);
+  }, [constructorIngredients, bun]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -47,7 +48,7 @@ const BurgerConstructor = () => {
 
   const onDropHandler = (item) => {
     if (item.type === "bun") {
-      dispatch({ type: actions.SET_BUN, payload: item });
+    
       dispatch({
         type: actions.ADD_BUN_TO_CONSTRUCTOR,
         payload: { ...item, key: uuidv4() },
