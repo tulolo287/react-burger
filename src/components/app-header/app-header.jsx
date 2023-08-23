@@ -5,7 +5,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
-
+import { Link, NavLink } from "react-router-dom";
 
 const AppHeader = () => {
   return (
@@ -14,7 +14,7 @@ const AppHeader = () => {
         <ul className={styles.appHeader_nav__constructor}>
           <ul>
             <li>
-              <a href="#">
+              <NavLink to="/">
                 <i>
                   <BurgerIcon type="primary" />
                 </i>
@@ -26,7 +26,7 @@ const AppHeader = () => {
                 >
                   Конструктор
                 </span>
-              </a>
+              </NavLink>
             </li>
             <li>
               <a href="#">
@@ -52,7 +52,7 @@ const AppHeader = () => {
           </li>
           <ul>
             <li>
-              <a href="#">
+              <NavLink to="/login">
                 <i className="p-2">
                   <ProfileIcon type="secondary" />
                 </i>
@@ -63,7 +63,7 @@ const AppHeader = () => {
                 >
                   Личный кабинет
                 </span>
-              </a>
+              </NavLink>
             </li>
           </ul>
         </ul>
