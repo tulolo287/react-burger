@@ -1,10 +1,11 @@
+import styles from "./profile.module.css";
 
 const Profile = () => {
- 
   return (
-    <>
-     Profile
-    </>
+   
+    <section className={styles.content}>
+    jjj
+  </section>
   );
 };
 
