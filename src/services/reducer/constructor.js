@@ -23,7 +23,11 @@ export const initialState = {
 export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.INIT_CONSTRUCTOR: {
-      return { ...state, bun: action.payload, ...state.constructorIngredients[0] = { ...action.payload, qty: 2 } };
+      return {
+        ...state,
+        bun: action.payload,
+        ...(state.constructorIngredients[0] = { ...action.payload, qty: 2 }),
+      };
     }
     case actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR: {
       const newBurgerIngredients = state.constructorIngredients.filter(
@@ -48,13 +52,19 @@ export const constructorReducer = (state = initialState, action) => {
     case actions.ADD_INGREDIENT_TO_CONSTRUCTOR: {
       return {
         ...state,
-        constructorIngredients: [...state.constructorIngredients, { ...action.payload, qty: 1 }],
+        constructorIngredients: [
+          ...state.constructorIngredients,
+          { ...action.payload, qty: 1 },
+        ],
       };
     }
     case actions.ADD_BUN_TO_CONSTRUCTOR: {
       return {
         ...state,
-        ...state.constructorIngredients.splice(0, 1, { ...action.payload, qty: 2 })
+        ...state.constructorIngredients.splice(0, 1, {
+          ...action.payload,
+          qty: 2,
+        }),
       };
     }
     case actions.SET_ORDER_DETAILS:

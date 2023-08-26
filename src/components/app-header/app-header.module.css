@@ -3,6 +3,8 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-grow: 1;
+  width: 33%;
 }
 .appHeader_nav li {
   padding: 10px;
@@ -17,7 +19,7 @@
   text-align: center;
 }
 .appHeader_nav div {
-  width: 33%;
+  display: flex;
 }
 .secondaryColor {
   color: #8585ad;

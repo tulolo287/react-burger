@@ -14,8 +14,7 @@ import { useDrag } from "react-dnd";
 const BurgerItem = ({ item }) => {
   const dispatch = useDispatch();
   const { isModal, openModal, closeModal, title, setTitle } = useModal();
-
-  const [ , dragRef] = useDrag({
+  const [, dragRef] = useDrag({
     type: "ingredient",
     item: item,
   });
@@ -23,6 +22,7 @@ const BurgerItem = ({ item }) => {
   const onItemHandler = () => {
     dispatch({ type: actions.SET_INGREDIENT_DETAILS, payload: item });
     setTitle("Детали ингредиента");
+    history.pushState({}, null, "/ingredient/" + item._id);
     openModal();
   };
   return (

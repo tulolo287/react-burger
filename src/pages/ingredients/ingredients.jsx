@@ -1,11 +1,5 @@
-
 const Ingredients = () => {
-  
-  return (
-    <>
-     Ingredients
-    </>
-  );
+  return <>Ingredients</>;
 };
 
 export default Ingredients;

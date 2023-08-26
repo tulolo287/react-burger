@@ -1,18 +1,39 @@
-import styles from "./ingredient-details.module.css";
-import { item } from "../../utils/consts";
-import { useSelector } from "react-redux";
+import React from "react";
+import { getIngredients } from "../../services/actions/ingredients";
+import styles from "./ingredient-detail-page.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-const IngredientDetails = () => {
+const IngredientDetailPage = () => {
+  const dispatch = useDispatch();
   const ingredients = useSelector(
     (state) => state.ingredientsReducer.ingredients,
   );
-  const ingredientDetails = useSelector(
-    (state) => state.ingredientDetailsReducer.ingredientDetails,
+  const fetchError = useSelector(
+    (state) => state.ingredientsReducer.fetchError,
   );
+  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
+
+  let ingredientDetails;
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (!ingredients) {
+      const fetchData = async () => {
+        dispatch(getIngredients());
+      };
+      fetchData();
+    }
+  }, []);
+
+  if (ingredients) {
+    ingredientDetails = ingredients.find((item) => item._id === id);
+  }
 
   return (
     <>
-      {ingredients.length ? (
+      {ingredientDetails && (
         <section className={styles.ingredientDetails}>
           <div className={styles.imgContainer}>
             <img
@@ -58,14 +79,12 @@ const IngredientDetails = () => {
             </li>
           </ul>
         </section>
-      ) : (
-        "null"
       )}
+
+      {fetchError && "Sorry server error"}
+      {isLoading && "Loading..."}
     </>
   );
 };
 
-IngredientDetails.propTypes = {
-  item,
-};
-export default IngredientDetails;
+export default IngredientDetailPage;

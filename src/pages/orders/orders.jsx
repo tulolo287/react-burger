@@ -1,13 +1,12 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./profile.module.css";
-import { NavLink, useLocation } from "react-router-dom";
+import styles from "./orders.module.css";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { actions } from "../../services/actions";
 
-const Profile = () => {
+const Orders = () => {
   const user = useSelector((state) => state.authReducer.user);
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
 
   return (
     <section className={styles.content}>
@@ -16,7 +15,7 @@ const Profile = () => {
           <NavLink
             to="/profile"
             className={({ isActive }) =>
-              isActive && pathname === "/profile" ? styles.active : styles.link
+              isActive ? styles.active : styles.link
             }
           >
             Профиль
@@ -24,7 +23,7 @@ const Profile = () => {
         </div>
         <div className={styles.navItem}>
           <NavLink
-            to="/profile/orders"
+            to="orders"
             className={({ isActive }) =>
               isActive ? styles.active : styles.link
             }
@@ -109,4 +108,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Orders;

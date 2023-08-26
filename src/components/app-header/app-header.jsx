@@ -11,7 +11,7 @@ const AppHeader = () => {
   return (
     <header>
       <nav className={styles.appHeader_nav}>
-        <ul className={styles.appHeader_nav__constructor}>
+        <div className={styles.appHeader_nav__constructor}>
           <ul>
             <li>
               <NavLink to="/">
@@ -43,16 +43,18 @@ const AppHeader = () => {
               </a>
             </li>
           </ul>
-          <li>
-            <a href="#">
-              <i className="p-2">
-                <Logo />
-              </i>
-            </a>
-          </li>
           <ul>
             <li>
-              <NavLink to="/login">
+              <a href="#">
+                <i className="p-2">
+                  <Logo />
+                </i>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <NavLink to="/profile">
                 <i className="p-2">
                   <ProfileIcon type="secondary" />
                 </i>
@@ -66,7 +68,7 @@ const AppHeader = () => {
               </NavLink>
             </li>
           </ul>
-        </ul>
+        </div>
       </nav>
     </header>
   );

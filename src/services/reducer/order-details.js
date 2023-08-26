@@ -8,7 +8,7 @@ export const initialState = {
 
 export const orderDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.POST_ORDER_SUCCES:
+    case actions.POST_ORDER_SUCCESS:
       return {
         ...state,
         orderDetails: action.payload,
