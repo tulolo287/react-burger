@@ -10,6 +10,7 @@ import Modal from "../modal/modal";
 import useModal from "../../hooks/useModal";
 import { useDispatch } from "react-redux";
 import { useDrag } from "react-dnd";
+import { useNavigate } from "react-router-dom";
 
 const BurgerItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -18,12 +19,11 @@ const BurgerItem = ({ item }) => {
     type: "ingredient",
     item: item,
   });
+  const navigate = useNavigate();
 
   const onItemHandler = () => {
     dispatch({ type: actions.SET_INGREDIENT_DETAILS, payload: item });
-    setTitle("Детали ингредиента");
-    history.pushState({}, null, "/ingredient/" + item._id);
-    openModal();
+    navigate("/ingredient/" + item._id, { state: { modal: true } });
   };
   return (
     <>
