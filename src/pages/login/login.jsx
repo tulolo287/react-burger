@@ -54,7 +54,8 @@ const Login = () => {
               extraClass="mb-2"
             />
             <div className={styles.input}>
-              <PasswordInput name={"password"} icon="LockIcon" />
+              <PasswordInput
+               name={"password"} icon="ShowIcon" />
             </div>
             <div className={styles.button}>
               <Button htmlType="submit" type="primary">

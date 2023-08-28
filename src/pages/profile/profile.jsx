@@ -8,7 +8,7 @@ import styles from "./profile.module.css";
 import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { logout, updateUser } from "../../services/actions/auth";
+import { getUser, logout, updateUser } from "../../services/actions/auth";
 
 const Profile = () => {
   const isAuth = useSelector((state) => state.authReducer.isAuth);
