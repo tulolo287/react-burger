@@ -54,7 +54,7 @@ const Register = () => {
               value={emailValue}
               onChange={(e) => setEmailValue(e.target.value)}
               placeholder="E-mail"
-              isIcon={false}
+              
               
             />
 

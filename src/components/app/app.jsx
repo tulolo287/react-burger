@@ -1,6 +1,6 @@
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Constructor from "../../pages/constructor/constructor";
 import Login from "../../pages/login/login";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
@@ -12,28 +12,36 @@ import NotFound from "../../pages/not-found/not-found";
 import IngredientDetailPage from "../../pages/ingredient-detail-page/ingredient-detail-page";
 import Orders from "../../pages/orders/orders";
 import { path } from "../../utils/consts";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function App() {
+  let location = useLocation();
+
+  let state = location.state;
   return (
     <div className={styles.app}>
-      <BrowserRouter>
-        <AppHeader />
+      <AppHeader />
+      <Routes location={state?.modal || location}>
+        <Route path={path.HOME} element={<Constructor />}></Route>
+        <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
+        <Route path={path.LOGIN} element={<Login />} />
+        <Route path={path.REGISTER} element={<Register />} />
+        <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
+        <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
+        <Route
+          path={path.PROFILE}
+          state={{ from: "/profile" }}
+          element={<ProtectedRouteElement element={<Profile />} />}
+        >
+          <Route path={path.ORDERS} element={<Orders />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {state?.modal && (
         <Routes>
-          <Route path={path.HOME} element={<Constructor />}></Route>
-          <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
-          <Route path={path.LOGIN} element={<Login />} />
-          <Route path={path.REGISTER} element={<Register />} />
-          <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
-          <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
-          <Route
-            path={path.PROFILE} state={{from: '/profile'}}
-            element={<ProtectedRouteElement element={<Profile />} />}
-          >
-            <Route path={path.ORDERS} element={<Orders />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
+          <Route path={path.INGREDIENT} element={<IngredientDetails />} />
         </Routes>
-      </BrowserRouter>
+      )}
     </div>
   );
 }

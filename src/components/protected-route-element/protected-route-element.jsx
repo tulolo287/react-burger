@@ -5,24 +5,24 @@ import { getUser } from "../../services/actions/auth";
 import PropTypes from "prop-types";
 
 const ProtectedRouteElement = ({ element }) => {
-  const isAuth = useSelector((state) => state.authReducer.isAuth);
+  const user = useSelector((state) => state.authReducer.user);
   const isLoading = useSelector((state) => state.authReducer.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!isAuth) {
+    if (!user) {
       dispatch(getUser());
     }
-  }, []);
+  }, [user, dispatch]);
 
-  if (isAuth) {
+  if (user) {
     return element;
   }
-  //return <Navigate to={location?.state?.from || '/'} />;
+  
   return (
     <>
       {isLoading && "Loading..."}
-      {isAuth ? element : <Navigate to={"/login"} replace />}
+      <Navigate to={"/login"} replace />}
     </>
   );
 };

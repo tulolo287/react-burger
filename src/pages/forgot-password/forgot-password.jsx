@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./forgot-password.module.css";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   EmailInput,
@@ -11,25 +11,20 @@ import { login, getUser, forgotPassword } from "../../services/actions/auth";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-   const [emailValue, setEmailValue] = useState("");
-  const isAuth = useSelector((state) => state.authReducer.isAuth);
+  const [emailValue, setEmailValue] = useState("");
+  const user = useSelector((state) => state.authReducer.user);
   const isForgotPassword = useSelector(
-    (state) => state.authReducer.isForgotPassword,
+    (state) => state.authReducer.isForgotPassword
   );
   const isLoading = useSelector((state) => state.authReducer.isLoading);
   const location = useLocation();
 
   useEffect(() => {
-    if (!isAuth) {
+    if (!user) {
       dispatch(getUser());
     }
-  }, []);
+  }, [user, dispatch]);
 
-  useEffect(() => {
-    if (isAuth || location.state !== "login") {
-      return navigate("/", { replace: true });
-    }
-  }, [isAuth, location.state]);
 
   const forgotPasswordHandle = useCallback((e) => {
     e.preventDefault();
@@ -38,42 +33,46 @@ const ForgotPassword = () => {
         email: emailValue,
       };
       dispatch(forgotPassword(data)).then(() =>
-        navigate("/reset-password", { state: "forgot-password" }),
+        navigate("/reset-password", { state:{for: "forgot-password"}  })
       );
     }
   });
 
-  return isLoading ? (
-    "Loading..."
-  ) : (
-    <section className={styles.content}>
-      <div className={styles.title}>Восстановление пароля</div>
-      <div className={styles.form}>
-        <form className={styles.form} onSubmit={forgotPasswordHandle}>
-          <EmailInput
-              name={"email"}
-              value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
-              placeholder="Укажите e-mail"
-              isIcon={false}
-              
-            />
-          <div className={styles.button}>
-            <Button htmlType="submit" type="primary">
-              Восстановить
-            </Button>
+  return (
+    <>
+      {isLoading && "Loading..."}
+      {!user ? (
+        <section className={styles.content}>
+          <div className={styles.title}>Восстановление пароля</div>
+          <div className={styles.form}>
+            <form className={styles.form} onSubmit={forgotPasswordHandle}>
+              <EmailInput
+                name={"email"}
+                value={emailValue}
+                onChange={(e) => setEmailValue(e.target.value)}
+                placeholder="Укажите e-mail"
+               
+              />
+              <div className={styles.button}>
+                <Button htmlType="submit" type="primary">
+                  Восстановить
+                </Button>
+              </div>
+            </form>
+            <div className={styles.actions}>
+              <div>
+                <span className={styles.question}>Вспомнили пароль?</span>
+                <Link to="/login">
+                  <span className={styles.register}>Войти</span>
+                </Link>
+              </div>
+            </div>
           </div>
-        </form>
-        <div className={styles.actions}>
-          <div>
-            <span className={styles.question}>Вспомнили пароль?</span>
-            <Link to="/login">
-              <span className={styles.register}>Войти</span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
+      ) : (
+        <Navigate to={location?.state?.from || "/"} />
+      )}
+    </>
   );
 };
 

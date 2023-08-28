@@ -90,8 +90,8 @@ export const updateUser = (data) => async (dispatch) => {
 
 export const register = (request) => async (dispatch) => {
   return registerApi(request)
-    .then((user) => {
-      dispatch({ type: actions.REGISTER_SUCCESS, payload: user });
+    .then((response) => {
+      dispatch({ type: actions.REGISTER_SUCCESS, payload: response });
     })
     .catch((err) => {
       dispatch({

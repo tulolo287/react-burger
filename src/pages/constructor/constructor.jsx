@@ -3,23 +3,21 @@ import styles from "./constructor.module.css";
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor";
 import { useEffect } from "react";
-import { getIngredients } from "../../services/actions/ingredients";
+import { getIngredients, getIngredientsSelector } from "../../services/actions/ingredients";
 import { useDispatch, useSelector } from "react-redux";
 
 const Constructor = () => {
   const dispatch = useDispatch();
-  const ingredients = useSelector(
-    (state) => state.ingredientsReducer.ingredients,
-  );
+  const ingredients = useSelector(getIngredientsSelector);
+
   const fetchError = useSelector(
-    (state) => state.ingredientsReducer.fetchError,
+    (state) => state.ingredientsReducer.fetchError
   );
   const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
   useEffect(() => {
     const fetchData = async () => {
       dispatch(getIngredients());
     };
-
     fetchData();
   }, []);
   return (

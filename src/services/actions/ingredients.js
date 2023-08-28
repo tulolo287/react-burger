@@ -1,6 +1,8 @@
 import { actions } from "../actions";
 import { getIngredientsApi } from "../../utils/api";
 import { v4 as uuidv4 } from "uuid";
+import { state } from "../..";
+import { createSelector } from "@reduxjs/toolkit";
 
 export const ingredientsActions = {
   GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
@@ -28,3 +30,9 @@ export const getIngredients = () => async (dispatch) => {
       });
     });
 };
+
+
+const ingredients = state => state.ingredientsReducer.ingredients
+export const getIngredientsSelector = (state) => state.ingredientsReducer.ingredients
+export const getSortedIngredientsSelector = (state) => state.ingredientsReducer.sortedIngredients;
+export const getIngredientDetailSelector = (state) => state.ingredientDetailsReducer.ingredientDetails

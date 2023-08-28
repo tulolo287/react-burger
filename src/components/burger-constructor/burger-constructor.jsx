@@ -20,8 +20,9 @@ import { getUser } from "../../services/actions/auth";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.authReducer.isAuth);
+  const user = useSelector((state) => state.authReducer.user);
   const navigate = useNavigate();
+
   const constructorIngredients = useSelector(
     (state) => state.constructorReducer.constructorIngredients,
   );
@@ -38,10 +39,10 @@ const BurgerConstructor = () => {
   }, [constructorIngredients, bun]);
 
   useEffect(() => {
-    if (isAuth) {
+    if (!user) {
       dispatch(getUser());
     }
-  }, []);
+  }, [user, dispatch]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -74,8 +75,8 @@ const BurgerConstructor = () => {
   };
 
   const makeOrder = async () => {
-    if (!isAuth) {
-      navigate("/login", { state: "/" });
+    if (!user) {
+      navigate("/login", { state: {from: "/"}  });
       return;
     }
     const ingredientsId = constructorIngredients.map((item) => item._id);

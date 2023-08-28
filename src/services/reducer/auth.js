@@ -94,15 +94,18 @@ export const authReducer = (state = initialState, action) => {
       };
     }
     case actions.REGISTER_SUCCESS:
-      localStorage.setItem("user", action.payload);
       setCookie("token", JSON.stringify(action.payload.accessToken));
       localStorage.setItem(
         "refreshToken",
         JSON.stringify(action.payload.refreshToken),
       );
+      localStorage.setItem(
+        "accessToken",
+        JSON.stringify(action.payload.accessToken),
+      );
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.user,
         isAuth: true,
       };
     case actions.REGISTER_FAILED:

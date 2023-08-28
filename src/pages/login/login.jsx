@@ -25,7 +25,7 @@ const Login = () => {
   }, [user, dispatch]);
 
   const resetPass = () => {
-    navigate("/forgot-password", { state: "login" });
+    navigate("/forgot-password", { state: { from: "login" } });
   };
 
   const onLogin = useCallback(
@@ -39,19 +39,13 @@ const Login = () => {
         dispatch(login(data));
       }
     },
-    [emailValue, passwordValue, dispatch],
+    [emailValue, passwordValue, dispatch]
   );
-  alert('ll')
-  if (user) {
-    return
-    alert('gg')
-  }
-  //return <Navigate to={location?.state?.from || '/'} />;
-  console.log(location);
+
   return (
     <>
       {isLoading && "Loading..."}
-      {!isLoading && !user ? (
+      {!user ? (
         <section className={styles.content}>
           <div className={styles.title}>Вход</div>
           <div className={styles.form}>
@@ -61,7 +55,7 @@ const Login = () => {
                 value={emailValue}
                 onChange={(e) => setEmailValue(e.target.value)}
                 placeholder="E-mail"
-                isIcon={false}
+                
               />
               <div className={styles.input}>
                 <PasswordInput

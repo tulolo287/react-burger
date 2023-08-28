@@ -5,17 +5,14 @@ import styles from "./burger-ingredients.module.css";
 import { SORT_ORDER, TYPES, ingredients } from "../../utils/consts";
 import { useSelector, useDispatch } from "react-redux";
 import { actions } from "../../services/actions";
+import { getIngredientsSelector, getSortedIngredientsSelector } from "../../services/actions/ingredients";
 
 let currentType = "";
 let categoryRefs = [];
 
 const BurgerIngredients = () => {
-  const ingredients = useSelector(
-    (state) => state.ingredientsReducer.ingredients,
-  );
-  const sortedIngredients = useSelector(
-    (state) => state.ingredientsReducer.sortedIngredients,
-  );
+  const ingredients = useSelector(getIngredientsSelector);
+  const sortedIngredients = useSelector(getSortedIngredientsSelector);
   const dispatch = useDispatch();
   const [current, setCurrent] = useState("bun");
   const [types, setTypes] = useState([]);
@@ -23,9 +20,10 @@ const BurgerIngredients = () => {
   useEffect(() => {
     getTypes();
     sortData();
-  }, []);
+  }, [ingredients]);
 
   const sortData = () => {
+  
     const sortedData = ingredients.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });

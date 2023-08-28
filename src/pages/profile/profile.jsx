@@ -19,14 +19,13 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
-  const nameRef = useRef()
-  const emailRef = useRef()
+
 
   useEffect(() => {
-    if (!isAuth) {
+    if (!user) {
       dispatch(getUser());
     }
-  }, []);
+  }, [user, dispatch]);
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
@@ -44,12 +43,6 @@ const Profile = () => {
     dispatch(updateUser(data));
   });
 
-  const onNameIconClick = () => {
-    setTimeout(() => nameRef.current.focus(), 0);
-  };
-  const onEmailIconClick = () => {
-    setTimeout(() => emailRef.current.focus(), 0);
-  };
 
   const onLogout = () => {
     dispatch(logout()).then((res) => console.log(res));
@@ -103,10 +96,9 @@ const Profile = () => {
               setNameValue(e.target.value);
               setSaveButton(true);
             }}
-            onIconClick={onNameIconClick}
-            ref={nameRef}
+      
             icon="EditIcon"
-            isIcon={true}
+            
             name={"name"}
             error={false}
             errorText={"Ошибка"}
@@ -116,8 +108,6 @@ const Profile = () => {
           <EmailInput
             name={"email"}
             value={emailValue}
-            onIconClick={onEmailIconClick}
-            ref={emailRef}
             isIcon={true}
             onChange={(e) => {
               setEmailValue(e.target.value);
