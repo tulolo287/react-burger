@@ -11,6 +11,7 @@ import ForgotPassword from "../../pages/forgot-password/forgot-password";
 import NotFound from "../../pages/not-found/not-found";
 import IngredientDetailPage from "../../pages/ingredient-detail-page/ingredient-detail-page";
 import Orders from "../../pages/orders/orders";
+import { path } from "../../utils/consts";
 
 function App() {
   return (
@@ -18,17 +19,17 @@ function App() {
       <BrowserRouter>
         <AppHeader />
         <Routes>
-          <Route path="/" element={<Constructor />}></Route>
-          <Route path="/ingredient/:id" element={<IngredientDetailPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path={path.HOME} element={<Constructor />}></Route>
+          <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
+          <Route path={path.LOGIN} element={<Login />} />
+          <Route path={path.REGISTER} element={<Register />} />
+          <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
           <Route
-            path="/profile"
+            path={path.PROFILE} state={{from: '/profile'}}
             element={<ProtectedRouteElement element={<Profile />} />}
           >
-            <Route path="orders" element={<Orders />} />
+            <Route path={path.ORDERS} element={<Orders />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -10,17 +10,19 @@ const ProtectedRouteElement = ({ element }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser());
+    if (!isAuth) {
+      dispatch(getUser());
+    }
   }, []);
 
   if (isAuth) {
     return element;
   }
-
+  //return <Navigate to={location?.state?.from || '/'} />;
   return (
     <>
       {isLoading && "Loading..."}
-      {isAuth ? element : <Navigate to={"/login"} state={"/profile"} replace />}
+      {isAuth ? element : <Navigate to={"/login"} replace />}
     </>
   );
 };

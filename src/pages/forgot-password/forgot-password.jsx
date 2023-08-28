@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import styles from "./forgot-password.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Button,
+  EmailInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, forgotPassword } from "../../services/actions/auth";
 
@@ -16,7 +19,9 @@ const ForgotPassword = () => {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(getUser());
+    if (!isAuth) {
+      dispatch(getUser());
+    }
   }, []);
 
   useEffect(() => {
@@ -25,16 +30,18 @@ const ForgotPassword = () => {
     }
   }, [isAuth, location.state]);
 
-  const forgotPass = async (e) => {
+  const forgotPasswordHandle = useCallback((e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    if (email) {
-      dispatch(forgotPassword({ email })).then(() =>
+    if (formData.get("email")) {
+      const data = {
+        email: formData.get("email"),
+      };
+      dispatch(forgotPassword(data)).then(() =>
         navigate("/reset-password", { state: "forgot-password" }),
       );
     }
-  };
+  });
 
   return isLoading ? (
     "Loading..."
@@ -42,8 +49,13 @@ const ForgotPassword = () => {
     <section className={styles.content}>
       <div className={styles.title}>Восстановление пароля</div>
       <div className={styles.form}>
-        <form className={styles.form} onSubmit={forgotPass}>
-          <input type="text" placeholder="Укажите e-mail" name="email" />
+        <form className={styles.form} onSubmit={forgotPasswordHandle}>
+          <EmailInput
+            name={"email"}
+            placeholder="Укажите e-mail"
+            isIcon={false}
+            extraClass="mb-2"
+          />
           <div className={styles.button}>
             <Button htmlType="submit" type="primary">
               Восстановить

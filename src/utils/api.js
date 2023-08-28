@@ -37,6 +37,9 @@ export const loginApi = async (data) => {
     });
     const result = await checkResponse(response);
     if (result.success) {
+      localStorage.setItem("refreshToken", result.refreshToken);
+      localStorage.setItem("accessToken", result.accessToken);
+      setCookie("token", JSON.stringify(result.accessToken));
       return result;
     } else {
       return false;
@@ -46,27 +49,65 @@ export const loginApi = async (data) => {
   }
 };
 
-export const getUserApi = async () => {
-  let token = getCookie("token");
+export const logoutApi = async () => {
+  let token = localStorage.getItem("refreshToken");
   token = token.replace(/^"(.*)"$/, "$1");
   try {
-    const response = await fetch(`${API_URL}/auth/user`, {
-      method: "GET",
+    const response = await fetch(`${API_URL}/auth/logout`, {
+      method: "POST",
       mode: "cors",
       cache: "no-cache",
       credentials: "same-origin",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        "Content-Type": "application/json;charset=utf-8",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
+      body: JSON.stringify({ token }),
     });
     const result = await checkResponse(response);
-    return result.success ? result : false;
+    return result
   } catch (err) {
     return Promise.reject(err);
   }
+};
+
+export const getUserApi = async () => {
+  let token = getCookie("token");
+  token = token.replace(/^"(.*)"$/, "$1");
+  const options = {
+    method: "GET",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+  }
+  return fetchWithRefresh(`${API_URL}/auth/user`, options)
+};
+
+export const updateUserApi = async (data) => {
+  let token = getCookie("token");
+  token = token.replace(/^"(.*)"$/, "$1");
+  const options = {
+    method: "PATCH",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    redirect: "follow",
+    referrerPolicy: "no-referrer",
+    body: JSON.stringify(data),
+  }
+  return fetchWithRefresh(`${API_URL}/auth/user`, options)
+
 };
 
 export const registerApi = async (request) => {
@@ -128,7 +169,7 @@ export const resetPasswordApi = async (request) => {
       body: JSON.stringify(request),
     });
     const result = await checkResponse(response);
-    return result.success ? result : false;
+    return result.success ? result : result.message;
   } catch (err) {
     return Promise.reject(err);
   }
@@ -155,6 +196,27 @@ export const forgotPasswordApi = async (request) => {
   }
 };
 
+
+
+const fetchWithRefresh = async (url, options) => {
+  try {
+    const res = await fetch(url, options);
+    return await checkResponse(res);
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const refreshData = await refreshTokenApi();
+      localStorage.setItem("refreshToken", refreshData.refreshToken);
+      localStorage.setItem("accessToken", refreshData.accessToken);
+      setCookie("token", JSON.stringify(refreshData.accessToken));
+      options.headers.authorization = refreshData.accessToken;
+      const res = await fetch(url, options);
+      return await checkResponse(res);
+    } else {
+      return Promise.reject(err);
+    }
+  }
+};
+
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
@@ -163,8 +225,8 @@ export function getCookie(name) {
   const matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)",
+      name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+      "=([^;]*)",
     ),
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;

@@ -18,15 +18,6 @@ export const authReducer = (state = initialState, action) => {
       };
     }
     case actions.LOGIN_SUCCESS:
-      const accessToken = action.payload.accessToken.split("Bearer ")[1];
-      localStorage.setItem(
-        "refreshToken",
-        JSON.stringify(action.payload.refreshToken),
-      );
-      setCookie("token", JSON.stringify(accessToken), {
-        SameSite: "None",
-        Secure: "Secure",
-      });
       return {
         ...state,
         user: action.payload.user,
@@ -40,11 +31,6 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
       };
     case actions.REFRESH_TOKEN_SUCCESS:
-      localStorage.setItem(
-        "refreshToken",
-        JSON.stringify(action.payload.refreshToken),
-      );
-      setCookie("token", JSON.stringify(action.payload.accessToken));
       return {
         ...state,
         isAuth: true,
@@ -93,6 +79,20 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
       };
     }
+    case actions.UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        user: action.payload.user,
+        isAuth: true,
+        isLoading: false,
+      };
+    case actions.UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        isAuth: false,
+        isLoading: false,
+      };
+    }
     case actions.REGISTER_SUCCESS:
       localStorage.setItem("user", action.payload);
       setCookie("token", JSON.stringify(action.payload.accessToken));
@@ -110,9 +110,10 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         isAuth: false,
       };
-    case actions.LOGOUT:
-      //localStorage.setItem('token', null);
+    case actions.LOGOUT_SUCCESS:
+      localStorage.setItem('accessToken', null);
       deleteCookie("token", null);
+      localStorage.setItem("refreshToken", null);
       return {
         ...state,
         ...initialState,

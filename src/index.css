@@ -21,6 +21,9 @@ code {
 a {
   text-decoration: none;
 }
+.active {
+  color: white;
+}
 
 li {
   list-style: none;

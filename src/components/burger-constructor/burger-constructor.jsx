@@ -38,7 +38,9 @@ const BurgerConstructor = () => {
   }, [constructorIngredients, bun]);
 
   useEffect(() => {
-    dispatch(getUser());
+    if (isAuth) {
+      dispatch(getUser());
+    }
   }, []);
 
   const [{ isHover }, dropTarget] = useDrop({
