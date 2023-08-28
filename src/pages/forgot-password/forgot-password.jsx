@@ -25,7 +25,6 @@ const ForgotPassword = () => {
     }
   }, [user, dispatch]);
 
-
   const forgotPasswordHandle = useCallback((e) => {
     e.preventDefault();
     if (emailValue) {
@@ -33,7 +32,7 @@ const ForgotPassword = () => {
         email: emailValue,
       };
       dispatch(forgotPassword(data)).then(() =>
-        navigate("/reset-password", { state:{for: "forgot-password"}  })
+        navigate("/reset-password", { state: { from: "forgot-password" } })
       );
     }
   });
@@ -41,7 +40,7 @@ const ForgotPassword = () => {
   return (
     <>
       {isLoading && "Loading..."}
-      {!user ? (
+      {!user && location?.state?.from === "login" ? (
         <section className={styles.content}>
           <div className={styles.title}>Восстановление пароля</div>
           <div className={styles.form}>
@@ -51,7 +50,6 @@ const ForgotPassword = () => {
                 value={emailValue}
                 onChange={(e) => setEmailValue(e.target.value)}
                 placeholder="Укажите e-mail"
-               
               />
               <div className={styles.button}>
                 <Button htmlType="submit" type="primary">

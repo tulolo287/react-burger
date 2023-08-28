@@ -44,7 +44,7 @@ const ResetPassword = () => {
   return (
     <>
       {isLoading && "Loading..."}
-      {!user ? (
+      {!user && location?.state?.from === "forgot-password" ? (
         <section className={styles.content}>
           <div className={styles.title}>Восстановление пароля</div>
           <div className={styles.form}>
