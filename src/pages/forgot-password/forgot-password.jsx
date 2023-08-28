@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./forgot-password.module.css";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import { login, getUser, forgotPassword } from "../../services/actions/auth";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+   const [emailValue, setEmailValue] = useState("");
   const isAuth = useSelector((state) => state.authReducer.isAuth);
   const isForgotPassword = useSelector(
     (state) => state.authReducer.isForgotPassword,
@@ -32,10 +33,9 @@ const ForgotPassword = () => {
 
   const forgotPasswordHandle = useCallback((e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    if (formData.get("email")) {
+    if (emailValue) {
       const data = {
-        email: formData.get("email"),
+        email: emailValue,
       };
       dispatch(forgotPassword(data)).then(() =>
         navigate("/reset-password", { state: "forgot-password" }),
@@ -51,11 +51,13 @@ const ForgotPassword = () => {
       <div className={styles.form}>
         <form className={styles.form} onSubmit={forgotPasswordHandle}>
           <EmailInput
-            name={"email"}
-            placeholder="Укажите e-mail"
-            isIcon={false}
-            extraClass="mb-2"
-          />
+              name={"email"}
+              value={emailValue}
+              onChange={(e) => setEmailValue(e.target.value)}
+              placeholder="Укажите e-mail"
+              isIcon={false}
+              
+            />
           <div className={styles.button}>
             <Button htmlType="submit" type="primary">
               Восстановить

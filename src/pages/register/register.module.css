@@ -24,21 +24,7 @@
   align-items: flex-end;
   gap: 24px;
 }
-.input {
-  position: relative;
-}
-.form input {
-  padding: 12px 0 12px 24px;
-  width: 480px;
-  border-radius: 40px;
-  border: 2px solid var(--interface-accent, #2f2f37);
-  background: var(--interface-input, #2f2f37);
-}
-.form i {
-  position: absolute;
-  margin-top: 13px;
-  margin-left: -42px;
-}
+
 .actions {
   width: 480px;
   align-items: center;

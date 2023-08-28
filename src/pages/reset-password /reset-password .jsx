@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Input,
@@ -10,15 +10,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, resetPassword } from "../../services/actions/auth";
 
 const ResetPassword = () => {
+  const [passwordValue, setPasswordValue] = useState("");
+  const [tokenValue, setTokenValue] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const isAuth = useSelector((state) => state.authReducer.isAuth);
   const isLoading = useSelector((state) => state.authReducer.isLoading);
-  const isPasswordReset = useSelector(
-    (state) => state.authReducer.isPasswordReset,
-  );
-
+ 
   useEffect(() => {
     if (!isAuth) {
       dispatch(getUser());
@@ -33,13 +32,10 @@ const ResetPassword = () => {
 
   const resetPasswordHandle = useCallback((e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const token = formData.get("token");
-    const password = formData.get("password");
-    if (token && password) {
+    if (tokenValue && passwordValue) {
       const data = {
-        token,
-        password,
+        token : tokenValue,
+        password : passwordValue
       };
       dispatch(resetPassword(data))
         .then((res) =>
@@ -59,14 +55,18 @@ const ResetPassword = () => {
       <div className={styles.form}>
         <form className={styles.form} onSubmit={resetPasswordHandle}>
           <div className={styles.input}>
-            <PasswordInput
-              placeholder="Введите новый пароль"
+              <PasswordInput
+              value={passwordValue}
+              onChange={(e) => setPasswordValue(e.target.value)}
               name={"password"}
-              icon="LockIcon"
+              placeholder="Введите новый пароль"
+              icon="ShowIcon"
             />
           </div>
           <Input
             type={"text"}
+            onChange={(e) => setTokenValue(e.target.value)}
+            value={tokenValue}
             placeholder={"Введите код из письма"}
             icon={false}
             name={"token"}

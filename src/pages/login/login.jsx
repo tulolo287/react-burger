@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./login.module.css";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -11,78 +11,98 @@ import { login, getUser } from "../../services/actions/auth";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.authReducer.isAuth);
+  const user = useSelector((state) => state.authReducer.user);
+  const isLoading = useSelector((state) => state.authReducer.isLoading);
   const navigate = useNavigate();
   const location = useLocation();
+  const [passwordValue, setPasswordValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
 
   useEffect(() => {
-    if (!isAuth) {
+    if (!user) {
       dispatch(getUser());
     }
-  }, []);
+  }, [user, dispatch]);
 
   const resetPass = () => {
     navigate("/forgot-password", { state: "login" });
   };
 
-  const onLogin = useCallback((e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    if (formData.get("email") && formData.get("password")) {
-      const data = {
-        email: formData.get("email"),
-        password: formData.get("password"),
-      };
-      dispatch(login(data));
-    }
-  });
-
+  const onLogin = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (emailValue && passwordValue) {
+        const data = {
+          email: emailValue,
+          password: passwordValue,
+        };
+        dispatch(login(data));
+      }
+    },
+    [emailValue, passwordValue, dispatch],
+  );
+  alert('ll')
+  if (user) {
+    return
+    alert('gg')
+  }
   //return <Navigate to={location?.state?.from || '/'} />;
-
+  console.log(location);
   return (
     <>
-      {isAuth && <Navigate to={location?.state?.from || "/"} />}
-
-      <section className={styles.content}>
-        <div className={styles.title}>Вход</div>
-        <div className={styles.form}>
-          <form className={styles.form} onSubmit={onLogin}>
-            <EmailInput
-              name={"email"}
-              placeholder="Логин"
-              isIcon={false}
-              extraClass="mb-2"
-            />
-            <div className={styles.input}>
-              <PasswordInput
-               name={"password"} icon="ShowIcon" />
-            </div>
-            <div className={styles.button}>
-              <Button htmlType="submit" type="primary">
-                Submit
-              </Button>
-            </div>
-          </form>
-          <div className={styles.actions}>
-            <div>
-              <span className={styles.question}>Вы — новый пользователь?</span>
-              <Link to="/register">
-                <span className={styles.register}>Зарегистрироваться</span>
-              </Link>
-            </div>
-            <div>
-              <span className={styles.question}>Забыли пароль?</span>
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={resetPass}
-                className={styles.register}
-              >
-                Восстановить пароль
-              </span>
+      {isLoading && "Loading..."}
+      {!isLoading && !user ? (
+        <section className={styles.content}>
+          <div className={styles.title}>Вход</div>
+          <div className={styles.form}>
+            <form className={styles.form} onSubmit={onLogin}>
+              <EmailInput
+                name={"email"}
+                value={emailValue}
+                onChange={(e) => setEmailValue(e.target.value)}
+                placeholder="E-mail"
+                isIcon={false}
+              />
+              <div className={styles.input}>
+                <PasswordInput
+                  value={passwordValue}
+                  placeholder="Пароль"
+                  onChange={(e) => setPasswordValue(e.target.value)}
+                  name={"password"}
+                  icon="ShowIcon"
+                />
+              </div>
+              <div className={styles.button}>
+                <Button htmlType="submit" type="primary">
+                  Submit
+                </Button>
+              </div>
+            </form>
+            <div className={styles.actions}>
+              <div>
+                <span className={styles.question}>
+                  Вы — новый пользователь?
+                </span>
+                <Link to="/register">
+                  <span className={styles.register}>Зарегистрироваться</span>
+                </Link>
+              </div>
+              <div>
+                <span className={styles.question}>Забыли пароль?</span>
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={resetPass}
+                  className={styles.register}
+                >
+                  Восстановить пароль
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <Navigate to={location?.state?.from || "/"} />
+      )}
     </>
   );
 };

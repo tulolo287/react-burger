@@ -13,23 +13,14 @@ import { getUser, logout, updateUser } from "../../services/actions/auth";
 const Profile = () => {
   const isAuth = useSelector((state) => state.authReducer.isAuth);
   const user = useSelector((state) => state.authReducer.user);
-  const [userState, setUserState] = useState(user);
+  const [passwordValue, setPasswordValue] = useState('');
+  const [emailValue, setEmailValue] = useState(user.email);
+  const [nameValue, setNameValue] = useState(user.name);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
   const [saveButton, setSaveButton] = useState(false);
-
-  const [value, setValue] = useState("password");
-  const onChange = (e) => {
-    setValue(e.target.value);
-  };
-
-  const onIconClick = () => {
-    setTimeout(() => nameRef.current.focus(), 0);
-    //alert('Icon Click Callback')
-  };
+  const nameRef = useRef()
+  const emailRef = useRef()
 
   useEffect(() => {
     if (!isAuth) {
@@ -40,41 +31,38 @@ const Profile = () => {
   const onSubmit = useCallback((e) => {
     e.preventDefault();
     let data;
-    passwordRef.current?.value
+    passwordValue
       ? (data = {
-          name: userState.name,
-          email: userState.email,
-          password: passwordRef.current?.value,
+          name: nameValue,
+          email: emailValue,
+          password: passwordValue,
         })
       : (data = {
-          name: userState.name,
-          email: userState.email,
+          name: nameValue,
+          email: emailValue,
         });
     dispatch(updateUser(data));
   });
+
+  const onNameIconClick = () => {
+    setTimeout(() => nameRef.current.focus(), 0);
+  };
+  const onEmailIconClick = () => {
+    setTimeout(() => emailRef.current.focus(), 0);
+  };
 
   const onLogout = () => {
     dispatch(logout()).then((res) => console.log(res));
   };
 
-  useEffect(() => {
-    setUserState(user);
-  }, [user.name]);
-
   const onCancel = () => {
-    setUserState(user);
+    setNameValue(user.name);
+    setEmailValue(user.email);
+    setPasswordValue(user.password);
     setSaveButton(false);
   };
 
-  const onInputChange = () => {
-    setUserState({
-      ...userState,
-      name: nameRef.current?.value,
-      email: emailRef.current?.value,
-      password: passwordRef.current?.value,
-    });
-    setSaveButton(true);
-  };
+ 
   return (
     <section className={styles.content}>
       <div className={styles.navigation}>
@@ -107,41 +95,49 @@ const Profile = () => {
       </div>
       <div className={styles.form}>
         <form onSubmit={onSubmit} className={styles.form}>
-          <div className={styles.input}>
-            <Input
-              type={"text"}
-              placeholder={"Name"}
-              onChange={onInputChange}
-              icon={"EditIcon"}
-              value={userState.name}
-              name={"name"}
-              error={false}
-              ref={nameRef}
-              onIconClick={onIconClick}
-              errorText={"Ошибка"}
-              size={"default"}
-              extraClass="ml-1"
-            />
-          </div>
-          <div className={styles.input}>
-            <EmailInput
-              onChange={onInputChange}
-              value={userState.email}
-              ref={emailRef}
-              name={"email"}
-              placeholder="Логин"
-              isIcon={true}
-              extraClass="mb-2"
-            />
-          </div>
-          <div className={styles.input}>
-            <PasswordInput
-              onChange={onInputChange}
-              ref={passwordRef}
-              name={"password"}
-              icon="EditIcon"
-            />
-          </div>
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            value={nameValue}
+            onChange={(e) => {
+              setNameValue(e.target.value);
+              setSaveButton(true);
+            }}
+            onIconClick={onNameIconClick}
+            ref={nameRef}
+            icon="EditIcon"
+            isIcon={true}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+          />
+
+          <EmailInput
+            name={"email"}
+            value={emailValue}
+            onIconClick={onEmailIconClick}
+            ref={emailRef}
+            isIcon={true}
+            onChange={(e) => {
+              setEmailValue(e.target.value);
+              setSaveButton(true);
+            }}
+            placeholder="E-mail"
+            icon="EditIcon"
+          />
+
+          <PasswordInput
+            value={passwordValue}
+            onChange={(e) => {
+              setPasswordValue(e.target.value);
+              setSaveButton(true);
+            }}
+            name={"password"}
+            placeholder="Пароль"
+            icon="EditIcon"
+          />
+
           {saveButton && (
             <div>
               <Button htmlType="submit" type="primary">
