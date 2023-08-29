@@ -22,6 +22,7 @@ export const getIngredients = () => async (dispatch) => {
         type: actions.GET_INGREDIENTS_SUCCESS,
         payload: ingredients,
       });
+      return ingredients;
     })
     .catch((err) => {
       dispatch({
@@ -31,8 +32,10 @@ export const getIngredients = () => async (dispatch) => {
     });
 };
 
-
-const ingredients = state => state.ingredientsReducer.ingredients
-export const getIngredientsSelector = (state) => state.ingredientsReducer.ingredients
-export const getSortedIngredientsSelector = (state) => state.ingredientsReducer.sortedIngredients;
-export const getIngredientDetailSelector = (state) => state.ingredientDetailsReducer.ingredientDetails
+const ingredients = (state) => state.ingredientsReducer.ingredients;
+export const getIngredientsSelector = (state) =>
+  state.ingredientsReducer.ingredients;
+export const getSortedIngredientsSelector = (state) =>
+  state.ingredientsReducer.sortedIngredients;
+export const getIngredientDetailSelector = (state) =>
+  state.ingredientDetailsReducer.ingredientDetails;

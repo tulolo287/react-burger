@@ -13,16 +13,16 @@ const ProtectedRouteElement = ({ element }) => {
     if (!user) {
       dispatch(getUser());
     }
-  }, [user, dispatch]);
+  }, []);
 
   if (user) {
     return element;
   }
-  
+
   return (
     <>
       {isLoading && "Loading..."}
-      <Navigate to={"/login"} replace />}
+      <Navigate to={"/login"} replace />
     </>
   );
 };

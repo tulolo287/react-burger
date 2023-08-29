@@ -5,27 +5,26 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./profile.module.css";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
 
 const Profile = () => {
-  const isAuth = useSelector((state) => state.authReducer.isAuth);
+  const navigate = useNavigate();
   const user = useSelector((state) => state.authReducer.user);
-  const [passwordValue, setPasswordValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState(user.email);
   const [nameValue, setNameValue] = useState(user.name);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
 
-
   useEffect(() => {
     if (!user) {
       dispatch(getUser());
     }
-  }, [user, dispatch]);
+  }, []);
 
   const onSubmit = useCallback((e) => {
     e.preventDefault();
@@ -43,9 +42,11 @@ const Profile = () => {
     dispatch(updateUser(data));
   });
 
-
   const onLogout = () => {
-    dispatch(logout()).then((res) => console.log(res));
+    dispatch(logout()).then((res) => {
+      console.log(res);
+      navigate("/");
+    });
   };
 
   const onCancel = () => {
@@ -55,7 +56,6 @@ const Profile = () => {
     setSaveButton(false);
   };
 
- 
   return (
     <section className={styles.content}>
       <div className={styles.navigation}>
@@ -96,9 +96,7 @@ const Profile = () => {
               setNameValue(e.target.value);
               setSaveButton(true);
             }}
-      
             icon="EditIcon"
-            
             name={"name"}
             error={false}
             errorText={"Ошибка"}

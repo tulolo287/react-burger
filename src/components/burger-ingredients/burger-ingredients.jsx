@@ -5,7 +5,11 @@ import styles from "./burger-ingredients.module.css";
 import { SORT_ORDER, TYPES, ingredients } from "../../utils/consts";
 import { useSelector, useDispatch } from "react-redux";
 import { actions } from "../../services/actions";
-import { getIngredientsSelector, getSortedIngredientsSelector } from "../../services/actions/ingredients";
+import {
+  getIngredients,
+  getIngredientsSelector,
+  getSortedIngredientsSelector,
+} from "../../services/actions/ingredients";
 
 let currentType = "";
 let categoryRefs = [];
@@ -16,14 +20,27 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState("bun");
   const [types, setTypes] = useState([]);
-
+  const fetchError = useSelector(
+    (state) => state.ingredientsReducer.fetchError,
+  );
+  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
   useEffect(() => {
-    getTypes();
-    sortData();
-  }, [ingredients]);
+    const fetchData = async () => {
+      dispatch(getIngredients()).then((ingredients) => {
+        if (ingredients) {
+          getTypes(ingredients);
+          sortData(ingredients);
+        }
+      });
+    };
+    if (!ingredients) {
+      fetchData();
+    }
+  }, []);
 
-  const sortData = () => {
-  
+  useEffect(() => {}, []);
+
+  const sortData = (ingredients) => {
     const sortedData = ingredients.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
@@ -40,7 +57,7 @@ const BurgerIngredients = () => {
     }
   }, [current]);
 
-  const getTypes = () => {
+  const getTypes = (ingredients) => {
     let types = [];
     ingredients
       .map((item) => item.type)
@@ -58,54 +75,58 @@ const BurgerIngredients = () => {
 
   return (
     <>
-      <section className={styles.constructorIngredients}>
-        <p
-          className={
-            styles.burgerIngredients_header +
-            " text text_type_main-large mt-10 mb-5"
-          }
-        >
-          Соберите бургер
-        </p>
-        <div className={styles.burgerIngredients_tab}>
-          {types.map((item, idx) => (
-            <Tab
-              key={idx}
-              value="bun"
-              active={current === item.type}
-              onClick={() => setCurrent(item.type)}
-            >
-              {item.name}
-            </Tab>
-          ))}
-        </div>
-        <ul className={styles.burgerItems + " mt-10 pr-5"}>
-          {sortedIngredients?.map((item) => {
-            let showTitle = false;
-            if (currentType !== item.type) {
-              showTitle = true;
-              setCurrentType(item.type);
-            } else {
-              showTitle = false;
+      {ingredients && (
+        <section className={styles.constructorIngredients}>
+          <p
+            className={
+              styles.burgerIngredients_header +
+              " text text_type_main-large mt-10 mb-5"
             }
-            return (
-              <Fragment key={item._id}>
-                {showTitle && (
-                  <li className={styles.burgerItems_category + " mb-6 mt-10"}>
-                    <h3
-                      className="text text_type_main-medium"
-                      ref={(ref) => (categoryRefs[item.type] = ref)}
-                    >
-                      {TYPES[item.type].name}
-                    </h3>
-                  </li>
-                )}
-                <BurgerItem item={item} />
-              </Fragment>
-            );
-          })}
-        </ul>
-      </section>
+          >
+            Соберите бургер
+          </p>
+          <div className={styles.burgerIngredients_tab}>
+            {types.map((item, idx) => (
+              <Tab
+                key={idx}
+                value="bun"
+                active={current === item.type}
+                onClick={() => setCurrent(item.type)}
+              >
+                {item.name}
+              </Tab>
+            ))}
+          </div>
+          <ul className={styles.burgerItems + " mt-10 pr-5"}>
+            {sortedIngredients?.map((item) => {
+              let showTitle = false;
+              if (currentType !== item.type) {
+                showTitle = true;
+                setCurrentType(item.type);
+              } else {
+                showTitle = false;
+              }
+              return (
+                <Fragment key={item._id}>
+                  {showTitle && (
+                    <li className={styles.burgerItems_category + " mb-6 mt-10"}>
+                      <h3
+                        className="text text_type_main-medium"
+                        ref={(ref) => (categoryRefs[item.type] = ref)}
+                      >
+                        {TYPES[item.type].name}
+                      </h3>
+                    </li>
+                  )}
+                  <BurgerItem item={item} />
+                </Fragment>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+      {fetchError && "Sorry server error"}
+      {isLoading && "Loading..."}
     </>
   );
 };
