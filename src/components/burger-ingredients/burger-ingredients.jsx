@@ -1,5 +1,5 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState, Fragment, useMemo } from "react";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
 import { SORT_ORDER, TYPES, ingredients } from "../../utils/consts";
@@ -28,7 +28,6 @@ const BurgerIngredients = () => {
     const fetchData = async () => {
       dispatch(getIngredients()).then((ingredients) => {
         if (ingredients) {
-          getTypes(ingredients);
           sortData(ingredients);
         }
       });
@@ -37,8 +36,6 @@ const BurgerIngredients = () => {
       fetchData();
     }
   }, []);
-
-  useEffect(() => {}, []);
 
   const sortData = (ingredients) => {
     const sortedData = ingredients.sort((a, b) => {
@@ -57,17 +54,18 @@ const BurgerIngredients = () => {
     }
   }, [current]);
 
-  const getTypes = (ingredients) => {
+  const getTypes = useMemo(() => {
     let types = [];
-    ingredients
-      .map((item) => item.type)
-      .filter((val, idx, arr) => {
-        if (arr.indexOf(val) === idx) {
-          types.push({ type: val, name: TYPES[val].name });
-        }
-      });
-    setTypes(types);
-  };
+    ingredients &&
+      ingredients
+        .map((item) => item.type)
+        .filter((val, idx, arr) => {
+          if (arr.indexOf(val) === idx) {
+            types.push({ type: val, name: TYPES[val].name });
+          }
+        });
+    return types;
+  }, [ingredients]);
 
   const setCurrentType = (type) => {
     currentType = type;
@@ -86,7 +84,7 @@ const BurgerIngredients = () => {
             Соберите бургер
           </p>
           <div className={styles.burgerIngredients_tab}>
-            {types.map((item, idx) => (
+            {getTypes.map((item, idx) => (
               <Tab
                 key={idx}
                 value="bun"
