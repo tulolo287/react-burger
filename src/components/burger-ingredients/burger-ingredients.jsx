@@ -19,7 +19,6 @@ const BurgerIngredients = () => {
   const sortedIngredients = useSelector(getSortedIngredientsSelector);
   const dispatch = useDispatch();
   const [current, setCurrent] = useState("bun");
-  const [types, setTypes] = useState([]);
   const fetchError = useSelector(
     (state) => state.ingredientsReducer.fetchError,
   );

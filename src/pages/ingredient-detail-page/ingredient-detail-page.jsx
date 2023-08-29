@@ -7,28 +7,37 @@ import styles from "./ingredient-detail-page.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { SORT_ORDER } from "../../utils/consts";
+import { actions } from "../../services/actions";
 
 const IngredientDetailPage = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(getIngredientsSelector);
   const fetchError = useSelector(
-    (state) => state.ingredientsReducer.fetchError
+    (state) => state.ingredientsReducer.fetchError,
   );
   const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
 
   let ingredientDetails;
   const { id } = useParams();
 
-  const location = useLocation();
-
   useEffect(() => {
     if (!ingredients) {
       const fetchData = async () => {
-        dispatch(getIngredients());
+        dispatch(getIngredients()).then((ingredients) => {
+          sortData(ingredients);
+        });
       };
       fetchData();
     }
   }, []);
+
+  const sortData = (ingredients) => {
+    const sortedData = ingredients.sort((a, b) => {
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+    });
+    dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });
+  };
 
   if (ingredients) {
     ingredientDetails = ingredients.find((item) => item._id === id);

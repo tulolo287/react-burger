@@ -13,9 +13,6 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
   const [emailValue, setEmailValue] = useState("");
   const user = useSelector((state) => state.authReducer.user);
-  const isForgotPassword = useSelector(
-    (state) => state.authReducer.isForgotPassword
-  );
   const isLoading = useSelector((state) => state.authReducer.isLoading);
   const location = useLocation();
 
@@ -32,7 +29,7 @@ const ForgotPassword = () => {
         email: emailValue,
       };
       dispatch(forgotPassword(data)).then(() =>
-        navigate("/reset-password", { state: { from: "forgot-password" } })
+        navigate("/reset-password", { state: { from: "forgot-password" } }),
       );
     }
   });
