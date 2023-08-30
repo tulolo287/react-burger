@@ -1,4 +1,5 @@
 import { API_URL } from "./consts";
+import jwtDecode from "jwt-decode";
 
 export const getIngredientsApi = async () => {
   try {
@@ -37,9 +38,7 @@ export const loginApi = async (data) => {
     });
     const result = await checkResponse(response);
     if (result.success) {
-      localStorage.setItem("refreshToken", result.refreshToken);
-      localStorage.setItem("accessToken", result.accessToken);
-      setCookie("token", JSON.stringify(result.accessToken));
+      saveResponse(result)
       return result;
     } else {
       return false;
@@ -205,9 +204,7 @@ const fetchWithRefresh = async (url, options) => {
   } catch (err) {
     if (err.message === "jwt expired") {
       const refreshData = await refreshTokenApi();
-      localStorage.setItem("refreshToken", refreshData.refreshToken);
-      localStorage.setItem("accessToken", refreshData.accessToken);
-      setCookie("token", JSON.stringify(refreshData.accessToken));
+      saveResponse(refreshData)
       options.headers.authorization = refreshData.accessToken;
       const res = await fetch(url, options);
       return await checkResponse(res);
@@ -216,6 +213,14 @@ const fetchWithRefresh = async (url, options) => {
     }
   }
 };
+
+const saveResponse = (result) => {
+  const decodedToken = jwtDecode(result.accessToken)
+  localStorage.setItem('accessTokenExp', decodedToken?.exp)
+  localStorage.setItem("refreshToken", result.refreshToken);
+  localStorage.setItem("accessToken", result.accessToken);
+  setCookie("token", JSON.stringify(result.accessToken));
+}
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));

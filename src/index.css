@@ -20,7 +20,10 @@ code {
 
 a {
   text-decoration: none;
-  color: #8585ad;;
+  color: #8585ad;
+}
+a:hover {
+  color: white;
 }
 .active {
   color: white;
