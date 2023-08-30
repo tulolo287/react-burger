@@ -1,0 +1,128 @@
+.content {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--interface-bg, #131316);
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, -50%);
+}
+.navigation {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 320px;
+  margin-right: 60px;
+}
+
+.navItem {
+  display: flex;
+  width: 320px;
+  height: 64px;
+  align-items: center;
+}
+
+.link {
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+  /* desktop/display small */
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+}
+.active {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+  /* desktop/display small */
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+}
+.caption {
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  margin-top: 80px;
+}
+.form {
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
+}
+.input {
+  position: relative;
+}
+.form input {
+  padding: 12px 0 12px 24px;
+  width: 480px;
+  border-radius: 40px;
+  border: 2px solid var(--interface-accent, #2f2f37);
+  background: var(--interface-input, #2f2f37);
+}
+.form i {
+  position: absolute;
+  margin-top: 13px;
+  margin-left: -42px;
+}
+.actions {
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  align-self: stretch;
+}
+.registerContent {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}
+.question {
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+  text-align: center;
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  margin-right: 8px;
+}
+.register {
+  color: var(--interface-accent, #4c4cff);
+  text-align: center;
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+.forgotPass {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+}

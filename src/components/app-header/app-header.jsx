@@ -5,68 +5,72 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 
 const AppHeader = () => {
+  const { pathname } = useLocation();
+
   return (
     <header>
       <nav className={styles.appHeader_nav}>
-        <ul className={styles.appHeader_nav__constructor}>
+        <div className={styles.appHeader_nav__constructor}>
           <ul>
             <li>
-              <a href="#">
+              <NavLink to="/">
                 <i>
-                  <BurgerIcon type="primary" />
+                  <BurgerIcon
+                    type={pathname === "/" ? "primary" : "secondary"}
+                  />
                 </i>
-                <span
-                  className={
-                    styles.primaryColor +
-                    " primary ml-2 text text_type_main-default"
-                  }
-                >
+                <span className={"primary ml-2 text text_type_main-default"}>
                   Конструктор
                 </span>
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a href="#">
+              <NavLink to="/profile/orders">
                 <i className="p-2">
-                  <ListIcon type="secondary" />
+                  <ListIcon
+                    type={
+                      pathname === "/profile/orders" ? "primary" : "secondary"
+                    }
+                  />
                 </i>
-                <span
-                  className={
-                    styles.secondaryColor + " text text_type_main-default"
-                  }
-                >
+                <span className={"text text_type_main-default"}>
                   Лента заказов
                 </span>
-              </a>
+              </NavLink>
             </li>
           </ul>
-          <li>
-            <a href="#">
-              <i className="p-2">
-                <Logo />
-              </i>
-            </a>
-          </li>
           <ul>
             <li>
               <a href="#">
                 <i className="p-2">
-                  <ProfileIcon type="secondary" />
+                  <Logo />
                 </i>
-                <span
-                  className={
-                    styles.secondaryColor + " text text_type_main-default"
-                  }
-                >
-                  Личный кабинет
-                </span>
               </a>
             </li>
           </ul>
-        </ul>
+          <ul>
+            <li>
+              <NavLink state={{ from: "/profile" }} to="/profile">
+                <i className="p-2">
+                  <ProfileIcon
+                    type={
+                      pathname === "/profile" || "/profile/orders"
+                        ? "primary"
+                        : "secondary"
+                    }
+                  />
+                </i>
+                <span className={"text text_type_main-default"}>
+                  Личный кабинет
+                </span>
+              </NavLink>
+            </li>
+          </ul>
+        </div>
       </nav>
     </header>
   );

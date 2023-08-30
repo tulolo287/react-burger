@@ -20,6 +20,10 @@ code {
 
 a {
   text-decoration: none;
+  color: #8585ad;;
+}
+.active {
+  color: white;
 }
 
 li {

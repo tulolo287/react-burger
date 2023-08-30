@@ -3,7 +3,7 @@ import {
   ConstructorElement,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
 import { ingredients } from "../../utils/consts";
 import OrderDetails from "../order-details/order-details";
@@ -15,13 +15,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { v4 as uuidv4 } from "uuid";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import { useNavigate } from "react-router-dom";
+import { getUser } from "../../services/actions/auth";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
-  const bun = useSelector((state) => state.constructorReducer.bun);
+  const user = useSelector((state) => state.authReducer.user);
+  const navigate = useNavigate();
+
   const constructorIngredients = useSelector(
     (state) => state.constructorReducer.constructorIngredients,
   );
+  const bun = constructorIngredients[0];
   const [disableOrder, setDisableOrder] = useState(true);
   const { isModal, openModal, closeModal } = useModal();
 
@@ -31,7 +36,13 @@ const BurgerConstructor = () => {
       (val, acc) => (val += acc.qty * acc.price),
       0,
     );
-  }, [constructorIngredients]);
+  }, [constructorIngredients, bun]);
+
+  useEffect(() => {
+    if (!user) {
+      dispatch(getUser());
+    }
+  }, [user, dispatch]);
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -47,7 +58,6 @@ const BurgerConstructor = () => {
 
   const onDropHandler = (item) => {
     if (item.type === "bun") {
-      dispatch({ type: actions.SET_BUN, payload: item });
       dispatch({
         type: actions.ADD_BUN_TO_CONSTRUCTOR,
         payload: { ...item, key: uuidv4() },
@@ -55,16 +65,20 @@ const BurgerConstructor = () => {
     } else {
       dispatch({
         type: actions.ADD_INGREDIENT_TO_CONSTRUCTOR,
-        payload: { ...item, key: uuidv4(), qty: 1 },
+        payload: { ...item, key: uuidv4() },
       });
       dispatch({
-        type: actions.INCREASE_INGREDIET_QTY,
-        payload: { ...item, qty: 1 },
+        type: actions.INCREASE_INGREDIENT_QTY,
+        payload: item,
       });
     }
   };
 
   const makeOrder = async () => {
+    if (!user) {
+      navigate("/login", { state: {from: "/"}  });
+      return;
+    }
     const ingredientsId = constructorIngredients.map((item) => item._id);
 
     const request = {
@@ -76,11 +90,11 @@ const BurgerConstructor = () => {
 
   return (
     <>
-      <section className={styles.burgerConsructor + " mt-25 ml-10"}>
+      <section className={styles.burgerConstructor + " mt-25 ml-10"}>
         <div
           ref={dropTarget}
           style={{ borderColor }}
-          className={styles.burgerConsructor_drop}
+          className={styles.burgerConstructor_drop}
         >
           <ul>
             <li>
@@ -93,7 +107,7 @@ const BurgerConstructor = () => {
               />
             </li>
           </ul>
-          <ul className={styles.burgerConsructor_group}>
+          <ul className={styles.burgerConstructor_group}>
             {constructorIngredients?.map((item, idx) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />

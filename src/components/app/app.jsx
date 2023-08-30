@@ -1,42 +1,47 @@
 import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { useEffect } from "react";
-import { getIngredients } from "../../services/actions/ingredients";
-import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Constructor from "../../pages/constructor/constructor";
+import Login from "../../pages/login/login";
+import ProtectedRouteElement from "../protected-route-element/protected-route-element";
+import Profile from "../../pages/profile/profile";
+import Register from "../../pages/register/register";
+import ResetPassword from "../../pages/reset-password /reset-password ";
+import ForgotPassword from "../../pages/forgot-password/forgot-password";
+import NotFound from "../../pages/not-found/not-found";
+import IngredientDetailPage from "../../pages/ingredient-detail-page/ingredient-detail-page";
+import Orders from "../../pages/orders/orders";
+import { path } from "../../utils/consts";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function App() {
-  const ingredients = useSelector(
-    (state) => state.ingredientsReducer.ingredients,
-  );
-  const fetchError = useSelector(
-    (state) => state.ingredientsReducer.fetchError,
-  );
-  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
-  const dispatch = useDispatch();
+  let location = useLocation();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      dispatch(getIngredients());
-    };
-
-    fetchData();
-  }, []);
-
+  let state = location.state;
   return (
     <div className={styles.app}>
       <AppHeader />
-      <main className={styles.container}>
-        {ingredients && (
-          <>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </>
-        )}
-      </main>
-      {fetchError && "Sorry server error"}
-      {isLoading && "Loading..."}
+      <Routes location={state?.modal || location}>
+        <Route path={path.HOME} element={<Constructor />}></Route>
+        <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
+        <Route path={path.LOGIN} element={<Login />} />
+        <Route path={path.REGISTER} element={<Register />} />
+        <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
+        <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
+        <Route
+          path={path.PROFILE}
+          state={{ from: "/profile" }}
+          element={<ProtectedRouteElement element={<Profile />} />}
+        >
+          <Route path={path.ORDERS} element={<Orders />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      {state?.modal && (
+        <Routes>
+          <Route path={path.INGREDIENT} element={<IngredientDetails />} />
+        </Routes>
+      )}
     </div>
   );
 }

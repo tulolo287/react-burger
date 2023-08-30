@@ -20,7 +20,7 @@ export const ingredientsReducer = (state = initialState, action) => {
       return { ...state, fetchError: action.payload };
     case actions.SET_SORTED_INGREDIENTS:
       return { ...state, sortedIngredients: action.payload };
-    case actions.DECREASE_INGREDIET_QTY: {
+    case actions.DECREASE_INGREDIENT_QTY: {
       const newSortedIngredients = state.sortedIngredients.map((item) =>
         item._id === action.payload._id
           ? { ...item, qty: item.qty <= 1 ? null : item.qty - 1 }
@@ -31,10 +31,10 @@ export const ingredientsReducer = (state = initialState, action) => {
         sortedIngredients: newSortedIngredients,
       };
     }
-    case actions.INCREASE_INGREDIET_QTY: {
+    case actions.INCREASE_INGREDIENT_QTY: {
       let newSortedIngredients = state.sortedIngredients.map((item) => {
         if (item._id === action.payload._id) {
-          return { ...item, qty: item.qty ? item.qty + 1 : action.payload.qty };
+          return { ...item, qty: item.qty ? item.qty + 1 : 1 };
         }
         return item;
       });

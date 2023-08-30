@@ -26,3 +26,14 @@ export const item = PropTypes.shape({
 });
 
 export const ingredients = PropTypes.arrayOf(item);
+
+export const path = {
+  HOME: "/",
+  INGREDIENT: "/ingredient/:id",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  RESET_PASSWORD: "/reset-password",
+  FORGOT_PASSWORD: "/forgot-password",
+  PROFILE: "/profile",
+  ORDERS: "orders"
+}

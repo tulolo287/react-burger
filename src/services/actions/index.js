@@ -1,3 +1,4 @@
+import { authActions } from "./auth";
 import { constructorActions } from "./constructor";
 import { ingredientDetailsActions } from "./ingredient-details";
 import { ingredientsActions } from "./ingredients";
@@ -8,4 +9,5 @@ export const actions = {
   ...constructorActions,
   ...orderActions,
   ...ingredientDetailsActions,
+  ...authActions,
 };

@@ -46,7 +46,7 @@ const BurgerConstructorItem = ({ item, idx }) => {
       payload: item,
     });
     dispatch({
-      type: actions.DECREASE_INGREDIET_QTY,
+      type: actions.DECREASE_INGREDIENT_QTY,
       payload: item,
     });
   };
