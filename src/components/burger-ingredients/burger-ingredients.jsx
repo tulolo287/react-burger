@@ -20,7 +20,7 @@ const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const [current, setCurrent] = useState("bun");
   const fetchError = useSelector(
-    (state) => state.ingredientsReducer.fetchError,
+    (state) => state.ingredientsReducer.fetchError
   );
   const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
   useEffect(() => {
@@ -55,14 +55,13 @@ const BurgerIngredients = () => {
 
   const getTypes = useMemo(() => {
     let types = [];
-    ingredients &&
-      ingredients
-        .map((item) => item.type)
-        .filter((val, idx, arr) => {
-          if (arr.indexOf(val) === idx) {
-            types.push({ type: val, name: TYPES[val].name });
-          }
-        });
+    ingredients
+      ?.map((item) => item.type)
+      .filter((val, idx, arr) => {
+        if (arr.indexOf(val) === idx) {
+          types.push({ type: val, name: TYPES[val].name });
+        }
+      });
     return types;
   }, [ingredients]);
 
