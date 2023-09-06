@@ -22,16 +22,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const date = Date.now();
-    if (localStorage.getItem("accessTokenExp")) {
-      const accessTokenExp = localStorage.getItem("accessTokenExp") * 1000;
-      if (date >= accessTokenExp) {
-        dispatch(refreshToken());
-        dispatch(getUser());
-      }
-    } else {
-      dispatch(getUser());
-    }
+    dispatch(getUser());
   }, []);
 
   let state = location.state;

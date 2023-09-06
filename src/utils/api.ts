@@ -73,6 +73,13 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async () => {
+  if (localStorage.getItem("accessTokenExp")) {
+    const accessTokenExp: number =
+      localStorage.getItem("accessTokenExp")!.length * 1000;
+    if (Date.now() >= accessTokenExp) {
+      refreshTokenApi();
+    }
+  }
   if (getCookie("token")) {
     const token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
     const options = {
@@ -161,7 +168,7 @@ export const refreshTokenApi = async (): Promise<TResponseBody> => {
       return Promise.reject(err);
     }
   }
-  throw new Error("No refresh token")
+  throw new Error("No refresh token");
 };
 
 export const resetPasswordApi = async (request) => {
@@ -235,7 +242,7 @@ const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export function getCookie(name: string) {
+export function getCookie(name) {
   const matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +
