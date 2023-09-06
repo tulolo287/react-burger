@@ -1,3 +1,4 @@
+import { error } from "console";
 import { API_URL } from "./consts";
 import jwtDecode from "jwt-decode";
 
@@ -11,7 +12,7 @@ export const getIngredientsApi = async () => {
   }
 };
 
-export const postOrderApi = async (request) => {
+export const postOrderApi = async (request: []) => {
   try {
     const response = await fetch(`${API_URL}/orders`, {
       method: "POST",
@@ -27,7 +28,7 @@ export const postOrderApi = async (request) => {
   }
 };
 
-export const loginApi = async (data) => {
+export const loginApi = async (data: []) => {
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -38,7 +39,7 @@ export const loginApi = async (data) => {
     });
     const result = await checkResponse(response);
     if (result.success) {
-      saveResponse(result)
+      saveResponse(result);
       return result;
     } else {
       return false;
@@ -65,28 +66,30 @@ export const logoutApi = async () => {
       body: JSON.stringify({ token }),
     });
     const result = await checkResponse(response);
-    return result
+    return result;
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
 export const getUserApi = async () => {
-  let token = getCookie("token");
-  token = token.replace(/^"(.*)"$/, "$1");
-  const options = {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+  if (getCookie("token")) {
+    const token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
+    const options = {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    };
+    return fetchWithRefresh(`${API_URL}/auth/user`, options);
   }
-  return fetchWithRefresh(`${API_URL}/auth/user`, options)
+  throw error("No token available");
 };
 
 export const updateUserApi = async (data) => {
@@ -104,9 +107,8 @@ export const updateUserApi = async (data) => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify(data),
-  }
-  return fetchWithRefresh(`${API_URL}/auth/user`, options)
-
+  };
+  return fetchWithRefresh(`${API_URL}/auth/user`, options);
 };
 
 export const registerApi = async (request) => {
@@ -129,28 +131,37 @@ export const registerApi = async (request) => {
     return Promise.reject(err);
   }
 };
+type TResponseBody<TDataKey extends string = "", TDataType = {}> = {
+  [key in TDataKey]: TDataType;
+} & {
+  success: boolean;
+  message?: string;
+  headers?: Headers;
+};
 
-export const refreshTokenApi = async () => {
-  let token = localStorage.getItem("refreshToken");
-  token = token.replace(/^"(.*)"$/, "$1");
-  try {
-    const response = await fetch(`${API_URL}/auth/token`, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
-      body: JSON.stringify({ token }),
-    });
-    const result = await checkResponse(response);
-    return result.success ? result : false;
-  } catch (err) {
-    return Promise.reject(err);
+export const refreshTokenApi = async (): Promise<TResponseBody> => {
+  if (localStorage.getItem("refreshToken")) {
+    let token = localStorage.getItem("refreshToken")?.replace(/^"(.*)"$/, "$1");
+    try {
+      const response = await fetch(`${API_URL}/auth/token`, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({ token }),
+      });
+      const result = await checkResponse(response);
+      return result.success ? result : false;
+    } catch (err) {
+      return Promise.reject(err);
+    }
   }
+  throw new Error("No refresh token")
 };
 
 export const resetPasswordApi = async (request) => {
@@ -195,8 +206,6 @@ export const forgotPasswordApi = async (request) => {
   }
 };
 
-
-
 const fetchWithRefresh = async (url, options) => {
   try {
     const res = await fetch(url, options);
@@ -204,7 +213,7 @@ const fetchWithRefresh = async (url, options) => {
   } catch (err) {
     if (err.message === "jwt expired") {
       const refreshData = await refreshTokenApi();
-      saveResponse(refreshData)
+      saveResponse(refreshData);
       options.headers.authorization = refreshData.accessToken;
       const res = await fetch(url, options);
       return await checkResponse(res);
@@ -215,29 +224,29 @@ const fetchWithRefresh = async (url, options) => {
 };
 
 const saveResponse = (result) => {
-  const decodedToken = jwtDecode(result.accessToken)
-  localStorage.setItem('accessTokenExp', decodedToken?.exp)
+  const decodedToken = jwtDecode(result.accessToken);
+  localStorage.setItem("accessTokenExp", decodedToken?.exp);
   localStorage.setItem("refreshToken", result.refreshToken);
   localStorage.setItem("accessToken", result.accessToken);
   setCookie("token", JSON.stringify(result.accessToken));
-}
+};
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export function getCookie(name) {
+export function getCookie(name: string) {
   const matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +
-      name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-      "=([^;]*)",
-    ),
+        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
+        "=([^;]*)"
+    )
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string, props: {}) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
@@ -260,6 +269,6 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function deleteCookie(name) {
+export function deleteCookie(name: string) {
   setCookie(name, null, { expires: -1 });
 }

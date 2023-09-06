@@ -23,10 +23,14 @@ function App() {
 
   useEffect(() => {
     const date = Date.now();
-    const accessTokenExp = localStorage.getItem("accessTokenExp") * 1000;
-    if (date >= accessTokenExp) {
-      dispatch(refreshToken());
-      dispatch(getUser())
+    if (localStorage.getItem("accessTokenExp")) {
+      const accessTokenExp = localStorage.getItem("accessTokenExp") * 1000;
+      if (date >= accessTokenExp) {
+        dispatch(refreshToken());
+        dispatch(getUser());
+      }
+    } else {
+      dispatch(getUser());
     }
   }, []);
 

@@ -101,7 +101,7 @@ export const register = (request) => async (dispatch) => {
     });
 };
 
-export const refreshToken = () => async (dispatch) => {
+export const refreshToken = () => async (dispatch: any): Promise<void> => {
   return refreshTokenApi()
     .then((tokens) => {
       dispatch({ type: actions.REFRESH_TOKEN_SUCCESS, payload: tokens });
