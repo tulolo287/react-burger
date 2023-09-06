@@ -4,11 +4,11 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./profile.module.css";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
+import styles from "./profile.module.css";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -39,7 +39,9 @@ const Profile = () => {
           name: nameValue,
           email: emailValue,
         });
-    dispatch(updateUser(data));
+    dispatch(updateUser(data)).then((res) =>
+      res.success ? setSaveButton(false) : alert("Update error")
+    );
   });
 
   const onLogout = () => {
@@ -52,7 +54,7 @@ const Profile = () => {
   const onCancel = () => {
     setNameValue(user.name);
     setEmailValue(user.email);
-    setPasswordValue(user.password);
+    setPasswordValue("");
     setSaveButton(false);
   };
 

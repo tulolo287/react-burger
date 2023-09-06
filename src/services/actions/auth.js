@@ -1,14 +1,13 @@
 import { actions } from ".";
 import {
   forgotPasswordApi,
-  getCookie,
   getUserApi,
   loginApi,
   logoutApi,
   refreshTokenApi,
   registerApi,
   resetPasswordApi,
-  updateUserApi,
+  updateUserApi
 } from "../../utils/api";
 
 export const authActions = {
@@ -77,8 +76,9 @@ export const getUser = () => async (dispatch) => {
 export const updateUser = (data) => async (dispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return updateUserApi(data)
-    .then((user) => {
-      dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: user });
+    .then((response) => {
+      dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: response });
+      return response
     })
     .catch((err) => {
       dispatch({

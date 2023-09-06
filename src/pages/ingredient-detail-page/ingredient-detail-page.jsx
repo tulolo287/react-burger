@@ -1,14 +1,13 @@
-import React from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { actions } from "../../services/actions";
 import {
   getIngredients,
   getIngredientsSelector,
 } from "../../services/actions/ingredients";
-import styles from "./ingredient-detail-page.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import { SORT_ORDER } from "../../utils/consts";
-import { actions } from "../../services/actions";
+import styles from "./ingredient-detail-page.module.css";
 
 const IngredientDetailPage = () => {
   const dispatch = useDispatch();

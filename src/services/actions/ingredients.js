@@ -1,8 +1,5 @@
-import { actions } from "../actions";
 import { getIngredientsApi } from "../../utils/api";
-import { v4 as uuidv4 } from "uuid";
-import { state } from "../..";
-import { createSelector } from "@reduxjs/toolkit";
+import { actions } from "../actions";
 
 export const ingredientsActions = {
   GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",

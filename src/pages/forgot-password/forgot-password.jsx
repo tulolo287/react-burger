@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import styles from "./forgot-password.module.css";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getUser, forgotPassword } from "../../services/actions/auth";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { forgotPassword, getUser } from "../../services/actions/auth";
+import styles from "./forgot-password.module.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();

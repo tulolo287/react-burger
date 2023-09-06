@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { getUser } from "../../services/actions/auth";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { getUser } from "../../services/actions/auth";
 
 const ProtectedRouteElement = ({ element }) => {
   const user = useSelector((state) => state.authReducer.user);
