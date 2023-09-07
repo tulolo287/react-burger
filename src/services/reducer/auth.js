@@ -73,9 +73,11 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
       };
     case actions.GET_USER_FAILED: {
+      console.log(action.payload);
       return {
         ...state,
         isAuth: false,
+        user: null,
         isLoading: false,
       };
     }
@@ -114,7 +116,7 @@ export const authReducer = (state = initialState, action) => {
         isAuth: false,
       };
     case actions.LOGOUT_SUCCESS:
-      localStorage.setItem('accessToken', null);
+      localStorage.setItem("accessToken", null);
       deleteCookie("token", null);
       localStorage.setItem("refreshToken", null);
       return {

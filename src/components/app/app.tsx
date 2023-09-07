@@ -9,20 +9,24 @@ import NotFound from "../../pages/not-found/not-found";
 import Orders from "../../pages/orders/orders";
 import Profile from "../../pages/profile/profile";
 import Register from "../../pages/register/register";
-import ResetPassword from "../../pages/reset-password /reset-password ";
+import ResetPassword from "../../pages/reset-password /reset-password";
 import { getUser, refreshToken } from "../../services/actions/auth";
 import { path } from "../../utils/consts";
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import styles from "./app.module.css";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 function App() {
+  type State = { a: string }; // your state type
+  type AppDispatch = ThunkDispatch<State, any, AnyAction>;
   let location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser());
+    //dispatch(getUser());
   }, []);
 
   let state = location.state;
@@ -38,7 +42,7 @@ function App() {
         <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route
           path={path.PROFILE}
-          state={{ from: "/profile" }}
+          //state={{ from: "/profile" }}
           element={<ProtectedRouteElement element={<Profile />} />}
         >
           <Route path={path.ORDERS} element={<Orders />} />

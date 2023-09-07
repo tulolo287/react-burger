@@ -50,8 +50,8 @@ export const loginApi = async (data: []) => {
 };
 
 export const logoutApi = async () => {
-  let token = localStorage.getItem("refreshToken");
-  token = token.replace(/^"(.*)"$/, "$1");
+  let token = localStorage.getItem("refreshToken")?.replace(/^"(.*)"$/, "$1");
+
   try {
     const response = await fetch(`${API_URL}/auth/logout`, {
       method: "POST",
@@ -72,7 +72,7 @@ export const logoutApi = async () => {
   }
 };
 
-export const getUserApi = async () => {
+export const getUserApi = async (): Promise<TResponseBody> => {
   if (localStorage.getItem("accessTokenExp")) {
     const accessTokenExp: number =
       localStorage.getItem("accessTokenExp")!.length * 1000;
@@ -96,12 +96,12 @@ export const getUserApi = async () => {
     };
     return fetchWithRefresh(`${API_URL}/auth/user`, options);
   }
-  throw error("No token available");
+  throw new Error("No token available");
 };
 
-export const updateUserApi = async (data) => {
-  let token = getCookie("token");
-  token = token.replace(/^"(.*)"$/, "$1");
+export const updateUserApi = async (data: any) => {
+  let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
+
   const options = {
     method: "PATCH",
     mode: "cors",
@@ -118,7 +118,7 @@ export const updateUserApi = async (data) => {
   return fetchWithRefresh(`${API_URL}/auth/user`, options);
 };
 
-export const registerApi = async (request) => {
+export const registerApi = async (request: any) => {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
@@ -144,6 +144,7 @@ type TResponseBody<TDataKey extends string = "", TDataType = {}> = {
   success: boolean;
   message?: string;
   headers?: Headers;
+  accessToken?: string;
 };
 
 export const refreshTokenApi = async (): Promise<TResponseBody> => {
@@ -171,7 +172,7 @@ export const refreshTokenApi = async (): Promise<TResponseBody> => {
   throw new Error("No refresh token");
 };
 
-export const resetPasswordApi = async (request) => {
+export const resetPasswordApi = async (request: any) => {
   try {
     const response = await fetch(`${API_URL}/password-reset/reset`, {
       method: "POST",
@@ -192,7 +193,7 @@ export const resetPasswordApi = async (request) => {
   }
 };
 
-export const forgotPasswordApi = async (request) => {
+export const forgotPasswordApi = async (request: any) => {
   try {
     const response = await fetch(`${API_URL}/password-reset`, {
       method: "POST",
@@ -213,11 +214,11 @@ export const forgotPasswordApi = async (request) => {
   }
 };
 
-const fetchWithRefresh = async (url, options) => {
+const fetchWithRefresh = async (url: any, options: any) => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === "jwt expired") {
       const refreshData = await refreshTokenApi();
       saveResponse(refreshData);
@@ -230,30 +231,32 @@ const fetchWithRefresh = async (url, options) => {
   }
 };
 
-const saveResponse = (result) => {
-  const decodedToken = jwtDecode(result.accessToken);
-  localStorage.setItem("accessTokenExp", decodedToken?.exp);
+const saveResponse = (result: any) => {
+  const decodedToken: any = jwtDecode(result.accessToken);
+  localStorage.setItem("accessTokenExp", decodedToken);
   localStorage.setItem("refreshToken", result.refreshToken);
   localStorage.setItem("accessToken", result.accessToken);
-  setCookie("token", JSON.stringify(result.accessToken));
+  setCookie("token", JSON.stringify(result.accessToken), null);
 };
 
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+const checkResponse = (res: Response) => {
+  return res.ok
+    ? res.json()
+    : res.json().then((err: any) => Promise.reject(err));
 };
 
-export function getCookie(name) {
+export function getCookie(name: any) {
   const matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +
         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
+        "=([^;]*)",
+    ),
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name: string, value: string, props: {}) {
+export function setCookie(name: string, value: any, props: any) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == "number" && exp) {

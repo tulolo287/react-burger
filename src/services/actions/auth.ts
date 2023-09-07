@@ -7,7 +7,7 @@ import {
   refreshTokenApi,
   registerApi,
   resetPasswordApi,
-  updateUserApi
+  updateUserApi,
 } from "../../utils/api";
 
 export const authActions = {
@@ -31,7 +31,7 @@ export const authActions = {
   FORGOT_PASSWORD_FAILED: "FORGOT_PASSWORD_FAILED",
 };
 
-export const login = (data) => async (dispatch) => {
+export const login = (data: any) => async (dispatch: any) => {
   return loginApi(data)
     .then((user) => {
       dispatch({ type: actions.LOGIN_SUCCESS, payload: user });
@@ -44,11 +44,11 @@ export const login = (data) => async (dispatch) => {
     });
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: any) => {
   return logoutApi()
     .then((response) => {
       dispatch({ type: actions.LOGOUT_SUCCESS, payload: response });
-      return response
+      return response;
     })
     .catch((err) => {
       dispatch({
@@ -58,7 +58,7 @@ export const logout = () => async (dispatch) => {
     });
 };
 
-export const getUser = () => async (dispatch) => {
+export const getUser = () => async (dispatch: any) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return getUserApi()
     .then((user) => {
@@ -69,26 +69,25 @@ export const getUser = () => async (dispatch) => {
         type: actions.GET_USER_FAILED,
         payload: err,
       });
-    })
-
+    });
 };
 
-export const updateUser = (data) => async (dispatch) => {
+export const updateUser = (data: any) => async (dispatch: any) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return updateUserApi(data)
     .then((response) => {
       dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: response });
-      return response
+      return response;
     })
     .catch((err) => {
       dispatch({
         type: actions.UPDATE_USER_FAILED,
         payload: err,
       });
-    })
+    });
 };
 
-export const register = (request) => async (dispatch) => {
+export const register = (request: any) => async (dispatch: any) => {
   return registerApi(request)
     .then((response) => {
       dispatch({ type: actions.REGISTER_SUCCESS, payload: response });
@@ -101,35 +100,37 @@ export const register = (request) => async (dispatch) => {
     });
 };
 
-export const refreshToken = () => async (dispatch: any): Promise<void> => {
-  return refreshTokenApi()
-    .then((tokens) => {
-      dispatch({ type: actions.REFRESH_TOKEN_SUCCESS, payload: tokens });
-    })
-    .catch((err) => {
-      dispatch({
-        type: actions.REFRESH_TOKEN_FAILED,
-        payload: err,
+export const refreshToken =
+  () =>
+  async (dispatch: any): Promise<void> => {
+    return refreshTokenApi()
+      .then((tokens) => {
+        dispatch({ type: actions.REFRESH_TOKEN_SUCCESS, payload: tokens });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actions.REFRESH_TOKEN_FAILED,
+          payload: err,
+        });
       });
-    });
-};
+  };
 
-export const resetPassword = (request) => async (dispatch) => {
+export const resetPassword = (request: any) => async (dispatch: any) => {
   return resetPasswordApi(request)
     .then((response) => {
       dispatch({ type: actions.RESET_PASSWORD_SUCCESS, payload: response });
-      return response
+      return response;
     })
     .catch((err) => {
       dispatch({
         type: actions.RESET_PASSWORD_FAILED,
         payload: err,
       });
-      return err
+      return err;
     });
 };
 
-export const forgotPassword = (request) => async (dispatch) => {
+export const forgotPassword = (request: any) => async (dispatch: any) => {
   return forgotPasswordApi(request)
     .then((response) => {
       dispatch({
