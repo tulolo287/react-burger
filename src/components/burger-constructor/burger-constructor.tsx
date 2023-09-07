@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./burger-constructor.module.css";
-import { ingredients } from "../../utils/consts";
+import { TConstructorIngredient } from "../../utils/types";
 import OrderDetails from "../order-details/order-details";
 import { actions } from "../../services/actions";
 import { postOrder } from "../../services/actions/order-details";
@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
+
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -108,7 +109,7 @@ const BurgerConstructor = () => {
             </li>
           </ul>
           <ul className={styles.burgerConstructor_group}>
-            {constructorIngredients?.map((item, idx) =>
+            {constructorIngredients?.map((item: TConstructorIngredient, idx: number) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />
               ) : null,
@@ -144,7 +145,7 @@ const BurgerConstructor = () => {
       </section>
 
       {isModal && (
-        <Modal closeModal={closeModal} height={718}>
+        <Modal title={null} closeModal={closeModal} height={718}>
           <OrderDetails />
         </Modal>
       )}
@@ -152,8 +153,5 @@ const BurgerConstructor = () => {
   );
 };
 
-BurgerConstructor.propTypes = {
-  ingredients,
-};
 
 export default BurgerConstructor;

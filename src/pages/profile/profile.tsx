@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   EmailInput,
@@ -26,7 +27,7 @@ const Profile = () => {
     }
   }, []);
 
-  const onSubmit = useCallback((e) => {
+  const onSubmit = useCallback((e: React.SyntheticEvent) => {
     e.preventDefault();
     let data;
     passwordValue
@@ -40,12 +41,12 @@ const Profile = () => {
           email: emailValue,
         });
     dispatch(updateUser(data)).then((res) =>
-      res.success ? setSaveButton(false) : alert("Update error")
+      res.success ? setSaveButton(false) : alert("Update error"),
     );
-  });
+  }, []);
 
   const onLogout = () => {
-    dispatch(logout()).then((res) => {
+    dispatch(logout()).then((res: Response) => {
       console.log(res);
       navigate("/");
     });
