@@ -8,17 +8,25 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch } from "react-redux";
 import { register } from "../../services/actions/auth";
-import { useState } from "react";
+import { SyntheticEvent, useState } from "react";
+import { any } from "prop-types";
+import { AppDispatch } from "../..";
+
+
+
 
 const Register = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [nameValue, setNameValue] = useState("");
 
-  const dispatch = useDispatch();
 
-  const handleRegister = (e) => {
+  const dispatch: AppDispatch = useDispatch();
+
+
+  const handleRegister = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
+    const target = e.target as typeof e.target
     if (nameValue && emailValue && passwordValue) {
       dispatch(
         register({

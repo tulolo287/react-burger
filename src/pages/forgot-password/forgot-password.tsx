@@ -2,15 +2,16 @@ import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useEffect, useState } from "react";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { AppDispatch } from "../..";
 import { forgotPassword, getUser } from "../../services/actions/auth";
 import styles from "./forgot-password.module.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const [emailValue, setEmailValue] = useState("");
   const user = useSelector((state) => state.authReducer.user);
   const isLoading = useSelector((state) => state.authReducer.isLoading);
@@ -22,7 +23,7 @@ const ForgotPassword = () => {
     }
   }, [user, dispatch]);
 
-  const forgotPasswordHandle = useCallback((e) => {
+  const forgotPasswordHandle = useCallback((e: SyntheticEvent) => {
     e.preventDefault();
     if (emailValue) {
       const data = {
@@ -32,7 +33,7 @@ const ForgotPassword = () => {
         navigate("/reset-password", { state: { from: "forgot-password" } }),
       );
     }
-  });
+  }, []);
 
   return (
     <>

@@ -1,4 +1,5 @@
 import { actions } from ".";
+import { AppDispatch } from "../..";
 import {
   forgotPasswordApi,
   getUserApi,
@@ -9,6 +10,7 @@ import {
   resetPasswordApi,
   updateUserApi,
 } from "../../utils/api";
+import { IUser } from "../../utils/types";
 
 export const authActions = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -87,7 +89,7 @@ export const updateUser = (data: any) => async (dispatch: any) => {
     });
 };
 
-export const register = (request: any) => async (dispatch: any) => {
+export const register = (request:IUser) => async (dispatch: AppDispatch) => {
   return registerApi(request)
     .then((response) => {
       dispatch({ type: actions.REGISTER_SUCCESS, payload: response });

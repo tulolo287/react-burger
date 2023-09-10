@@ -1,6 +1,7 @@
 import { error } from "console";
 import { API_URL } from "./consts";
 import jwtDecode from "jwt-decode";
+import { IUser } from "./types";
 
 export const getIngredientsApi = async () => {
   try {
@@ -118,7 +119,7 @@ export const updateUserApi = async (data: any) => {
   return fetchWithRefresh(`${API_URL}/auth/user`, options);
 };
 
-export const registerApi = async (request: any) => {
+export const registerApi = async (request: IUser) => {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
       method: "POST",

@@ -18,7 +18,6 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
 
-
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.user);
@@ -77,7 +76,7 @@ const BurgerConstructor = () => {
 
   const makeOrder = async () => {
     if (!user) {
-      navigate("/login", { state: {from: "/"}  });
+      navigate("/login", { state: { from: "/" } });
       return;
     }
     const ingredientsId = constructorIngredients.map((item) => item._id);
@@ -109,7 +108,7 @@ const BurgerConstructor = () => {
             </li>
           </ul>
           <ul className={styles.burgerConstructor_group}>
-            {constructorIngredients?.map((item: TConstructorIngredient, idx: number) =>
+            {constructorIngredients?.map((item, idx) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />
               ) : null,
@@ -152,6 +151,5 @@ const BurgerConstructor = () => {
     </>
   );
 };
-
 
 export default BurgerConstructor;

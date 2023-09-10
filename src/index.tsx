@@ -14,6 +14,9 @@ import { rootReducer } from "./services/reducer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter } from "react-router-dom";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { actions } from "./services/actions";
 
 declare global {
   interface Window {
@@ -27,6 +30,10 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 export const state = store.getState();
+  type State =  typeof state ;
+  type Actions = typeof actions;
+ export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

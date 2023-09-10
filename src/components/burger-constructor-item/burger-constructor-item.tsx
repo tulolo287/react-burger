@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { FC, SyntheticEvent, useRef } from "react";
 import {
   ConstructorElement,
   DragIcon,
@@ -6,10 +6,27 @@ import {
 import { useDrop, useDrag } from "react-dnd";
 import styles from "./burger-constructor-item.module.css";
 import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
 import { actions } from "../../services/actions";
+import { IUser, TIngredient, TConstructorIngredient } from "../../utils/types";
 
-const BurgerConstructorItem = ({ item, idx }) => {
+interface IConstructorIngredient {
+  key?: string;
+  _id: string;
+  __v: number;
+  name: string;
+  type: string;
+  price: number;
+  proteins: number;
+  calories: number;
+  carbohydrates: number;
+  fat: number;
+  image: string;
+  image_large: string;
+  image_mobile: string;
+  idx: number;
+};
+
+const BurgerConstructorItem = ({ item: IConstructorIngredient, idx:number }) => {
   const dispatch = useDispatch();
   const ref = useRef(null);
 
@@ -40,7 +57,7 @@ const BurgerConstructorItem = ({ item, idx }) => {
 
   drag(drop(ref));
 
-  const removeBurgerIngredient = (e, item) => {
+  const removeBurgerIngredient = (item: TConstructorIngredient): void => {
     dispatch({
       type: actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
       payload: item,
@@ -61,8 +78,8 @@ const BurgerConstructorItem = ({ item, idx }) => {
         <DragIcon type="primary" />
       </i>
       <ConstructorElement
-        handleClose={(e) => removeBurgerIngredient(e, item)}
-        type="center"
+        handleClose={() => removeBurgerIngredient(item)}
+        type="top"
         isLocked={false}
         text={item.name}
         price={item.price}
@@ -72,9 +89,5 @@ const BurgerConstructorItem = ({ item, idx }) => {
   );
 };
 
-BurgerConstructorItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  idx: PropTypes.number,
-};
 
 export default BurgerConstructorItem;

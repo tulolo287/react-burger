@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
 import styles from "./profile.module.css";
+import { AppDispatch } from "../..";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Profile = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState(user.email);
   const [nameValue, setNameValue] = useState(user.name);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
 

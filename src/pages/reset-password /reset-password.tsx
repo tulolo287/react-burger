@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import {
   Button,
   Input,
@@ -8,12 +8,13 @@ import styles from "./reset-password.module.css";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, resetPassword } from "../../services/actions/auth";
+import { AppDispatch } from "../..";
 
 const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [tokenValue, setTokenValue] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
   const user = useSelector((state) => state.authReducer.user);
   const isLoading = useSelector((state) => state.authReducer.isLoading);
@@ -24,7 +25,7 @@ const ResetPassword = () => {
     }
   }, [user, dispatch]);
 
-  const resetPasswordHandle = useCallback((e) => {
+  const resetPasswordHandle = useCallback((e: SyntheticEvent) => {
     e.preventDefault();
     if (tokenValue && passwordValue) {
       const data = {
@@ -39,7 +40,7 @@ const ResetPassword = () => {
         )
         .catch((err) => console.log("err", err));
     }
-  });
+  }, []);
 
   return (
     <>
