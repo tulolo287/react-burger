@@ -5,7 +5,7 @@ import {
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch } from "../..";
+import { AppDispatch, State } from "../..";
 import { forgotPassword, getUser } from "../../services/actions/auth";
 import styles from "./forgot-password.module.css";
 
@@ -13,8 +13,8 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [emailValue, setEmailValue] = useState("");
-  const user = useSelector((state) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
+  const user = useSelector((state: State) => state.authReducer.user);
+  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
   const location = useLocation();
 
   useEffect(() => {

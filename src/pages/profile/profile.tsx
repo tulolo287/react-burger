@@ -10,11 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
 import styles from "./profile.module.css";
-import { AppDispatch } from "../..";
+import { AppDispatch, State } from "../..";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.authReducer.user);
+  const user = useSelector((state: State) => state.authReducer.user);
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState(user.email);
   const [nameValue, setNameValue] = useState(user.name);
@@ -84,7 +84,7 @@ const Profile = () => {
           </NavLink>
         </div>
         <div className={styles.navItem}>
-          <NavLink onClick={onLogout}>Выход</NavLink>
+          <NavLink to="" onClick={onLogout}>Выход</NavLink>
         </div>
         <div className={styles.caption}>
           В этом разделе вы можете изменить свои персональные данные
@@ -116,7 +116,7 @@ const Profile = () => {
               setSaveButton(true);
             }}
             placeholder="E-mail"
-            icon="EditIcon"
+            
           />
 
           <PasswordInput

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import styles from "./login.module.css";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -8,11 +8,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser } from "../../services/actions/auth";
+import { AppDispatch, State } from "../..";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
+  const dispatch: AppDispatch = useDispatch();
+  const user = useSelector((state: State) => state.authReducer.user);
+  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
   const navigate = useNavigate();
   const location = useLocation();
   const [passwordValue, setPasswordValue] = useState("");
@@ -29,7 +30,7 @@ const Login = () => {
   };
 
   const onLogin = useCallback(
-    (e) => {
+    (e: SyntheticEvent) => {
       e.preventDefault();
       if (emailValue && passwordValue) {
         const data = {

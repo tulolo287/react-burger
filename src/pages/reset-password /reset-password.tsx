@@ -8,7 +8,7 @@ import styles from "./reset-password.module.css";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login, getUser, resetPassword } from "../../services/actions/auth";
-import { AppDispatch } from "../..";
+import { AppDispatch, State } from "../..";
 
 const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");
@@ -16,8 +16,8 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector((state) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
+  const user = useSelector((state: State) => state.authReducer.user);
+  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
 
   useEffect(() => {
     if (!user) {
@@ -64,7 +64,6 @@ const ResetPassword = () => {
                 onChange={(e) => setTokenValue(e.target.value)}
                 value={tokenValue}
                 placeholder={"Введите код из письма"}
-                icon={false}
                 name={"token"}
                 error={false}
                 errorText={"Ошибка"}

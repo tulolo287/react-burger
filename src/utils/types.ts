@@ -11,6 +11,7 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
+  qty: number;
 };
 export type TIngredients = Array<TIngredient>;
 
@@ -24,3 +25,7 @@ export type IUser = {
   email: string;
   password: string;
 };
+
+export interface AssociativeArray<T> {
+  [key: string]: T;
+}

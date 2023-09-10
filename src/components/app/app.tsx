@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Constructor from "../../pages/constructor/constructor";
 import ForgotPassword from "../../pages/forgot-password/forgot-password";
@@ -10,24 +8,14 @@ import Orders from "../../pages/orders/orders";
 import Profile from "../../pages/profile/profile";
 import Register from "../../pages/register/register";
 import ResetPassword from "../../pages/reset-password /reset-password";
-import { getUser, refreshToken } from "../../services/actions/auth";
 import { path } from "../../utils/consts";
 import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import styles from "./app.module.css";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
 
 function App() {
-  type State = { a: string }; // your state type
-  type AppDispatch = ThunkDispatch<State, any, AnyAction>;
   let location = useLocation();
-  const dispatch: AppDispatch = useDispatch();
-
-  useEffect(() => {
-    //dispatch(getUser());
-  }, []);
 
   let state = location.state;
   return (
@@ -42,7 +30,6 @@ function App() {
         <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route
           path={path.PROFILE}
-          //state={{ from: "/profile" }}
           element={<ProtectedRouteElement element={<Profile />} />}
         >
           <Route path={path.ORDERS} element={<Orders />} />

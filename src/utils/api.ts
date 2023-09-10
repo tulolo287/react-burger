@@ -1,6 +1,5 @@
-import { error } from "console";
-import { API_URL } from "./consts";
 import jwtDecode from "jwt-decode";
+import { API_URL } from "./consts";
 import { IUser } from "./types";
 
 export const getIngredientsApi = async () => {
@@ -74,7 +73,10 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody> => {
-  if (localStorage.getItem("accessTokenExp")) {
+  if (
+    localStorage.getItem("accessTokenExp") &&
+    localStorage.getItem("refreshToken")
+  ) {
     const accessTokenExp: number =
       localStorage.getItem("accessTokenExp")!.length * 1000;
     if (Date.now() >= accessTokenExp) {
@@ -234,7 +236,7 @@ const fetchWithRefresh = async (url: any, options: any) => {
 
 const saveResponse = (result: any) => {
   const decodedToken: any = jwtDecode(result.accessToken);
-  localStorage.setItem("accessTokenExp", decodedToken);
+  localStorage.setItem("accessTokenExp", decodedToken.exp);
   localStorage.setItem("refreshToken", result.refreshToken);
   localStorage.setItem("accessToken", result.accessToken);
   setCookie("token", JSON.stringify(result.accessToken), null);
@@ -251,8 +253,8 @@ export function getCookie(name: any) {
     new RegExp(
       "(?:^|; )" +
         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)",
-    ),
+        "=([^;]*)"
+    )
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }

@@ -12,28 +12,23 @@ import { SyntheticEvent, useState } from "react";
 import { any } from "prop-types";
 import { AppDispatch } from "../..";
 
-
-
-
 const Register = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [nameValue, setNameValue] = useState("");
 
-
   const dispatch: AppDispatch = useDispatch();
-
 
   const handleRegister = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
-    const target = e.target as typeof e.target
+    const target = e.target as typeof e.target;
     if (nameValue && emailValue && passwordValue) {
       dispatch(
         register({
           name: nameValue,
           email: emailValue,
           password: passwordValue,
-        }),
+        })
       );
     }
   };
@@ -43,37 +38,32 @@ const Register = () => {
       <div className={styles.title}>Регистрация</div>
       <div className={styles.form}>
         <form className={styles.form} onSubmit={handleRegister}>
-          
-            <Input
-              type={"text"}
-              placeholder={"Имя"}
-              value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
-              icon={false}
-              name={"name"}
-              error={false}
-              errorText={"Ошибка"}
-              size={"default"}
-              
-            />
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+          />
 
-            <EmailInput
-              name={"email"}
-              value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
-              placeholder="E-mail"
-              
-              
-            />
+          <EmailInput
+            name={"email"}
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
+            placeholder="E-mail"
+          />
 
-            <PasswordInput
-              value={passwordValue}
-              onChange={(e) => setPasswordValue(e.target.value)}
-              name={"password"}
-              placeholder="Пароль"
-              icon="ShowIcon"
-            />
-         
+          <PasswordInput
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
+            name={"password"}
+            placeholder="Пароль"
+            icon="ShowIcon"
+          />
+
           <div className={styles.button}>
             <Button type="primary" htmlType="submit">
               Зарегистрироваться

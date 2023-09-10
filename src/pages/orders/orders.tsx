@@ -1,12 +1,13 @@
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./orders.module.css";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { AppDispatch, State } from "../..";
 import { actions } from "../../services/actions";
+import styles from "./orders.module.css";
+import { logout } from "../../services/actions/auth";
 
 const Orders = () => {
-  const user = useSelector((state) => state.authReducer.user);
-  const dispatch = useDispatch();
+  const user = useSelector((state: State) => state.authReducer.user);
+  const dispatch: AppDispatch = useDispatch();
 
   return (
     <section className={styles.content}>
@@ -33,7 +34,8 @@ const Orders = () => {
         </div>
         <div className={styles.navItem}>
           <NavLink
-            onClick={() => dispatch({ type: actions.LOGOUT })}
+            to=""
+            onClick={() => dispatch(logout())}
             className={styles.link}
           >
             Выход

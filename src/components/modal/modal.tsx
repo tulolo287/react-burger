@@ -1,12 +1,19 @@
-import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { FC, useEffect } from "react";
+import { createPortal } from "react-dom";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 import styles from "./modal.module.css";
-import { useEffect } from "react";
-import ModalOverlay from "../modal-overlay/modal-overlay.jsx";
 
-const Modal = ({ closeModal, children, title, height }) => {
+interface IModalProps {
+  closeModal: () => void;
+  children: React.ReactNode;
+  title?: string | null;
+  height?: number;
+}
+
+const Modal: FC<IModalProps> = ({ closeModal, children, title, height }) => {
   useEffect(() => {
-    const handleEsc = (evt) => {
+    const handleEsc = (evt: KeyboardEvent) => {
       if (evt.key === "Escape") {
         closeModal();
       }
@@ -30,7 +37,7 @@ const Modal = ({ closeModal, children, title, height }) => {
         {children}
       </section>
     </>,
-    document.getElementById("modals"),
+    document.getElementById("modals") as HTMLDivElement
   );
 };
 export default Modal;

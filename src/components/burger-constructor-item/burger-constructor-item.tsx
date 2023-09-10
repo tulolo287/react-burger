@@ -9,24 +9,13 @@ import { useDispatch } from "react-redux";
 import { actions } from "../../services/actions";
 import { IUser, TIngredient, TConstructorIngredient } from "../../utils/types";
 
-interface IConstructorIngredient {
-  key?: string;
-  _id: string;
-  __v: number;
-  name: string;
-  type: string;
-  price: number;
-  proteins: number;
-  calories: number;
-  carbohydrates: number;
-  fat: number;
-  image: string;
-  image_large: string;
-  image_mobile: string;
+type IConstructorIngredientProps = {
+  item: TConstructorIngredient
   idx: number;
 };
 
-const BurgerConstructorItem = ({ item: IConstructorIngredient, idx:number }) => {
+const BurgerConstructorItem:FC<IConstructorIngredientProps> = (props) => {
+  const { item, idx } = props;
   const dispatch = useDispatch();
   const ref = useRef(null);
 
@@ -35,7 +24,7 @@ const BurgerConstructorItem = ({ item: IConstructorIngredient, idx:number }) => 
     collect: (monitor) => ({
       isHover: monitor.isOver(),
     }),
-    drop(item) {
+    drop(item: any) {
       const dragIndex = item.idx;
       const hoverIndex = idx;
       dispatch({

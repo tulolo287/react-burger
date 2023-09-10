@@ -1,18 +1,19 @@
 import styles from "./ingredient-details.module.css";
-import { item } from "../../utils/consts";
 import useModal from "../../hooks/useModal";
 import Modal from "../modal/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getIngredients, getIngredientsSelector } from "../../services/actions/ingredients";
+import { AppDispatch } from "../..";
+import { TIngredient } from "../../utils/types";
 
 const IngredientDetails = () => {
   
   const ingredients = useSelector(getIngredientsSelector);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
-  const { isModal, openModal, closeModal, title, setTitle, navBack } =
+  const { title, setTitle, navBack } =
     useModal();
   let ingredientDetails;
   
@@ -27,7 +28,7 @@ const IngredientDetails = () => {
   }, []);
 
   if (ingredients) {
-    ingredientDetails = ingredients.find((item) => item._id === id);
+    ingredientDetails = ingredients.find((item: TIngredient) => item._id === id);
   }
 
   return (
@@ -85,7 +86,4 @@ const IngredientDetails = () => {
   );
 };
 
-IngredientDetails.propTypes = {
-  item,
-};
 export default IngredientDetails;

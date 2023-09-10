@@ -30,9 +30,9 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 export const state = store.getState();
-  type State =  typeof state ;
-  type Actions = typeof actions;
- export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
+export type State = typeof state;
+type Actions = typeof actions;
+export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

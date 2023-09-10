@@ -116,9 +116,10 @@ export const authReducer = (state = initialState, action) => {
         isAuth: false,
       };
     case actions.LOGOUT_SUCCESS:
-      localStorage.setItem("accessToken", null);
+      localStorage.removeItem("accessToken");
       deleteCookie("token", null);
-      localStorage.setItem("refreshToken", null);
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("accessTokenExp");
       return {
         ...state,
         ...initialState,
