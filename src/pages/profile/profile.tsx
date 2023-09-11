@@ -42,7 +42,7 @@ const Profile = () => {
           email: emailValue,
         });
     dispatch(updateUser(data)).then((res) =>
-      res.success ? setSaveButton(false) : alert("Update error"),
+      res?.success ? setSaveButton(false) : alert("Update error"),
     );
   }, []);
 

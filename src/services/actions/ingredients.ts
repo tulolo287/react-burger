@@ -1,5 +1,6 @@
 import { getIngredientsApi } from "../../utils/api";
-import { actions } from "../actions";
+import { actions } from ".";
+import { AppDispatch, State } from "../..";
 
 export const ingredientsActions = {
   GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
@@ -11,15 +12,15 @@ export const ingredientsActions = {
   INGREDIENTS_FETCHING: "INGREDIENTS_FETCHING",
 };
 
-export const getIngredients = () => async (dispatch) => {
+export const getIngredients = () => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.INGREDIENTS_FETCHING, payload: true });
   return getIngredientsApi()
-    .then((ingredients) => {
+    .then((response) => {
       dispatch({
         type: actions.GET_INGREDIENTS_SUCCESS,
-        payload: ingredients,
+        payload: response.data
       });
-      return ingredients;
+      return response.data;
     })
     .catch((err) => {
       dispatch({
@@ -29,10 +30,10 @@ export const getIngredients = () => async (dispatch) => {
     });
 };
 
-const ingredients = (state) => state.ingredientsReducer.ingredients;
-export const getIngredientsSelector = (state) =>
+const ingredients = (state: State) => state.ingredientsReducer.ingredients;
+export const getIngredientsSelector = (state: State) =>
   state.ingredientsReducer.ingredients;
-export const getSortedIngredientsSelector = (state) =>
+export const getSortedIngredientsSelector = (state: State) =>
   state.ingredientsReducer.sortedIngredients;
-export const getIngredientDetailSelector = (state) =>
+export const getIngredientDetailSelector = (state: State) =>
   state.ingredientDetailsReducer.ingredientDetails;

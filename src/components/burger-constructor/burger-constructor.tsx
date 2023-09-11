@@ -28,7 +28,7 @@ const BurgerConstructor = () => {
     (state: State) => state.constructorReducer.constructorIngredients
   );
   const bun = constructorIngredients[0];
-  const [disableOrder, setDisableOrder] = useState(true);
+  const [disableOrder, setDisableOrder] = useState<boolean>(true);
   const { isModal, openModal, closeModal } = useModal();
 
   const totalOrderPrice = useMemo(() => {

@@ -1,23 +1,25 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { AppDispatch, State } from "../..";
 import { actions } from "../../services/actions";
 import {
   getIngredients,
   getIngredientsSelector,
 } from "../../services/actions/ingredients";
 import { SORT_ORDER } from "../../utils/consts";
+import { TIngredient } from "../../utils/types";
 import styles from "./ingredient-detail-page.module.css";
-import { AppDispatch, State } from "../..";
-import { TIngredient, TIngredients } from "../../utils/types";
 
 const IngredientDetailPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const ingredients = useSelector(getIngredientsSelector);
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError,
+    (state: State) => state.ingredientsReducer.fetchError
   );
-  const isLoading = useSelector((state: State) => state.ingredientsReducer.isLoading);
+  const isLoading = useSelector(
+    (state: State) => state.ingredientsReducer.isLoading
+  );
 
   let ingredientDetails;
   const { id } = useParams();
@@ -26,14 +28,14 @@ const IngredientDetailPage = () => {
     if (!ingredients) {
       const fetchData = async () => {
         dispatch(getIngredients()).then((ingredients) => {
-          sortData(ingredients);
+          ingredients && sortData(ingredients);
         });
       };
       fetchData();
     }
   }, []);
 
-  const sortData = (ingredients: TIngredients) => {
+  const sortData = (ingredients: TIngredient[]) => {
     const sortedData = ingredients.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
@@ -41,7 +43,9 @@ const IngredientDetailPage = () => {
   };
 
   if (ingredients) {
-    ingredientDetails = ingredients.find((item: TIngredient) => item._id === id);
+    ingredientDetails = ingredients.find(
+      (item: TIngredient) => item._id === id
+    );
   }
 
   return (

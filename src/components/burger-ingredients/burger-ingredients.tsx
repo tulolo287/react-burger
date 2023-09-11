@@ -18,7 +18,7 @@ const BurgerIngredients = () => {
   const ingredients = useSelector(getIngredientsSelector);
   const sortedIngredients = useSelector(getSortedIngredientsSelector);
   const dispatch: AppDispatch = useDispatch();
-  const [current, setCurrent] = useState("bun");
+  const [current, setCurrent] = useState<string>("bun");
   const fetchError = useSelector(
     (state: State) => state.ingredientsReducer.fetchError
   );
@@ -32,19 +32,15 @@ let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(getIngredients()).then((ingredients) => {
-        if (ingredients) {
-          sortData(ingredients);
-        }
-      });
+      dispatch(getIngredients()).then((ingredients) => ingredients && sortData(ingredients));
     };
     if (!ingredients) {
       fetchData();
     }
   }, []);
 
-  const sortData = (ingredients: TIngredients) => {
-    const sortedData = ingredients.sort((a, b) => {
+  const sortData = (ingredients: TIngredient[]) => {
+    const sortedData = ingredients?.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
     dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });

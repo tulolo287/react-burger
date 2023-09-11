@@ -1,16 +1,14 @@
 import jwtDecode from "jwt-decode";
 import { API_URL } from "./consts";
-import { IUser } from "./types";
+import { IUser, TIngredient, TIngredientsData } from "./types";
 
-export const getIngredientsApi = async () => {
-  try {
-    const response = await fetch(`${API_URL}/ingredients`);
-    const result = await checkResponse(response);
-    return result.success ? result.data : false;
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
+export const getIngredientsApi = async (): Promise<TResponseBody<'data',
+  Array<TIngredient>>
+> =>
+  await fetch(`${API_URL}/ingredients`)
+    .then((res) => res.json())
+    .then((data) => data)
+    .catch((err) => Promise.reject(err));
 
 export const postOrderApi = async (request: []) => {
   try {
@@ -72,7 +70,7 @@ export const logoutApi = async () => {
   }
 };
 
-export const getUserApi = async (): Promise<TResponseBody> => {
+export const getUserApi = async (): Promise<TResponseBody<"user", IUser>> => {
   if (
     localStorage.getItem("accessTokenExp") &&
     localStorage.getItem("refreshToken")
@@ -102,7 +100,9 @@ export const getUserApi = async (): Promise<TResponseBody> => {
   throw new Error("No token available");
 };
 
-export const updateUserApi = async (data: any) => {
+export const updateUserApi = async (
+  data: IUser
+): Promise<TResponseBody<"user", IUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
 
   const options = {
@@ -148,9 +148,12 @@ type TResponseBody<TDataKey extends string = "", TDataType = {}> = {
   message?: string;
   headers?: Headers;
   accessToken?: string;
+  refreshToken?: string;
 };
 
-export const refreshTokenApi = async (): Promise<TResponseBody> => {
+export const refreshTokenApi = async (): Promise<
+  TResponseBody<"tokens", TTokens>
+> => {
   if (localStorage.getItem("refreshToken")) {
     let token = localStorage.getItem("refreshToken")?.replace(/^"(.*)"$/, "$1");
     try {
@@ -196,7 +199,7 @@ export const resetPasswordApi = async (request: any) => {
   }
 };
 
-export const forgotPasswordApi = async (request: any) => {
+export const forgotPasswordApi = async (request: { email: string }) => {
   try {
     const response = await fetch(`${API_URL}/password-reset`, {
       method: "POST",
@@ -217,24 +220,33 @@ export const forgotPasswordApi = async (request: any) => {
   }
 };
 
-const fetchWithRefresh = async (url: any, options: any) => {
+type TTokens = {
+  accessTokenExp: number;
+  refreshToken: string;
+  accessToken: string;
+};
+
+const fetchWithRefresh = async (
+  url: string,
+  options: any
+): Promise<TResponseBody<"user", IUser>> => {
   try {
     const res = await fetch(url, options);
     return await checkResponse(res);
   } catch (err: any) {
     if (err.message === "jwt expired") {
       const refreshData = await refreshTokenApi();
-      saveResponse(refreshData);
+      saveResponse(refreshData.tokens);
       options.headers.authorization = refreshData.accessToken;
-      const res = await fetch(url, options);
-      return await checkResponse(res);
+      const result = await fetch(url, options);
+      return await checkResponse(result);
     } else {
       return Promise.reject(err);
     }
   }
 };
 
-const saveResponse = (result: any) => {
+const saveResponse = (result: TTokens) => {
   const decodedToken: any = jwtDecode(result.accessToken);
   localStorage.setItem("accessTokenExp", decodedToken.exp);
   localStorage.setItem("refreshToken", result.refreshToken);
@@ -248,7 +260,7 @@ const checkResponse = (res: Response) => {
     : res.json().then((err: any) => Promise.reject(err));
 };
 
-export function getCookie(name: any) {
+export function getCookie(name: string) {
   const matches = document.cookie.match(
     new RegExp(
       "(?:^|; )" +

@@ -13,6 +13,11 @@ export type TIngredient = {
   image_mobile: string;
   qty: number;
 };
+
+export type TIngredientsData = {
+  data: Array<TIngredient>;
+}
+
 export type TIngredients = Array<TIngredient>;
 
 export type TConstructorIngredient = TIngredient & {
@@ -23,7 +28,7 @@ export type TConstructorIngredients = Array<TConstructorIngredient>;
 export type IUser = {
   name: string;
   email: string;
-  password: string;
+  password?: string;
 };
 
 export interface AssociativeArray<T> {

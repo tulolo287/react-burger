@@ -60,7 +60,7 @@ export const logout = () => async (dispatch: any) => {
     });
 };
 
-export const getUser = () => async (dispatch: any) => {
+export const getUser = () => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return getUserApi()
     .then((user) => {
@@ -74,7 +74,7 @@ export const getUser = () => async (dispatch: any) => {
     });
 };
 
-export const updateUser = (data: any) => async (dispatch: any) => {
+export const updateUser = (data: IUser) => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return updateUserApi(data)
     .then((response) => {
@@ -89,7 +89,7 @@ export const updateUser = (data: any) => async (dispatch: any) => {
     });
 };
 
-export const register = (request:IUser) => async (dispatch: AppDispatch) => {
+export const register = (request: IUser) => async (dispatch: AppDispatch) => {
   return registerApi(request)
     .then((response) => {
       dispatch({ type: actions.REGISTER_SUCCESS, payload: response });
@@ -102,9 +102,8 @@ export const register = (request:IUser) => async (dispatch: AppDispatch) => {
     });
 };
 
-export const refreshToken =
-  () =>
-  async (dispatch: any): Promise<void> => {
+export const refreshToken = () =>
+  async (dispatch: AppDispatch) => {
     return refreshTokenApi()
       .then((tokens) => {
         dispatch({ type: actions.REFRESH_TOKEN_SUCCESS, payload: tokens });
@@ -132,7 +131,7 @@ export const resetPassword = (request: any) => async (dispatch: any) => {
     });
 };
 
-export const forgotPassword = (request: any) => async (dispatch: any) => {
+export const forgotPassword = (request: any) => async (dispatch: AppDispatch) => {
   return forgotPasswordApi(request)
     .then((response) => {
       dispatch({
