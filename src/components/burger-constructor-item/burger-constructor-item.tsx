@@ -1,20 +1,20 @@
-import { FC, SyntheticEvent, useRef } from "react";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDrop, useDrag } from "react-dnd";
-import styles from "./burger-constructor-item.module.css";
+import { FC, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { actions } from "../../services/actions";
-import { IUser, TIngredient, TConstructorIngredient } from "../../utils/types";
+import { TConstructorIngredient } from "../../utils/types";
+import styles from "./burger-constructor-item.module.css";
 
 type IConstructorIngredientProps = {
-  item: TConstructorIngredient
+  item: TConstructorIngredient;
   idx: number;
 };
 
-const BurgerConstructorItem:FC<IConstructorIngredientProps> = (props) => {
+const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
   const { item, idx } = props;
   const dispatch = useDispatch();
   const ref = useRef(null);
@@ -77,6 +77,5 @@ const BurgerConstructorItem:FC<IConstructorIngredientProps> = (props) => {
     </li>
   );
 };
-
 
 export default BurgerConstructorItem;

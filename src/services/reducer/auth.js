@@ -20,7 +20,7 @@ export const authReducer = (state = initialState, action) => {
     case actions.LOGIN_SUCCESS:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.payload,
         isAuth: true,
         isLoading: false,
       };
@@ -68,7 +68,7 @@ export const authReducer = (state = initialState, action) => {
     case actions.GET_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.payload,
         isAuth: true,
         isLoading: false,
       };

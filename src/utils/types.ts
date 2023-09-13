@@ -16,7 +16,7 @@ export type TIngredient = {
 
 export type TIngredientsData = {
   data: Array<TIngredient>;
-}
+};
 
 export type TIngredients = Array<TIngredient>;
 
@@ -25,11 +25,18 @@ export type TConstructorIngredient = TIngredient & {
 };
 export type TConstructorIngredients = Array<TConstructorIngredient>;
 
-export type IUser = {
+
+export type TUser = {
   name: string;
   email: string;
   password?: string;
 };
+
+export type TLogin = {
+  email: string;
+  password: string;
+};
+
 
 export interface AssociativeArray<T> {
   [key: string]: T;
