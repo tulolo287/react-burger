@@ -17,7 +17,8 @@ type IConstructorIngredientProps = {
 const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
   const { item, idx } = props;
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
+  
 
   const [{ isHover }, drop] = useDrop({
     accept: "ingredient2",
