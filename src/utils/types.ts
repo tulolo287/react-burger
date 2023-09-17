@@ -25,6 +25,10 @@ export type TConstructorIngredient = TIngredient & {
 };
 export type TConstructorIngredients = Array<TConstructorIngredient>;
 
+export type TResetPassword = {
+  token: string;
+  password: string;
+};
 
 export type TUser = {
   name: string;

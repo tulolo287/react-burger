@@ -1,6 +1,13 @@
 import jwtDecode from "jwt-decode";
 import { API_URL } from "./consts";
-import { TIngredient, TLogin, TResponseBody, TTokens, TUser } from "./types";
+import {
+  TIngredient,
+  TLogin,
+  TResetPassword,
+  TResponseBody,
+  TTokens,
+  TUser,
+} from "./types";
 
 export const getIngredientsApi = async (): Promise<
   TResponseBody<"data", Array<TIngredient>>
@@ -72,7 +79,6 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
-  
   let token: string = "";
   if (
     (localStorage.getItem("accessTokenExp") &&
@@ -106,7 +112,6 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
 export const updateUserApi = async (
   data: TUser
 ): Promise<TResponseBody<"user", TUser>> => {
-  
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
   const options = {
     method: "PATCH",
@@ -144,7 +149,6 @@ export const registerApi = async (request: TUser) => {
   }
 };
 
-
 export const refreshTokenApi = async (): Promise<TTokens> => {
   if (localStorage.getItem("refreshToken")) {
     let token = localStorage.getItem("refreshToken")?.replace(/^"(.*)"$/, "$1");
@@ -172,7 +176,9 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
   throw new Error("No refresh token");
 };
 
-export const resetPasswordApi = async (request: any) => {
+export const resetPasswordApi = async (
+  request: TResetPassword
+): Promise<TResponseBody<"password", TResetPassword>> => {
   try {
     const response = await fetch(`${API_URL}/password-reset/reset`, {
       method: "POST",

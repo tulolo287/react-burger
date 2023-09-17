@@ -10,7 +10,7 @@ import {
   resetPasswordApi,
   updateUserApi,
 } from "../../utils/api";
-import { TLogin, TUser } from "../../utils/types";
+import { TLogin, TResetPassword, TUser } from "../../utils/types";
 
 export const authActions = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -116,7 +116,7 @@ export const refreshToken = () => async (dispatch: AppDispatch) => {
     });
 };
 
-export const resetPassword = (request: any) => async (dispatch: any) => {
+export const resetPassword = (request: TResetPassword) => async (dispatch: AppDispatch) => {
   return resetPasswordApi(request)
     .then((response) => {
       dispatch({ type: actions.RESET_PASSWORD_SUCCESS, payload: response });

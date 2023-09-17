@@ -1,14 +1,15 @@
-import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import {
   Button,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./reset-password.module.css";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getUser, resetPassword } from "../../services/actions/auth";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch, State } from "../..";
+import { getUser, resetPassword } from "../../services/actions/auth";
+import styles from "./reset-password.module.css";
+import { TResetPassword } from "../../utils/types";
 
 const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");
@@ -25,22 +26,25 @@ const ResetPassword = () => {
     }
   }, [user, dispatch]);
 
-  const resetPasswordHandle = useCallback((e: SyntheticEvent) => {
-    e.preventDefault();
-    if (tokenValue && passwordValue) {
-      const data = {
-        token: tokenValue,
-        password: passwordValue,
-      };
-      dispatch(resetPassword(data))
-        .then((res) =>
-          res.success
-            ? navigate("/login", { state: { from: "reset-password" } })
-            : alert(res.message)
-        )
-        .catch((err) => console.log("err", err));
-    }
-  }, []);
+  const resetPasswordHandle = useCallback(
+    (e: SyntheticEvent) => {
+      e.preventDefault();
+      if (tokenValue && passwordValue) {
+        const data: TResetPassword = {
+          token: tokenValue,
+          password: passwordValue,
+        };
+        dispatch(resetPassword(data))
+          .then((res) =>
+            res.success
+              ? navigate("/login", { state: { from: "reset-password" } })
+              : alert(res.message)
+          )
+          .catch((err) => console.log("err", err));
+      }
+    },
+    [tokenValue, passwordValue]
+  );
 
   return (
     <>
