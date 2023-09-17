@@ -1,23 +1,21 @@
-import React from "react";
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { getUser, logout, updateUser } from "../../services/actions/auth";
-import styles from "./profile.module.css";
 import { AppDispatch, State } from "../..";
+import { getUser, logout, updateUser } from "../../services/actions/auth";
+import { TUser } from "../../utils/types";
+import styles from "./profile.module.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: State) => state.authReducer.user);
-  const [passwordValue, setPasswordValue] = useState("");
-  const [emailValue, setEmailValue] = useState(user.email);
-  const [nameValue, setNameValue] = useState(user.name);
+  const user: TUser = useSelector((state: State) => state.authReducer.user);
+  const [userInput, setUserInput] = useState<TUser>(user);
   const dispatch: AppDispatch = useDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
@@ -31,20 +29,23 @@ const Profile = () => {
   const onSubmit = useCallback((e: React.SyntheticEvent) => {
     e.preventDefault();
     let data;
-    passwordValue
+    userInput.password
       ? (data = {
-          name: nameValue,
-          email: emailValue,
-          password: passwordValue,
+          name: userInput.name,
+          email: userInput.email,
+          password: userInput.password,
         })
       : (data = {
-          name: nameValue,
-          email: emailValue,
+          name: userInput.name,
+          email: userInput.email,
         });
-    dispatch(updateUser(data)).then((res) =>
-      res?.success ? setSaveButton(false) : alert("Update error"),
-    );
-  }, []);
+
+    dispatch(updateUser(data))
+      .then((user) => {
+        setSaveButton(false);
+      })
+      .catch((err) => alert("Update user failed"));
+  }, [userInput]);
 
   const onLogout = () => {
     dispatch(logout()).then((res: Response) => {
@@ -54,9 +55,7 @@ const Profile = () => {
   };
 
   const onCancel = () => {
-    setNameValue(user.name);
-    setEmailValue(user.email);
-    setPasswordValue("");
+    setUserInput(user);
     setSaveButton(false);
   };
 
@@ -84,7 +83,9 @@ const Profile = () => {
           </NavLink>
         </div>
         <div className={styles.navItem}>
-          <NavLink to="" onClick={onLogout}>Выход</NavLink>
+          <NavLink to="" onClick={onLogout}>
+            Выход
+          </NavLink>
         </div>
         <div className={styles.caption}>
           В этом разделе вы можете изменить свои персональные данные
@@ -95,9 +96,9 @@ const Profile = () => {
           <Input
             type={"text"}
             placeholder={"Имя"}
-            value={nameValue}
+            value={userInput.name}
             onChange={(e) => {
-              setNameValue(e.target.value);
+              setUserInput({ ...userInput, name: e.target.value });
               setSaveButton(true);
             }}
             icon="EditIcon"
@@ -109,20 +110,19 @@ const Profile = () => {
 
           <EmailInput
             name={"email"}
-            value={emailValue}
+            value={userInput.email}
             isIcon={true}
             onChange={(e) => {
-              setEmailValue(e.target.value);
+              setUserInput({ ...userInput, email: e.target.value });
               setSaveButton(true);
             }}
             placeholder="E-mail"
-            
           />
 
           <PasswordInput
-            value={passwordValue}
+            value={userInput.password || ""}
             onChange={(e) => {
-              setPasswordValue(e.target.value);
+              setUserInput({ ...userInput, password: e.target.value });
               setSaveButton(true);
             }}
             name={"password"}

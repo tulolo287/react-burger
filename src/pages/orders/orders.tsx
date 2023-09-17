@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { AppDispatch, State } from "../..";
-import { actions } from "../../services/actions";
-import styles from "./orders.module.css";
 import { logout } from "../../services/actions/auth";
+import styles from "./orders.module.css";
 
 const Orders = () => {
   const user = useSelector((state: State) => state.authReducer.user);

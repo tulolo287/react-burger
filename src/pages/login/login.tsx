@@ -1,14 +1,14 @@
-import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import styles from "./login.module.css";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   EmailInput,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getUser } from "../../services/actions/auth";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch, State } from "../..";
+import { getUser, login } from "../../services/actions/auth";
+import styles from "./login.module.css";
 
 const Login = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -56,7 +56,6 @@ const Login = () => {
                 value={emailValue}
                 onChange={(e) => setEmailValue(e.target.value)}
                 placeholder="E-mail"
-                
               />
               <div className={styles.input}>
                 <PasswordInput

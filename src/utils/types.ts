@@ -37,6 +37,23 @@ export type TLogin = {
   password: string;
 };
 
+export type TResponseBody<TDataKey extends string = "", TDataType = {}> = {
+  [key in TDataKey]: TDataType;
+} & {
+  success: boolean;
+  message?: string;
+  headers?: Headers;
+  accessToken?: string;
+  refreshToken?: string;
+};
+
+export type TTokens = {
+  message: string;
+  success: boolean;
+  accessTokenExp?: number;
+  refreshToken: string;
+  accessToken: string;
+};
 
 export interface AssociativeArray<T> {
   [key: string]: T;

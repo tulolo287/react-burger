@@ -33,7 +33,7 @@ const ForgotPassword = () => {
         navigate("/reset-password", { state: { from: "forgot-password" } }),
       );
     }
-  }, []);
+  }, [emailValue]);
 
   return (
     <>

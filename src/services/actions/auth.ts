@@ -64,6 +64,7 @@ export const getUser = () => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return getUserApi()
     .then((response) => {
+
       dispatch({ type: actions.GET_USER_SUCCESS, payload: response.user });
     })
     .catch((err) => {
@@ -78,8 +79,8 @@ export const updateUser = (data: TUser) => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return updateUserApi(data)
     .then((response) => {
-      dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: response });
-      return response;
+      dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: response.user });
+      return response.user;
     })
     .catch((err) => {
       dispatch({

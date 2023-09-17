@@ -1,16 +1,15 @@
-import { Link } from "react-router-dom";
-import styles from "./register.module.css";
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
-import { register } from "../../services/actions/auth";
 import { SyntheticEvent, useState } from "react";
-import { any } from "prop-types";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { AppDispatch } from "../..";
+import { register } from "../../services/actions/auth";
+import styles from "./register.module.css";
 
 const Register = () => {
   const [passwordValue, setPasswordValue] = useState("");
@@ -21,7 +20,6 @@ const Register = () => {
 
   const handleRegister = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
-    const target = e.target as typeof e.target;
     if (nameValue && emailValue && passwordValue) {
       dispatch(
         register({
