@@ -94,15 +94,15 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
     }
   }
   token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!!;
-  const options = {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", token!);
+  const options: RequestInit = {
     method: "GET",
     mode: "cors",
     cache: "no-cache",
     credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
+    headers,
     redirect: "follow",
     referrerPolicy: "no-referrer",
   };
@@ -113,15 +113,15 @@ export const updateUserApi = async (
   data: TUser
 ): Promise<TResponseBody<"user", TUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
-  const options = {
+  const headers = new Headers();
+  headers.append("Content-Type", "application/json");
+  headers.append("Authorization", token!);
+  const options: RequestInit = {
     method: "PATCH",
     mode: "cors",
     cache: "no-cache",
     credentials: "same-origin",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token,
-    },
+    headers,
     redirect: "follow",
     referrerPolicy: "no-referrer",
     body: JSON.stringify(data),
@@ -222,7 +222,7 @@ export const forgotPasswordApi = async (request: { email: string }) => {
 
 const fetchWithRefresh = async (
   url: string,
-  options: any
+  options: RequestInit
 ): Promise<TResponseBody<"user", TUser>> => {
   try {
     const response = await fetch(url, options);
@@ -232,7 +232,9 @@ const fetchWithRefresh = async (
     if (err.message === "jwt expired") {
       const refreshData = await refreshTokenApi();
       saveResponse(refreshData);
-      options.headers.authorization = refreshData.accessToken;
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + refreshData.accessToken);
+      options.headers = headers;
       const response = await fetch(url, options);
       const result = await checkResponse(response);
       return result.success ? result : Promise.reject(result);
@@ -247,7 +249,7 @@ const saveResponse = (result: TTokens) => {
   localStorage.setItem("accessTokenExp", decodedToken.exp);
   localStorage.setItem("refreshToken", result.refreshToken);
   localStorage.setItem("accessToken", result.accessToken);
-  setCookie("token", JSON.stringify(result.accessToken), null);
+  setCookie("token", JSON.stringify(result.accessToken), {});
 };
 
 const checkResponse = (res: Response) => {
@@ -267,7 +269,15 @@ export function getCookie(name: string) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name: string, value: any, props: any) {
+export function setCookie(
+  name: string,
+  value: any,
+  props: {
+    path?: string;
+    expires?: Date | string | number;
+    [propName: string]: any;
+  }
+) {
   props = props || {};
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
@@ -275,7 +285,7 @@ export function setCookie(name: string, value: any, props: any) {
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
-  if (exp && exp.toUTCString) {
+  if (exp instanceof Date && exp.toUTCString) {
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);

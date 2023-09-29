@@ -37,6 +37,7 @@
 }
 .burgerConstructor_checkout i {
   display: flex;
+  width: 33px;
 }
 .burgerConstructor_checkout svg {
   width: 33px;

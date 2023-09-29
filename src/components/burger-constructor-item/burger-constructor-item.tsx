@@ -18,14 +18,17 @@ const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
   const { item, idx } = props;
   const dispatch = useDispatch();
   const ref = useRef<HTMLLIElement>(null);
-  
 
-  const [{ isHover }, drop] = useDrop({
+  const [{ isOver }, drop] = useDrop<
+    IConstructorIngredientProps,
+    unknown,
+    { isOver: boolean }
+  >({
     accept: "ingredient2",
     collect: (monitor) => ({
-      isHover: monitor.isOver(),
+      isOver: monitor.isOver(),
     }),
-    drop(item: any) {
+    drop(item) {
       const dragIndex = item.idx;
       const hoverIndex = idx;
       dispatch({
@@ -43,7 +46,7 @@ const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
     }),
   });
   let opacity = isDragging ? 0 : 1;
-  let borderColor = isHover ? "lightgrey" : "transparent";
+  let borderColor = isOver ? "lightgrey" : "transparent";
 
   drag(drop(ref));
 

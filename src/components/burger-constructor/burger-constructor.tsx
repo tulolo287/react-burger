@@ -132,7 +132,7 @@ const BurgerConstructor = () => {
         </div>
         <div className={styles.burgerConstructor_checkout + " mt-10"}>
           <p className="text text_type_digits-medium mr-2">{totalOrderPrice}</p>
-          <i style={{ width: 33 }} className="mr-10">
+          <i className="mr-10">
             <CurrencyIcon type="primary" />
           </i>
           <Button
