@@ -1,13 +1,14 @@
-import PropTypes from "prop-types";
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
+import { AppDispatch, State } from "../..";
 
-const ProtectedRouteElement = ({ element }) => {
-  const user = useSelector((state) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
-  const dispatch = useDispatch();
+const ProtectedRouteElement = ({ element }: { element: React.ReactElement }) => {
+  const user = useSelector((state: State) => state.authReducer.user);
+  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     if (!user) {
@@ -25,10 +26,6 @@ const ProtectedRouteElement = ({ element }) => {
       <Navigate to={"/login"} replace />
     </>
   );
-};
-
-ProtectedRouteElement.propTypes = {
-  element: PropTypes.object,
 };
 
 export default ProtectedRouteElement;

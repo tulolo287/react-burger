@@ -1,22 +1,32 @@
-import { useRef } from "react";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDrop, useDrag } from "react-dnd";
-import styles from "./burger-constructor-item.module.css";
+import { FC, useRef } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import PropTypes from "prop-types";
 import { actions } from "../../services/actions";
+import { TConstructorIngredient } from "../../utils/types";
+import styles from "./burger-constructor-item.module.css";
 
-const BurgerConstructorItem = ({ item, idx }) => {
+type IConstructorIngredientProps = {
+  item: TConstructorIngredient;
+  idx: number;
+};
+
+const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
+  const { item, idx } = props;
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
-  const [{ isHover }, drop] = useDrop({
+  const [{ isOver }, drop] = useDrop<
+    IConstructorIngredientProps,
+    unknown,
+    { isOver: boolean }
+  >({
     accept: "ingredient2",
     collect: (monitor) => ({
-      isHover: monitor.isOver(),
+      isOver: monitor.isOver(),
     }),
     drop(item) {
       const dragIndex = item.idx;
@@ -36,11 +46,11 @@ const BurgerConstructorItem = ({ item, idx }) => {
     }),
   });
   let opacity = isDragging ? 0 : 1;
-  let borderColor = isHover ? "lightgrey" : "transparent";
+  let borderColor = isOver ? "lightgrey" : "transparent";
 
   drag(drop(ref));
 
-  const removeBurgerIngredient = (e, item) => {
+  const removeBurgerIngredient = (item: TConstructorIngredient): void => {
     dispatch({
       type: actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
       payload: item,
@@ -61,8 +71,8 @@ const BurgerConstructorItem = ({ item, idx }) => {
         <DragIcon type="primary" />
       </i>
       <ConstructorElement
-        handleClose={(e) => removeBurgerIngredient(e, item)}
-        type="center"
+        handleClose={() => removeBurgerIngredient(item)}
+        type="top"
         isLocked={false}
         text={item.name}
         price={item.price}
@@ -70,11 +80,6 @@ const BurgerConstructorItem = ({ item, idx }) => {
       />
     </li>
   );
-};
-
-BurgerConstructorItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  idx: PropTypes.number,
 };
 
 export default BurgerConstructorItem;

@@ -1,4 +1,5 @@
 import { actions } from ".";
+import { AppDispatch } from "../..";
 import {
   forgotPasswordApi,
   getUserApi,
@@ -7,8 +8,9 @@ import {
   refreshTokenApi,
   registerApi,
   resetPasswordApi,
-  updateUserApi
+  updateUserApi,
 } from "../../utils/api";
+import { TLogin, TResetPassword, TUser } from "../../utils/types";
 
 export const authActions = {
   LOGIN_SUCCESS: "LOGIN_SUCCESS",
@@ -31,10 +33,10 @@ export const authActions = {
   FORGOT_PASSWORD_FAILED: "FORGOT_PASSWORD_FAILED",
 };
 
-export const login = (data) => async (dispatch) => {
+export const login = (data: TLogin) => async (dispatch: AppDispatch) => {
   return loginApi(data)
-    .then((user) => {
-      dispatch({ type: actions.LOGIN_SUCCESS, payload: user });
+    .then((response) => {
+      dispatch({ type: actions.LOGIN_SUCCESS, payload: response.user });
     })
     .catch((err) => {
       dispatch({
@@ -44,11 +46,11 @@ export const login = (data) => async (dispatch) => {
     });
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: any) => {
   return logoutApi()
     .then((response) => {
       dispatch({ type: actions.LOGOUT_SUCCESS, payload: response });
-      return response
+      return response;
     })
     .catch((err) => {
       dispatch({
@@ -58,37 +60,37 @@ export const logout = () => async (dispatch) => {
     });
 };
 
-export const getUser = () => async (dispatch) => {
+export const getUser = () => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return getUserApi()
-    .then((user) => {
-      dispatch({ type: actions.GET_USER_SUCCESS, payload: user });
+    .then((response) => {
+
+      dispatch({ type: actions.GET_USER_SUCCESS, payload: response.user });
     })
     .catch((err) => {
       dispatch({
         type: actions.GET_USER_FAILED,
         payload: err,
       });
-    })
-
+    });
 };
 
-export const updateUser = (data) => async (dispatch) => {
+export const updateUser = (data: TUser) => async (dispatch: AppDispatch) => {
   dispatch({ type: actions.GET_USER_FETCHING });
   return updateUserApi(data)
     .then((response) => {
-      dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: response });
-      return response
+      dispatch({ type: actions.UPDATE_USER_SUCCESS, payload: response.user });
+      return response.user;
     })
     .catch((err) => {
       dispatch({
         type: actions.UPDATE_USER_FAILED,
         payload: err,
       });
-    })
+    });
 };
 
-export const register = (request) => async (dispatch) => {
+export const register = (request: TUser) => async (dispatch: AppDispatch) => {
   return registerApi(request)
     .then((response) => {
       dispatch({ type: actions.REGISTER_SUCCESS, payload: response });
@@ -101,7 +103,7 @@ export const register = (request) => async (dispatch) => {
     });
 };
 
-export const refreshToken = () => async (dispatch) => {
+export const refreshToken = () => async (dispatch: AppDispatch) => {
   return refreshTokenApi()
     .then((tokens) => {
       dispatch({ type: actions.REFRESH_TOKEN_SUCCESS, payload: tokens });
@@ -114,33 +116,34 @@ export const refreshToken = () => async (dispatch) => {
     });
 };
 
-export const resetPassword = (request) => async (dispatch) => {
+export const resetPassword = (request: TResetPassword) => async (dispatch: AppDispatch) => {
   return resetPasswordApi(request)
     .then((response) => {
       dispatch({ type: actions.RESET_PASSWORD_SUCCESS, payload: response });
-      return response
+      return response;
     })
     .catch((err) => {
       dispatch({
         type: actions.RESET_PASSWORD_FAILED,
         payload: err,
       });
-      return err
+      return err;
     });
 };
 
-export const forgotPassword = (request) => async (dispatch) => {
-  return forgotPasswordApi(request)
-    .then((response) => {
-      dispatch({
-        type: actions.FORGOT_PASSWORD_SUCCESS,
-        payload: response.success,
+export const forgotPassword =
+  (request: any) => async (dispatch: AppDispatch) => {
+    return forgotPasswordApi(request)
+      .then((response) => {
+        dispatch({
+          type: actions.FORGOT_PASSWORD_SUCCESS,
+          payload: response.success,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: actions.FORGOT_PASSWORD_FAILED,
+          payload: err,
+        });
       });
-    })
-    .catch((err) => {
-      dispatch({
-        type: actions.FORGOT_PASSWORD_FAILED,
-        payload: err,
-      });
-    });
-};
+  };

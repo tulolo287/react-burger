@@ -3,13 +3,17 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { motion } from "framer-motion";
-import PropTypes from "prop-types";
+import { FC } from "react";
 import { useDrag } from "react-dnd";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { TIngredient } from "../../utils/types";
 import styles from "./burger-item.module.css";
 
-const BurgerItem = ({ item }) => {
+type TBurgerItemProps = {
+  item: TIngredient;
+};
+
+const BurgerItem: FC<TBurgerItemProps> = ({ item }) => {
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: item,
@@ -25,9 +29,9 @@ const BurgerItem = ({ item }) => {
       whileTap={{
         scale: 1.2,
         y: -10,
-        backgroundColor: '#392c93',
+        backgroundColor: "#392c93",
 
-borderRadius: '22px'
+        borderRadius: "22px",
       }}
       ref={dragRef}
       onClick={onItemHandler}
@@ -42,11 +46,6 @@ borderRadius: '22px'
       <p className="text text_type_main-default mt-2 mb-6">{item.name}</p>
     </motion.li>
   );
-};
-
-BurgerItem.propTypes = {
-  item: PropTypes.object.isRequired,
-  qty: PropTypes.number,
 };
 
 export default BurgerItem;

@@ -1,23 +1,24 @@
-import { Link } from "react-router-dom";
-import styles from "./register.module.css";
 import {
   Button,
   EmailInput,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { AppDispatch } from "../..";
 import { register } from "../../services/actions/auth";
-import { useState } from "react";
+import styles from "./register.module.css";
 
 const Register = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [nameValue, setNameValue] = useState("");
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
-  const handleRegister = (e) => {
+  const handleRegister = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
     if (nameValue && emailValue && passwordValue) {
       dispatch(
@@ -25,7 +26,7 @@ const Register = () => {
           name: nameValue,
           email: emailValue,
           password: passwordValue,
-        }),
+        })
       );
     }
   };
@@ -35,37 +36,32 @@ const Register = () => {
       <div className={styles.title}>Регистрация</div>
       <div className={styles.form}>
         <form className={styles.form} onSubmit={handleRegister}>
-          
-            <Input
-              type={"text"}
-              placeholder={"Имя"}
-              value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
-              icon={false}
-              name={"name"}
-              error={false}
-              errorText={"Ошибка"}
-              size={"default"}
-              
-            />
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            value={nameValue}
+            onChange={(e) => setNameValue(e.target.value)}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+          />
 
-            <EmailInput
-              name={"email"}
-              value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
-              placeholder="E-mail"
-              
-              
-            />
+          <EmailInput
+            name={"email"}
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
+            placeholder="E-mail"
+          />
 
-            <PasswordInput
-              value={passwordValue}
-              onChange={(e) => setPasswordValue(e.target.value)}
-              name={"password"}
-              placeholder="Пароль"
-              icon="ShowIcon"
-            />
-         
+          <PasswordInput
+            value={passwordValue}
+            onChange={(e) => setPasswordValue(e.target.value)}
+            name={"password"}
+            placeholder="Пароль"
+            icon="ShowIcon"
+          />
+
           <div className={styles.button}>
             <Button type="primary" htmlType="submit">
               Зарегистрироваться

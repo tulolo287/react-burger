@@ -1,22 +1,24 @@
-import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import styles from "./reset-password.module.css";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, getUser, resetPassword } from "../../services/actions/auth";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { AppDispatch, State } from "../..";
+import { getUser, resetPassword } from "../../services/actions/auth";
+import styles from "./reset-password.module.css";
+import { TResetPassword } from "../../utils/types";
 
 const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [tokenValue, setTokenValue] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector((state) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
+  const user = useSelector((state: State) => state.authReducer.user);
+  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
 
   useEffect(() => {
     if (!user) {
@@ -24,22 +26,25 @@ const ResetPassword = () => {
     }
   }, [user, dispatch]);
 
-  const resetPasswordHandle = useCallback((e) => {
-    e.preventDefault();
-    if (tokenValue && passwordValue) {
-      const data = {
-        token: tokenValue,
-        password: passwordValue,
-      };
-      dispatch(resetPassword(data))
-        .then((res) =>
-          res.success
-            ? navigate("/login", { state: { from: "reset-password" } })
-            : alert(res.message)
-        )
-        .catch((err) => console.log("err", err));
-    }
-  });
+  const resetPasswordHandle = useCallback(
+    (e: SyntheticEvent) => {
+      e.preventDefault();
+      if (tokenValue && passwordValue) {
+        const data: TResetPassword = {
+          token: tokenValue,
+          password: passwordValue,
+        };
+        dispatch(resetPassword(data))
+          .then((res) =>
+            res.success
+              ? navigate("/login", { state: { from: "reset-password" } })
+              : alert(res.message)
+          )
+          .catch((err) => console.log("err", err));
+      }
+    },
+    [tokenValue, passwordValue]
+  );
 
   return (
     <>
@@ -63,7 +68,6 @@ const ResetPassword = () => {
                 onChange={(e) => setTokenValue(e.target.value)}
                 value={tokenValue}
                 placeholder={"Введите код из письма"}
-                icon={false}
                 name={"token"}
                 error={false}
                 errorText={"Ошибка"}

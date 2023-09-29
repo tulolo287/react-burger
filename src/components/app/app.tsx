@@ -1,18 +1,18 @@
-import styles from "./app.module.css";
-import AppHeader from "../app-header/app-header";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Constructor from "../../pages/constructor/constructor";
+import ForgotPassword from "../../pages/forgot-password/forgot-password";
+import IngredientDetailPage from "../../pages/ingredient-detail-page/ingredient-detail-page";
 import Login from "../../pages/login/login";
-import ProtectedRouteElement from "../protected-route-element/protected-route-element";
+import NotFound from "../../pages/not-found/not-found";
+import Orders from "../../pages/orders/orders";
 import Profile from "../../pages/profile/profile";
 import Register from "../../pages/register/register";
-import ResetPassword from "../../pages/reset-password /reset-password ";
-import ForgotPassword from "../../pages/forgot-password/forgot-password";
-import NotFound from "../../pages/not-found/not-found";
-import IngredientDetailPage from "../../pages/ingredient-detail-page/ingredient-detail-page";
-import Orders from "../../pages/orders/orders";
+import ResetPassword from "../../pages/reset-password /reset-password";
 import { path } from "../../utils/consts";
+import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import ProtectedRouteElement from "../protected-route-element/protected-route-element";
+import styles from "./app.module.css";
 
 function App() {
   let location = useLocation();
@@ -30,7 +30,6 @@ function App() {
         <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route
           path={path.PROFILE}
-          state={{ from: "/profile" }}
           element={<ProtectedRouteElement element={<Profile />} />}
         >
           <Route path={path.ORDERS} element={<Orders />} />

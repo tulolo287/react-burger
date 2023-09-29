@@ -4,37 +4,38 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useMemo, useState } from "react";
-import styles from "./burger-constructor.module.css";
-import { ingredients } from "../../utils/consts";
-import OrderDetails from "../order-details/order-details";
-import { actions } from "../../services/actions";
-import { postOrder } from "../../services/actions/order-details";
-import Modal from "../modal/modal";
-import useModal from "../../hooks/useModal";
-import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
-import { v4 as uuidv4 } from "uuid";
-import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import { AppDispatch, State } from "../..";
+import useModal from "../../hooks/useModal";
+import { actions } from "../../services/actions";
 import { getUser } from "../../services/actions/auth";
+import { postOrder } from "../../services/actions/order-details";
+import { TConstructorIngredient, TIngredient } from "../../utils/types";
+import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
+import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.authReducer.user);
+  const dispatch: AppDispatch = useDispatch();
+  const user = useSelector((state: State) => state.authReducer.user);
   const navigate = useNavigate();
 
   const constructorIngredients = useSelector(
-    (state) => state.constructorReducer.constructorIngredients,
+    (state: State) => state.constructorReducer.constructorIngredients
   );
   const bun = constructorIngredients[0];
-  const [disableOrder, setDisableOrder] = useState(true);
+  const [disableOrder, setDisableOrder] = useState<boolean>(true);
   const { isModal, openModal, closeModal } = useModal();
 
   const totalOrderPrice = useMemo(() => {
     constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
     return constructorIngredients.reduce(
-      (val, acc) => (val += acc.qty * acc.price),
-      0,
+      (val: number, acc: TIngredient) => (val += acc.qty * acc.price),
+      0
     );
   }, [constructorIngredients, bun]);
 
@@ -46,7 +47,7 @@ const BurgerConstructor = () => {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: any) {
       onDropHandler(item);
     },
     collect: (monitor) => ({
@@ -56,7 +57,7 @@ const BurgerConstructor = () => {
 
   const borderColor = isHover ? "lightgrey" : "transparent";
 
-  const onDropHandler = (item) => {
+  const onDropHandler = (item: TConstructorIngredient) => {
     if (item.type === "bun") {
       dispatch({
         type: actions.ADD_BUN_TO_CONSTRUCTOR,
@@ -76,10 +77,12 @@ const BurgerConstructor = () => {
 
   const makeOrder = async () => {
     if (!user) {
-      navigate("/login", { state: {from: "/"}  });
+      navigate("/login", { state: { from: "/" } });
       return;
     }
-    const ingredientsId = constructorIngredients.map((item) => item._id);
+    const ingredientsId = constructorIngredients.map(
+      (item: TConstructorIngredient) => item._id
+    );
 
     const request = {
       ingredients: ingredientsId,
@@ -108,10 +111,11 @@ const BurgerConstructor = () => {
             </li>
           </ul>
           <ul className={styles.burgerConstructor_group}>
-            {constructorIngredients?.map((item, idx) =>
-              item.type !== "bun" ? (
-                <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-              ) : null,
+            {constructorIngredients?.map(
+              (item: TConstructorIngredient, idx: number) =>
+                item.type !== "bun" ? (
+                  <BurgerConstructorItem key={item.key} item={item} idx={idx} />
+                ) : null
             )}
           </ul>
           <ul>
@@ -129,7 +133,7 @@ const BurgerConstructor = () => {
         <div className={styles.burgerConstructor_checkout + " mt-10"}>
           <p className="text text_type_digits-medium mr-2">{totalOrderPrice}</p>
           <i className="mr-10">
-            <CurrencyIcon style={{ width: 33 }} type="primary" />
+            <CurrencyIcon type="primary" />
           </i>
           <Button
             disabled={disableOrder}
@@ -144,16 +148,12 @@ const BurgerConstructor = () => {
       </section>
 
       {isModal && (
-        <Modal closeModal={closeModal} height={718}>
+        <Modal title={null} closeModal={closeModal} height={718}>
           <OrderDetails />
         </Modal>
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredients,
 };
 
 export default BurgerConstructor;

@@ -14,6 +14,9 @@ import { rootReducer } from "./services/reducer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter } from "react-router-dom";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { actions } from "./services/actions";
 
 declare global {
   interface Window {
@@ -27,11 +30,15 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 export const state = store.getState();
+export type State = typeof state;
+type Actions = typeof actions;
+export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
         <BrowserRouter>
@@ -39,7 +46,7 @@ root.render(
         </BrowserRouter>
       </DndProvider>
     </Provider>
-  </React.StrictMode>
+  //</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,16 +1,17 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./order-details.module.css";
 import { useSelector } from "react-redux";
+import { State } from "../..";
 
 const OrderDetails = () => {
   const orderDetails = useSelector(
-    (state) => state.orderDetailsReducer.orderDetails,
+    (state: State) => state.orderDetailsReducer.orderDetails,
   );
   const isOrderFetching = useSelector(
-    (state) => state.orderDetailsReducer.isOrderFetching,
+    (state: State) => state.orderDetailsReducer.isOrderFetching,
   );
   const postOrderError = useSelector(
-    (state) => state.orderDetailsReducer.postOrderError,
+    (state: State) => state.orderDetailsReducer.postOrderError,
   );
 
   return (
