@@ -25,6 +25,7 @@ export const path = {
   FORGOT_PASSWORD: "/forgot-password",
   PROFILE: "/profile",
   ORDERS: "orders",
+  FEED: "/feed",
 };
 
 export type TPath = typeof path;

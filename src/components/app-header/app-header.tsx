@@ -29,11 +29,11 @@ const AppHeader = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/profile/orders">
+              <NavLink to="/feed">
                 <i className="p-2">
                   <ListIcon
                     type={
-                      pathname === "/profile/orders" ? "primary" : "secondary"
+                      pathname === "/feed" ? "primary" : "secondary"
                     }
                   />
                 </i>

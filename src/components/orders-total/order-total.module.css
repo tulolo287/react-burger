@@ -1,0 +1,8 @@
+.board {
+   display: flex;
+   justify-content: space-between;
+}
+.order_done {
+   color: #00CCCC;
+
+}
