@@ -12,8 +12,8 @@ type TOrder = {
 };
 
 type TOrderTotalProps = {
-  ordersDone: TOrder[];
-  ordersInWork: TOrder[];
+  ordersDone: TOrder[] | null;
+  ordersInWork: TOrder[] | null;
 };
 
 const OrdersTotal: FC<TOrderTotalProps> = ({ ordersDone, ordersInWork }) => {

@@ -25,8 +25,8 @@ type TResponseOrders = {
 
 const Feed = () => {
   const [orders, setOrders] = useState<Array<TOrder> | null>(null);
-  const [ordersDone, setOrdersDone] = useState<Array<TOrder>();
-  const [ordersInWork, setOrdersInWork] = useState<Array<TOrder>();
+  const [ordersDone, setOrdersDone] = useState<Array<TOrder> | null>(null);
+  const [ordersInWork, setOrdersInWork] = useState<Array<TOrder> | null>(null);
 
   useEffect(() => {
     const socket = new WebSocket("wss://norma.nomoreparties.space/orders/all");
@@ -47,7 +47,7 @@ const Feed = () => {
       <h2 className={styles.header}>Лента заказов</h2>
       <section className={styles.content}>
         <article className={`${styles.orders} mr-15`}>
-          <CardOrder />
+          <CardOrder orders={orders} />
         </article>
         <article className={styles.orders_total}>
           <OrdersTotal ordersDone={ordersDone} ordersInWork={ordersInWork} />

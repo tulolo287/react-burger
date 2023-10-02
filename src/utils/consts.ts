@@ -26,6 +26,7 @@ export const path = {
   PROFILE: "/profile",
   ORDERS: "orders",
   FEED: "/feed",
+  FEED_DETAILS: "/feed/:id",
 };
 
 export type TPath = typeof path;

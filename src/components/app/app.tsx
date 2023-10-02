@@ -14,6 +14,7 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import styles from "./app.module.css";
 import Feed from "../../pages/feed/feed";
+import FeedDetails from "../../pages/feed-details/feed-deails";
 
 function App() {
   let location = useLocation();
@@ -30,6 +31,7 @@ function App() {
         <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={path.FEED} element={<Feed />} />
+        <Route path={path.FEED_DETAILS} element={<FeedDetails />} />
         <Route
           path={path.PROFILE}
           element={<ProtectedRouteElement element={<Profile />} />}

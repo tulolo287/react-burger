@@ -1,0 +1,21 @@
+.container {
+  text-align: left;
+  width: 640px;
+  height: 620px;
+  top: 230px;
+  left: 680px;
+  border: 2px;
+  margin: 0 auto;
+}
+.title {
+   text-align: center;
+}
+.info {
+   margin-top: 40px;
+}
+.ingredients {
+   margin-top: 60px;
+}
+.time_price {
+   margin-top: 40px;
+}

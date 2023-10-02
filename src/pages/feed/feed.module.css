@@ -8,7 +8,25 @@
   color: #f2f2f3;
 }
 .content {
-   text-align: left;
-   display: flex;
-   justify-content: center;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+}
+
+.orders {
+  width: 608px;
+  height: 852px;
+  overflow-y: scroll;
+  top: 208px;
+  left: 372px;
+  padding: 0px, 0px, 40px, 8px;
+  gap: 24px;
+}
+.orders_total {
+  overflow-y: scroll;
+  height: 626px;
+  top: 208px;
+  left: 1040px;
+  border: 2px;
+  gap: 60px;
 }
