@@ -17,6 +17,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { actions } from "./services/actions";
+import { socketMiddleware } from "./services/middleware/socketMiddleware";
 
 declare global {
   interface Window {
@@ -27,11 +28,11 @@ declare global {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk), applyMiddleware(socketMiddleware("lll")))
 );
 export const state = store.getState();
 export type State = typeof state;
-type Actions = typeof actions;
+export type Actions = typeof actions;
 export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
 
 const root = ReactDOM.createRoot(
