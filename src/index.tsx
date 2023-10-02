@@ -7,8 +7,10 @@ import {
   legacy_createStore as createStore,
   compose,
   applyMiddleware,
+  ActionCreator,
+  Action,
 } from "redux";
-import thunk from "redux-thunk";
+import thunk, { ThunkAction } from "redux-thunk";
 import { Provider } from "react-redux";
 import { rootReducer } from "./services/reducer";
 import { DndProvider } from "react-dnd";
@@ -30,10 +32,17 @@ const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(thunk), applyMiddleware(socketMiddleware("lll")))
 );
+
+type TApplicationActions = typeof actions;
+
 export const state = store.getState();
 export type State = typeof state;
 export type Actions = typeof actions;
 export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
+export type AppThunk<TReturn = void> = ActionCreator<
+  ThunkAction<TReturn, Action, State, AnyAction>
+>;
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
