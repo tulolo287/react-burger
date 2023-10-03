@@ -1,4 +1,3 @@
-import { actions } from ".";
 import { AppDispatch } from "../..";
 import {
   forgotPasswordApi,
@@ -10,12 +9,18 @@ import {
   resetPasswordApi,
   updateUserApi,
 } from "../../utils/api";
-import { TLogin, TResetPassword, TResponseBody, TTokens, TUser } from "../../utils/types";
-import { authActions } from "../constants/auth";
+import {
+  TLogin,
+  TResetPassword,
+  TResponseBody,
+  TTokens,
+  TUser,
+} from "../../utils/types";
+import { LOGIN_SUCCESS, authActions } from "../constants/auth";
 
-export interface ILoginSuccess {
+export type ILoginSuccess = {
   readonly type: typeof authActions.LOGIN_SUCCESS;
-  readonly user: TUser;
+  readonly user: TUser | null;
 }
 export interface ILoginFailed {
   readonly type: typeof authActions.LOGIN_FAILED;
@@ -26,31 +31,31 @@ export interface ILogoutSuccess {
   readonly response: any;
 }
 export interface ILogoutFailed {
-  readonly type: typeof authActions.LOGIN_FAILED;
+  readonly type: typeof authActions.LOGOUT_FAILED;
   readonly err: any;
 }
 export interface IGetUser {
-  readonly type: typeof authActions.LOGOUT_SUCCESS;
-  readonly user: TUser;
+  readonly type: typeof authActions.GET_USER_SUCCESS;
+  readonly user: TUser | null;
 }
 export interface IGetUserFailed {
-  readonly type: typeof authActions.LOGIN_FAILED;
+  readonly type: typeof authActions.GET_USER_FAILED;
   readonly err: any;
 }
 export interface IUpdateUser {
   readonly type: typeof authActions.UPDATE_USER_SUCCESS;
-  readonly user: TUser;
+  readonly user: TUser | null;
 }
 export interface IUpdateUserFailed {
   readonly type: typeof authActions.UPDATE_USER_FAILED;
   readonly err: any;
 }
 export interface IRegister {
-  readonly type: typeof authActions.UPDATE_USER_SUCCESS;
-  readonly user: TUser;
+  readonly type: typeof authActions.REGISTER_SUCCESS;
+  readonly response: any;
 }
 export interface IRegisterFailed {
-  readonly type: typeof authActions.UPDATE_USER_FAILED;
+  readonly type: typeof authActions.REGISTER_FAILED;
   readonly err: any;
 }
 export interface IRefreshToken {
@@ -82,38 +87,49 @@ export interface IForgotPasswordFailed {
   readonly err: any;
 }
 
+export type TAuthActions =
+  | ILoginSuccess
+  | ILoginFailed
+  | ILogoutSuccess
+  | ILogoutFailed
+  | IGetUser
+  | IGetUserFailed
+  | IUpdateUser
+  | IUpdateUserFailed
+  | IRegister
+  | IRegisterFailed
+  | IRefreshToken
+  | IRefreshTokenFailed
+  | IResetPassword
+  | IResetPasswordFailed
+  | IGetUserFetching
+  | IForgotPassword
+  | IForgotPasswordFailed;
 
-export const loginSuccess = (user: TUser): ILoginSuccess => ({
+export const loginSuccess = (user: TUser | null): ILoginSuccess => ({
   type: authActions.LOGIN_SUCCESS,
   user,
 });
-
 
 export const loginFailed = (err: any): ILoginFailed => ({
   type: authActions.LOGIN_FAILED,
   err,
 });
 
-
 export const logoutFailed = (err: any): ILogoutFailed => ({
   type: authActions.LOGOUT_FAILED,
   err,
 });
-
-
 
 export const logoutSuccess = (response: any): ILogoutSuccess => ({
   type: authActions.LOGOUT_SUCCESS,
   response,
 });
 
-
-
-export const getUserSuccess = (user: TUser): IGetUser => ({
+export const getUserSuccess = (user: TUser | null): IGetUser => ({
   type: authActions.GET_USER_SUCCESS,
   user,
 });
-
 
 export const getUserFailed = (err: any): IGetUserFailed => ({
   type: authActions.GET_USER_FAILED,
@@ -124,69 +140,57 @@ export const getUserFetching = (): IGetUserFetching => ({
   type: authActions.GET_USER_FETCHING,
 });
 
-
-export const updateUserSuccess = (user: TUser): IUpdateUser => ({
+export const updateUserSuccess = (user: TUser | null): IUpdateUser => ({
   type: authActions.UPDATE_USER_SUCCESS,
   user,
 });
-
 
 export const updateUserFailed = (err: any): IUpdateUserFailed => ({
   type: authActions.UPDATE_USER_FAILED,
   err,
 });
 
-export const registerSuccess = (user: TUser): IRegister => ({
+export const registerSuccess = (response: any): IRegister => ({
   type: authActions.REGISTER_SUCCESS,
-  user,
+  response,
 });
-
 
 export const registerFailed = (err: any): IRegisterFailed => ({
   type: authActions.REGISTER_FAILED,
   err,
 });
 
-
-
 export const refreshTokenSuccess = (tokens: TTokens): IRefreshToken => ({
   type: authActions.REFRESH_TOKEN_SUCCESS,
   tokens,
 });
-
 
 export const refreshTokenFailed = (err: any): IRefreshTokenFailed => ({
   type: authActions.REFRESH_TOKEN_FAILED,
   err,
 });
 
-
-
-export const resetPasswordSuccess = (response: TResponseBody<"password", TResetPassword>): IResetPassword => ({
+export const resetPasswordSuccess = (
+  response: TResponseBody<"password", TResetPassword>
+): IResetPassword => ({
   type: authActions.RESET_PASSWORD_SUCCESS,
   response,
 });
-
 
 export const resetPasswordFailed = (err: any): IResetPasswordFailed => ({
   type: authActions.RESET_PASSWORD_FAILED,
   err,
 });
 
-
 export const forgotPasswordSuccess = (response: any): IForgotPassword => ({
   type: authActions.FORGOT_PASSWORD_SUCCESS,
   response,
 });
 
-
 export const forgotPasswordFailed = (err: any): IForgotPasswordFailed => ({
   type: authActions.FORGOT_PASSWORD_FAILED,
   err,
 });
-
-
-
 
 export const login = (data: TLogin) => async (dispatch: AppDispatch) => {
   return loginApi(data)

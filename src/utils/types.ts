@@ -12,6 +12,7 @@ export type TIngredient = {
   image_large: string;
   image_mobile: string;
   qty: number;
+  key?: string;
 };
 
 export type TIngredientsData = {

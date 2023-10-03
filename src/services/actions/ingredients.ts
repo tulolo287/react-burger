@@ -1,8 +1,7 @@
-import { getIngredientsApi } from "../../utils/api";
-import { actions } from ".";
 import { AppDispatch, State } from "../..";
-import { ingredientsActions } from "../constants/ingredients";
+import { getIngredientsApi } from "../../utils/api";
 import { TIngredient } from "../../utils/types";
+import { ingredientsActions } from "../constants/ingredients";
 
 /*export const ingredientsActions = {
   GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
@@ -26,18 +25,39 @@ export interface IGetIngredientsFailed {
   readonly type: typeof ingredientsActions.GET_INGREDIENTS_FAILED;
   readonly err: any;
 }
-
 export interface IIncreaseIngredientQty {
   readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
+  ingredient: TIngredient;
 }
 export interface IDecreaseIngredientQty {
-  readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
+  readonly type: typeof ingredientsActions.DECREASE_INGREDIENT_QTY;
   item: TIngredient;
 }
+export interface ISetSortedIngredients {
+  readonly type: typeof ingredientsActions.SET_SORTED_INGREDIENTS;
+  ingredients: TIngredient[];
+}
 
-export const decreaseIngredientQty = (item: TIngredient): IDecreaseIngredientQty => ({
+export type TIngredientsActions =
+  | IIngredientsFetching
+  | IGetIngredientsSuccess
+  | IGetIngredientsFailed
+  | IIncreaseIngredientQty
+  | IDecreaseIngredientQty
+  | ISetSortedIngredients;
+
+export const setSortedIngredients = (
+  ingredients: TIngredient[]
+): ISetSortedIngredients => ({
+  type: ingredientsActions.SET_SORTED_INGREDIENTS,
+  ingredients,
+});
+
+export const decreaseIngredientQty = (
+  item: TIngredient
+): IDecreaseIngredientQty => ({
   type: ingredientsActions.DECREASE_INGREDIENT_QTY,
-  item
+  item,
 });
 
 export const ingredientsFetching = (): IIngredientsFetching => ({
@@ -45,7 +65,7 @@ export const ingredientsFetching = (): IIngredientsFetching => ({
 });
 
 export const getIngredientsSuccess = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
@@ -58,6 +78,7 @@ export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
 
 export const increaseIngredientQty = (): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
+  ingredient
 });
 
 export const getIngredients = () => async (dispatch: AppDispatch) => {

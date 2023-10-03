@@ -1,4 +1,8 @@
-import { actions } from "../actions";
+import { TIngredient } from "../../utils/types";
+import { TConstructorActions } from "../actions/constructor";
+
+import { actions } from "../constants";
+
 
 export const initialState = {
   constructorIngredients: [
@@ -16,22 +20,17 @@ export const initialState = {
       image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
       __v: 0,
       qty: 2,
+      key: ""
     },
   ],
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions) => {
   switch (action.type) {
-    case actions.INIT_CONSTRUCTOR: {
-      return {
-        ...state,
-        bun: action.payload,
-        ...(state.constructorIngredients[0] = { ...action.payload, qty: 2 }),
-      };
-    }
+  
     case actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR: {
       const newBurgerIngredients = state.constructorIngredients.filter(
-        (item) => item.key !== action.payload.key,
+        (item) => item.key !== action.ingredient.key,
       );
       return {
         ...state,
@@ -40,12 +39,12 @@ export const constructorReducer = (state = initialState, action) => {
     }
     case actions.CHANGE_CONSTRUCTOR_INGREDIENT: {
       const sortCards = state.constructorIngredients.filter(
-        (item, idx) => idx !== action.payload.dragIndex,
+        (item, idx) => idx !== action.ingredient.dragIndex,
       );
       sortCards.splice(
-        action.payload.hoverIndex,
+        action.ingredient.hoverIndex,
         0,
-        state.constructorIngredients[action.payload.dragIndex],
+        state.constructorIngredients[action.ingredient.dragIndex],
       );
       return { ...state, constructorIngredients: sortCards };
     }
@@ -54,7 +53,7 @@ export const constructorReducer = (state = initialState, action) => {
         ...state,
         constructorIngredients: [
           ...state.constructorIngredients,
-          { ...action.payload, qty: 1 },
+          { ...action.ingredient, qty: 1 },
         ],
       };
     }
@@ -62,13 +61,14 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         ...state.constructorIngredients.splice(0, 1, {
-          ...action.payload,
+          ...action.bun,
           qty: 2,
+          key: ""
         }),
       };
     }
     case actions.SET_ORDER_DETAILS:
-      return { ...state, orderDetails: action.payload };
+      return { ...state, orderDetails: action.orderDetails };
     case actions.CLEAR_ORDER:
       return { ...state, ...initialState };
     default:

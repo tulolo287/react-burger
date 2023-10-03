@@ -1,6 +1,18 @@
 import { TIngredient } from "../../utils/types";
 import { constructorActions } from "../constants/constructor";
 
+/*
+export const constructorActions = {
+  ADD_INGREDIENT_TO_CONSTRUCTOR: "ADD_INGREDIENT_TO_CONSTRUCTOR",
+  ADD_BUN_TO_CONSTRUCTOR: "ADD_BUN_TO_CONSTRUCTOR",
+  REMOVE_INGREDIENT_FROM_CONSTRUCTOR: "REMOVE_INGREDIENT_FROM_CONSTRUCTOR",
+  CHANGE_CONSTRUCTOR_INGREDIENT: "CHANGE_CONSTRUCTOR_INGREDIENT",
+  CLEAR_ORDER: "CLEAR_ORDER",
+  SET_ORDER_DETAILS: "SET_ORDER_DETAILS",
+  INIT_CONSTRUCTOR: "INIT_CONSTRUCTOR",
+};
+*/
+
 export interface IAddIngredientToConstructor {
   readonly type: typeof constructorActions.ADD_INGREDIENT_TO_CONSTRUCTOR;
   readonly ingredient: TIngredient;
@@ -10,13 +22,26 @@ export interface IAddBuntToConstructor {
   readonly bun: TIngredient;
 }
 export interface IChangeConstructorIngredient {
-  readonly type: typeof constructorActions.ADD_INGREDIENT_TO_CONSTRUCTOR;
-  readonly ingredient: TIngredient;
+  readonly type: typeof constructorActions.CHANGE_CONSTRUCTOR_INGREDIENT;
+  readonly ingredient: { dragIndex: number, hoverIndex: number };
 }
 export interface IRemoveIngredientConstructor {
   readonly type: typeof constructorActions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR;
-  readonly ingredient: TIngredient;
+  readonly ingredient: TIngredient
 }
+export interface IInitConstructor {
+  readonly type: typeof constructorActions.INIT_CONSTRUCTOR;
+  readonly bun: TIngredient
+}
+export interface ISetOrderDetails {
+  readonly type: typeof constructorActions.SET_ORDER_DETAILS;
+  readonly orderDetails: any
+}
+export interface IClearOrder {
+  readonly type: typeof constructorActions.CLEAR_ORDER;
+}
+
+export type TConstructorActions = IAddIngredientToConstructor | ISetOrderDetails | IClearOrder| IAddBuntToConstructor | IChangeConstructorIngredient | IRemoveIngredientConstructor
 
 export const removeIngredientConstructor = (
   ingredient: TIngredient,
@@ -26,7 +51,7 @@ export const removeIngredientConstructor = (
 });
 
 export const changeConstructorIngredient = (
-  ingredient: TIngredient,
+  ingredient: { dragIndex: number, hoverIndex: number },
 ): IChangeConstructorIngredient => ({
   type: constructorActions.CHANGE_CONSTRUCTOR_INGREDIENT,
   ingredient,
@@ -46,7 +71,22 @@ export const addBuntToConstructor = (
   bun,
 });
 
-export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
-  type: ingredientsActions.GET_INGREDIENTS_FAILED,
-  err,
+export const initConstructor = (
+  bun: TIngredient,
+): IAddBuntToConstructor => ({
+  type: constructorActions.ADD_BUN_TO_CONSTRUCTOR,
+  bun,
+});
+
+export const setOrderDetails = (
+  orderDetails: any,
+): ISetOrderDetails => ({
+  type: constructorActions.SET_ORDER_DETAILS,
+  orderDetails,
+});
+
+export const clearOrder = (
+  orderDetails: any,
+): IClearOrder => ({
+  type: constructorActions.CLEAR_ORDER,
 });

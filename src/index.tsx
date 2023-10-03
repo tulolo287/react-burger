@@ -18,7 +18,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { actions } from "./services/actions";
+import { TActions } from "./services/actions";
 import { socketMiddleware } from "./services/middleware/socketMiddleware";
 
 declare global {
@@ -33,16 +33,13 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk), applyMiddleware(socketMiddleware("lll")))
 );
 
-type TApplicationActions = typeof actions;
 
-export const state = store.getState();
-export type State = typeof state;
-export type Actions = typeof actions;
-export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
+export type State = ReturnType<typeof store.getState>;
+export type AppDispatch = ThunkDispatch<State, any, TActions>;
 export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, State, AnyAction>
+  ThunkAction<TReturn, Action, State, TActions>
 >;
-
+export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, State, unknown, TActions>;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

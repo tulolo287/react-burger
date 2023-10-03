@@ -7,6 +7,8 @@ import {
   getIngredients,
   getIngredientsSelector,
   getSortedIngredientsSelector,
+  setSortedIngredient,
+  setSortedIngredients,
 } from "../../services/actions/ingredients";
 import { SORT_ORDER, TYPES } from "../../utils/consts";
 import { AssociativeArray, TIngredient, TIngredients } from "../../utils/types";
@@ -43,7 +45,7 @@ let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
     const sortedData = ingredients?.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
-    dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });
+    dispatch(setSortedIngredients(sortedData));
   };
 
   useEffect(() => {

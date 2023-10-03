@@ -1,6 +1,5 @@
-import { actions } from "../actions";
-import { postOrderApi } from "../../utils/api";
 import { AppDispatch } from "../..";
+import { postOrderApi } from "../../utils/api";
 import { orderActions } from "../constants/order-details";
 
 export interface IOrderFetching {
@@ -12,8 +11,13 @@ export interface IPostOrderSuccess {
 }
 export interface IPostOrderFailed {
   readonly type: typeof orderActions.POST_ORDER_FAILED;
-  readonly order: any;
+  readonly err: any;
 }
+
+export type TOrderDetailsActions =
+  | IOrderFetching
+  | IPostOrderSuccess
+  | IPostOrderFailed;
 
 export const orderFetching = (): IOrderFetching => ({
   type: orderActions.POST_ORDER_FETCHING,
@@ -29,8 +33,8 @@ export const postOrderFailed = (err: any): IPostOrderFailed => ({
   err,
 });
 
-export const postOrder = (request) => async (dispatch: AppDispatch) => {
-  dispatch({ type: actions.POST_ORDER_FETCHING });
+export const postOrder = (request: any) => async (dispatch: AppDispatch) => {
+  dispatch({ type: orderActions.POST_ORDER_FETCHING });
   return postOrderApi(request)
     .then((order) => {
       dispatch(postOrderSuccess(order));

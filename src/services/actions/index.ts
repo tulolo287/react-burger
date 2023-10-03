@@ -1,15 +1,10 @@
-import { authActions } from "./auth";
-import { constructorActions } from "./constructor";
-import { ingredientDetailsActions } from "./ingredient-details";
-import { ingredientsActions } from "./ingredients";
-import { orderActions } from "./order-details";
-import { wsActions } from "./wsActions";
+import { TAuthActions } from "./auth";
+import { TConstructorActions } from "./constructor";
+import { TIngredientsActions } from "./ingredients";
+import { TOrderDetailsActions } from "./order-details";
 
-export const actions = {
-  ...wsActions,
-  ...ingredientsActions,
-  ...constructorActions,
-  ...orderActions,
-  ...ingredientDetailsActions,
-  ...authActions,
-};
+export type TActions =
+  | TConstructorActions
+  | TAuthActions
+  | TIngredientsActions
+  | TOrderDetailsActions;
