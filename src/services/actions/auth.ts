@@ -17,26 +17,81 @@ export interface ILoginSuccess {
   readonly type: typeof authActions.LOGIN_SUCCESS;
   readonly user: TUser;
 }
+export interface ILoginFailed {
+  readonly type: typeof authActions.LOGIN_FAILED;
+  readonly err: any;
+}
+export interface ILogoutSuccess {
+  readonly type: typeof authActions.LOGOUT_SUCCESS;
+  readonly response: any;
+}
+export interface ILogoutFailed {
+  readonly type: typeof authActions.LOGIN_FAILED;
+  readonly err: any;
+}
+export interface IGetUser {
+  readonly type: typeof authActions.LOGOUT_SUCCESS;
+  readonly user: TUser;
+}
+export interface IGetUserFailed {
+  readonly type: typeof authActions.LOGIN_FAILED;
+  readonly err: any;
+}
+export interface IUpdateUser {
+  readonly type: typeof authActions.UPDATE_USER_SUCCESS;
+  readonly user: TUser;
+}
+export interface IUpdateUserFailed {
+  readonly type: typeof authActions.UPDATE_USER_FAILED;
+  readonly err: any;
+}
+export interface IRegister {
+  readonly type: typeof authActions.UPDATE_USER_SUCCESS;
+  readonly user: TUser;
+}
+export interface IRegisterFailed {
+  readonly type: typeof authActions.UPDATE_USER_FAILED;
+  readonly err: any;
+}
+export interface IRefreshToken {
+  readonly type: typeof authActions.REFRESH_TOKEN_SUCCESS;
+  readonly tokens: TTokens;
+}
+export interface IRefreshTokenFailed {
+  readonly type: typeof authActions.REFRESH_TOKEN_FAILED;
+  readonly err: any;
+}
+export interface IResetPassword {
+  readonly type: typeof authActions.RESET_PASSWORD_SUCCESS;
+  readonly response: TResponseBody<"password", TResetPassword>;
+}
+export interface IResetPasswordFailed {
+  readonly type: typeof authActions.RESET_PASSWORD_FAILED;
+  readonly err: any;
+}
+
+export interface IForgotPassword {
+  readonly type: typeof authActions.FORGOT_PASSWORD_SUCCESS;
+  readonly response: any;
+}
+
+export interface IForgotPasswordFailed {
+  readonly type: typeof authActions.FORGOT_PASSWORD_FAILED;
+  readonly err: any;
+}
+
 
 export const loginSuccess = (user: TUser): ILoginSuccess => ({
   type: authActions.LOGIN_SUCCESS,
   user,
 });
 
-export interface ILoginFailed {
-  readonly type: typeof authActions.LOGIN_FAILED;
-  readonly err: any;
-}
 
 export const loginFailed = (err: any): ILoginFailed => ({
   type: authActions.LOGIN_FAILED,
   err,
 });
 
-export interface ILogoutFailed {
-  readonly type: typeof authActions.LOGIN_FAILED;
-  readonly err: any;
-}
 
 export const logoutFailed = (err: any): ILogoutFailed => ({
   type: authActions.LOGOUT_FAILED,
@@ -44,10 +99,6 @@ export const logoutFailed = (err: any): ILogoutFailed => ({
 });
 
 
-export interface ILogoutSuccess {
-  readonly type: typeof authActions.LOGOUT_SUCCESS;
-  readonly response: any;
-}
 
 export const logoutSuccess = (response: any): ILogoutSuccess => ({
   type: authActions.LOGOUT_SUCCESS,
@@ -55,66 +106,39 @@ export const logoutSuccess = (response: any): ILogoutSuccess => ({
 });
 
 
-export interface IGetUser {
-  readonly type: typeof authActions.LOGOUT_SUCCESS;
-  readonly user: TUser;
-}
 
 export const getUserSuccess = (user: TUser): IGetUser => ({
   type: authActions.GET_USER_SUCCESS,
   user,
 });
 
-export interface IGetUserFailed {
-  readonly type: typeof authActions.LOGIN_FAILED;
-  readonly err: any;
-}
 
 export const getUserFailed = (err: any): IGetUserFailed => ({
   type: authActions.GET_USER_FAILED,
   err,
 });
-export interface IGetUserFetching {
-  readonly type: typeof authActions.GET_USER_FETCHING;
-}
 
 export const getUserFetching = (): IGetUserFetching => ({
   type: authActions.GET_USER_FETCHING,
 });
 
-export interface IUpdateUser {
-  readonly type: typeof authActions.UPDATE_USER_SUCCESS;
-  readonly user: TUser;
-}
 
 export const updateUserSuccess = (user: TUser): IUpdateUser => ({
   type: authActions.UPDATE_USER_SUCCESS,
   user,
 });
 
-export interface IUpdateUserFailed {
-  readonly type: typeof authActions.UPDATE_USER_FAILED;
-  readonly err: any;
-}
 
 export const updateUserFailed = (err: any): IUpdateUserFailed => ({
   type: authActions.UPDATE_USER_FAILED,
   err,
 });
-export interface IRegister {
-  readonly type: typeof authActions.UPDATE_USER_SUCCESS;
-  readonly user: TUser;
-}
 
 export const registerSuccess = (user: TUser): IRegister => ({
   type: authActions.REGISTER_SUCCESS,
   user,
 });
 
-export interface IRegisterFailed {
-  readonly type: typeof authActions.UPDATE_USER_FAILED;
-  readonly err: any;
-}
 
 export const registerFailed = (err: any): IRegisterFailed => ({
   type: authActions.REGISTER_FAILED,
@@ -122,20 +146,12 @@ export const registerFailed = (err: any): IRegisterFailed => ({
 });
 
 
-export interface IRefreshToken {
-  readonly type: typeof authActions.REFRESH_TOKEN_SUCCESS;
-  readonly tokens: TTokens;
-}
 
 export const refreshTokenSuccess = (tokens: TTokens): IRefreshToken => ({
   type: authActions.REFRESH_TOKEN_SUCCESS,
   tokens,
 });
 
-export interface IRefreshTokenFailed {
-  readonly type: typeof authActions.REFRESH_TOKEN_FAILED;
-  readonly err: any;
-}
 
 export const refreshTokenFailed = (err: any): IRefreshTokenFailed => ({
   type: authActions.REFRESH_TOKEN_FAILED,
@@ -143,40 +159,24 @@ export const refreshTokenFailed = (err: any): IRefreshTokenFailed => ({
 });
 
 
-export interface IResetPassword {
-  readonly type: typeof authActions.RESET_PASSWORD_SUCCESS;
-  readonly response: TResponseBody<"password", TResetPassword>;
-}
 
 export const resetPasswordSuccess = (response: TResponseBody<"password", TResetPassword>): IResetPassword => ({
   type: authActions.RESET_PASSWORD_SUCCESS,
   response,
 });
 
-export interface IResetPasswordFailed {
-  readonly type: typeof authActions.RESET_PASSWORD_FAILED;
-  readonly err: any;
-}
 
 export const resetPasswordFailed = (err: any): IResetPasswordFailed => ({
   type: authActions.RESET_PASSWORD_FAILED,
   err,
 });
 
-export interface IForgotPassword {
-  readonly type: typeof authActions.FORGOT_PASSWORD_SUCCESS;
-  readonly response: any;
-}
 
 export const forgotPasswordSuccess = (response: any): IForgotPassword => ({
   type: authActions.FORGOT_PASSWORD_SUCCESS,
   response,
 });
 
-export interface IForgotPasswordFailed {
-  readonly type: typeof authActions.FORGOT_PASSWORD_FAILED;
-  readonly err: any;
-}
 
 export const forgotPasswordFailed = (err: any): IForgotPasswordFailed => ({
   type: authActions.FORGOT_PASSWORD_FAILED,
