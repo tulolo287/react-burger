@@ -69,7 +69,9 @@ export interface IResetPasswordFailed {
   readonly type: typeof authActions.RESET_PASSWORD_FAILED;
   readonly err: any;
 }
-
+export interface IGetUserFetching {
+  readonly type: typeof authActions.GET_USER_FETCHING;
+}
 export interface IForgotPassword {
   readonly type: typeof authActions.FORGOT_PASSWORD_SUCCESS;
   readonly response: any;
