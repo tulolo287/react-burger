@@ -6,6 +6,8 @@ import { FC, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { actions } from "../../services/actions";
+import { removeIngredientConstructor } from "../../services/actions/constructor";
+import { decreaseIngredientQty } from "../../services/actions/ingredients";
 import { TConstructorIngredient } from "../../utils/types";
 import styles from "./burger-constructor-item.module.css";
 
@@ -51,14 +53,8 @@ const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
   drag(drop(ref));
 
   const removeBurgerIngredient = (item: TConstructorIngredient): void => {
-    dispatch({
-      type: actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR,
-      payload: item,
-    });
-    dispatch({
-      type: actions.DECREASE_INGREDIENT_QTY,
-      payload: item,
-    });
+    dispatch(removeIngredientConstructor(item));
+    dispatch(decreaseIngredientQty(item));
   };
 
   return (

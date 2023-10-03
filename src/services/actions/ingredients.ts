@@ -4,7 +4,16 @@ import { AppDispatch, State } from "../..";
 import { ingredientsActions } from "../constants/ingredients";
 import { TIngredient } from "../../utils/types";
 
-
+/*export const ingredientsActions = {
+  GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
+  GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED",
+  SET_SORTED_INGREDIENTS: "SET_All_INGREDIENTS",
+  SET_INGREDIENT_DETAILS: "SET_INGREDIENT_DETAILS",
+  INCREASE_INGREDIENT_QTY: "INCREASE_INGREDIENT_QTY",
+  DECREASE_INGREDIENT_QTY: "DECREASE_INGREDIENT_QTY",
+  INGREDIENTS_FETCHING: "INGREDIENTS_FETCHING",
+};
+*/
 
 export interface IIngredientsFetching {
   readonly type: typeof ingredientsActions.INGREDIENTS_FETCHING;
@@ -18,11 +27,26 @@ export interface IGetIngredientsFailed {
   readonly err: any;
 }
 
+export interface IIncreaseIngredientQty {
+  readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
+}
+export interface IDecreaseIngredientQty {
+  readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
+  item: TIngredient;
+}
+
+export const decreaseIngredientQty = (item: TIngredient): IDecreaseIngredientQty => ({
+  type: ingredientsActions.DECREASE_INGREDIENT_QTY,
+  item
+});
+
 export const ingredientsFetching = (): IIngredientsFetching => ({
   type: ingredientsActions.INGREDIENTS_FETCHING,
 });
 
-export const getIngredientsSuccess = (ingredients: TIngredient[]): IGetIngredientsSuccess => ({
+export const getIngredientsSuccess = (
+  ingredients: TIngredient[],
+): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
 });
@@ -30,6 +54,10 @@ export const getIngredientsSuccess = (ingredients: TIngredient[]): IGetIngredien
 export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
   type: ingredientsActions.GET_INGREDIENTS_FAILED,
   err,
+});
+
+export const increaseIngredientQty = (): IIncreaseIngredientQty => ({
+  type: ingredientsActions.INCREASE_INGREDIENT_QTY,
 });
 
 export const getIngredients = () => async (dispatch: AppDispatch) => {

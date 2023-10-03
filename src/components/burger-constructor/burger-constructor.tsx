@@ -12,6 +12,11 @@ import { AppDispatch, State } from "../..";
 import useModal from "../../hooks/useModal";
 import { actions } from "../../services/actions";
 import { getUser } from "../../services/actions/auth";
+import {
+  addBuntToConstructor,
+  addIngredientToConstructor,
+} from "../../services/actions/constructor";
+import { increaseIngredientQty } from "../../services/actions/ingredients";
 import { postOrder } from "../../services/actions/order-details";
 import { TConstructorIngredient, TIngredient } from "../../utils/types";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
@@ -25,7 +30,7 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
 
   const constructorIngredients = useSelector(
-    (state: State) => state.constructorReducer.constructorIngredients
+    (state: State) => state.constructorReducer.constructorIngredients,
   );
   const bun = constructorIngredients[0];
   const [disableOrder, setDisableOrder] = useState<boolean>(true);
@@ -35,7 +40,7 @@ const BurgerConstructor = () => {
     constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
     return constructorIngredients.reduce(
       (val: number, acc: TIngredient) => (val += acc.qty * acc.price),
-      0
+      0,
     );
   }, [constructorIngredients, bun]);
 
@@ -59,20 +64,11 @@ const BurgerConstructor = () => {
 
   const onDropHandler = (item: TConstructorIngredient) => {
     if (item.type === "bun") {
-      dispatch({
-        type: actions.ADD_BUN_TO_CONSTRUCTOR,
-        payload: { ...item, key: uuidv4() },
-      });
+      dispatch(addBuntToConstructor({ ...item, key: uuidv4() }));
     } else {
-      dispatch({
-        type: actions.ADD_INGREDIENT_TO_CONSTRUCTOR,
-        payload: { ...item, key: uuidv4() },
-      });
-      dispatch({
-        type: actions.INCREASE_INGREDIENT_QTY,
-        payload: item,
-      });
+      dispatch(addIngredientToConstructor({ ...item, key: uuidv4() }));
     }
+    dispatch(increaseIngredientQty(item));
   };
 
   const makeOrder = async () => {
@@ -81,7 +77,7 @@ const BurgerConstructor = () => {
       return;
     }
     const ingredientsId = constructorIngredients.map(
-      (item: TConstructorIngredient) => item._id
+      (item: TConstructorIngredient) => item._id,
     );
 
     const request = {
@@ -115,7 +111,7 @@ const BurgerConstructor = () => {
               (item: TConstructorIngredient, idx: number) =>
                 item.type !== "bun" ? (
                   <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-                ) : null
+                ) : null,
             )}
           </ul>
           <ul>
