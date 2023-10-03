@@ -1,19 +1,41 @@
 import { getIngredientsApi } from "../../utils/api";
 import { actions } from ".";
 import { AppDispatch, State } from "../..";
+import { ingredientsActions } from "../constants/ingredients";
+import { TIngredient } from "../../utils/types";
 
-export const ingredientsActions = {
-  GET_INGREDIENTS_SUCCESS: "GET_INGREDIENTS_SUCCESS",
-  GET_INGREDIENTS_FAILED: "GET_INGREDIENTS_FAILED",
-  SET_SORTED_INGREDIENTS: "SET_All_INGREDIENTS",
-  SET_INGREDIENT_DETAILS: "SET_INGREDIENT_DETAILS",
-  INCREASE_INGREDIENT_QTY: "INCREASE_INGREDIENT_QTY",
-  DECREASE_INGREDIENT_QTY: "DECREASE_INGREDIENT_QTY",
-  INGREDIENTS_FETCHING: "INGREDIENTS_FETCHING",
-};
+
+export interface IIngredientsFetching {
+  readonly type: typeof ingredientsActions.INGREDIENTS_FETCHING;
+}
+
+export const ingredientsFetching = (): IIngredientsFetching => ({
+  type: ingredientsActions.INGREDIENTS_FETCHING,
+});
+
+
+export interface IGetIngredientsSuccess {
+  readonly type: typeof ingredientsActions.GET_INGREDIENTS_SUCCESS;
+  readonly ingredients: TIngredient[];
+}
+
+export const loginSuccess = (ingredients: TIngredient[]): IGetIngredientsSuccess => ({
+  type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
+  ingredients,
+});
+
+export interface ILoginFailed {
+  readonly type: typeof authActions.LOGIN_FAILED;
+  readonly err: any;
+}
+
+export const loginFailed = (err: any): ILoginFailed => ({
+  type: authActions.LOGIN_FAILED,
+  err,
+});
 
 export const getIngredients = () => async (dispatch: AppDispatch) => {
-  dispatch({ type: actions.INGREDIENTS_FETCHING, payload: true });
+  dispatch(ingredientsFetching());
   return getIngredientsApi()
     .then((response) => {
       dispatch({
