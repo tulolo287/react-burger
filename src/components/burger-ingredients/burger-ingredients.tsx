@@ -1,6 +1,8 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {useSelector} from "../../services/hooks"
+
 import { AppDispatch, State } from "../../services/store";
 import {
   getIngredients,
