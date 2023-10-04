@@ -5,7 +5,6 @@ import {
 import { FC, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { actions } from "../../services/actions";
 import { changeConstructorIngredient, removeIngredientConstructor } from "../../services/actions/constructor";
 import { decreaseIngredientQty } from "../../services/actions/ingredients";
 import { TConstructorIngredient } from "../../utils/types";

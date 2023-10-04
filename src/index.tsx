@@ -18,7 +18,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { TActions } from "./services/actions";
+import { Actions } from "./services/actions";
 import { socketMiddleware } from "./services/middleware/socketMiddleware";
 import {store} from "./services/store"
 

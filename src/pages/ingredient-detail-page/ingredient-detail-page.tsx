@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AppDispatch, State } from "../..";
-import { actions } from "../../services/actions";
+import { AppDispatch, State } from "../../services/store";
 import {
   getIngredients,
   getIngredientsSelector,
+  setSortedIngredients,
 } from "../../services/actions/ingredients";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
@@ -39,7 +39,7 @@ const IngredientDetailPage = () => {
     const sortedData = ingredients.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
-    dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });
+    dispatch(setSortedIngredients(sortedData));
   };
 
   if (ingredients) {

@@ -1,13 +1,11 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, State } from "../..";
-import { actions } from "../../services/actions";
+import { AppDispatch, State } from "../../services/store";
 import {
   getIngredients,
   getIngredientsSelector,
   getSortedIngredientsSelector,
-  setSortedIngredient,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
 import { SORT_ORDER, TYPES } from "../../utils/consts";

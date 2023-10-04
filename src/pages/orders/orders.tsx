@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { AppDispatch, State } from "../..";
+import { AppDispatch, State } from "../../services/store";
 import { logout } from "../../services/actions/auth";
 import styles from "./orders.module.css";
 

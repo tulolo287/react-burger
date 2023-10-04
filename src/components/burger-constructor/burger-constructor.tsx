@@ -8,9 +8,8 @@ import { useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { AppDispatch, State } from "../..";
+import { AppDispatch, State } from "../../services/store";
 import useModal from "../../hooks/useModal";
-import { actions } from "../../services/actions";
 import { getUser } from "../../services/actions/auth";
 import {
   addBuntToConstructor,

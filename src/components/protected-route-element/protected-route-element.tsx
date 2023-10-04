@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
-import { AppDispatch, State } from "../..";
+import { AppDispatch, State } from "../../services/store";
 
 const ProtectedRouteElement = ({ element }: { element: React.ReactElement }) => {
   const user = useSelector((state: State) => state.authReducer.user);

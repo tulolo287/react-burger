@@ -1,4 +1,4 @@
-import { AppDispatch, State } from "../..";
+import { AppDispatch, State } from "../store";
 import { getIngredientsApi } from "../../utils/api";
 import { TIngredient } from "../../utils/types";
 import { ingredientsActions } from "../constants/ingredients";
@@ -76,7 +76,7 @@ export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
   err,
 });
 
-export const increaseIngredientQty = (): IIncreaseIngredientQty => ({
+export const increaseIngredientQty = (ingredient: TIngredient): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
   ingredient
 });

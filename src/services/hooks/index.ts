@@ -3,7 +3,7 @@ import {
    useDispatch as dispatchHook,
    useSelector as selectorHook
  } from 'react-redux';
- import { AppDispatch, AppThunk, State } from '../../index';
+ import { AppDispatch, AppThunk, State } from '../store';
  
 
  export const useSelector: TypedUseSelectorHook<State> = selectorHook;

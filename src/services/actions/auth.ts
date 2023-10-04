@@ -1,4 +1,4 @@
-import { AppDispatch } from "../..";
+import { AppDispatch } from "../../services/store";
 import {
   forgotPasswordApi,
   getUserApi,

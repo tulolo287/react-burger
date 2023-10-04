@@ -7,7 +7,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../..";
+import { AppDispatch, State } from "../../services/store";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
 import { TUser } from "../../utils/types";
 import styles from "./profile.module.css";

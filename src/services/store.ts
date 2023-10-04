@@ -14,7 +14,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { TActions } from "./actions";
+import { Actions } from "./actions";
 import { socketMiddleware } from "./middleware/socketMiddleware";
 
 
@@ -35,8 +35,8 @@ export const store = createStore(
 
 
 export type State = ReturnType<typeof store.getState>;
-export type AppDispatch = ThunkDispatch<State, any, TActions>;
+export type AppDispatch = ThunkDispatch<State, any, Actions>;
 export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, State, TActions>
+  ThunkAction<TReturn, Action, State, Actions>
 >;
-export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, State, unknown, TActions>;
+export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, State, unknown, Actions>;

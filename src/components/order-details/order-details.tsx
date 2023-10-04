@@ -1,7 +1,7 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./order-details.module.css";
 import { useSelector } from "react-redux";
-import { State } from "../..";
+import { State } from "../../services/store";
 
 const OrderDetails = () => {
   const orderDetails = useSelector(

@@ -3,7 +3,7 @@ import { TConstructorActions } from "./constructor";
 import { TIngredientsActions } from "./ingredients";
 import { TOrderDetailsActions } from "./order-details";
 
-export type TActions =
+export type Actions =
   | TConstructorActions
   | TAuthActions
   | TIngredientsActions

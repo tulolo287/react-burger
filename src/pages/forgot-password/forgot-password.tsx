@@ -5,7 +5,7 @@ import {
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../..";
+import { AppDispatch, State } from "../../services/store";
 import { forgotPassword, getUser } from "../../services/actions/auth";
 import styles from "./forgot-password.module.css";
 
