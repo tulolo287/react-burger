@@ -3,7 +3,8 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch, State } from "../../services/store";
 import { forgotPassword, getUser } from "../../services/actions/auth";
@@ -23,17 +24,20 @@ const ForgotPassword = () => {
     }
   }, [user, dispatch]);
 
-  const forgotPasswordHandle = useCallback((e: SyntheticEvent) => {
-    e.preventDefault();
-    if (emailValue) {
-      const data = {
-        email: emailValue,
-      };
-      dispatch(forgotPassword(data)).then(() =>
-        navigate("/reset-password", { state: { from: "forgot-password" } }),
-      );
-    }
-  }, [emailValue]);
+  const forgotPasswordHandle = useCallback(
+    (e: SyntheticEvent) => {
+      e.preventDefault();
+      if (emailValue) {
+        const data = {
+          email: emailValue,
+        };
+        dispatch(forgotPassword(data)).then(() =>
+          navigate("/reset-password", { state: { from: "forgot-password" } }),
+        );
+      }
+    },
+    [emailValue],
+  );
 
   return (
     <>

@@ -1,4 +1,4 @@
-import reportWebVitals from "./reportWebVitals";
+
 import {
   legacy_createStore as createStore,
   compose,

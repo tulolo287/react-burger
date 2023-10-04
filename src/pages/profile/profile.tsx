@@ -5,7 +5,8 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch, State } from "../../services/store";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
@@ -26,26 +27,29 @@ const Profile = () => {
     }
   }, []);
 
-  const onSubmit = useCallback((e: React.SyntheticEvent) => {
-    e.preventDefault();
-    let data;
-    userInput.password
-      ? (data = {
-          name: userInput.name,
-          email: userInput.email,
-          password: userInput.password,
-        })
-      : (data = {
-          name: userInput.name,
-          email: userInput.email,
-        });
+  const onSubmit = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.preventDefault();
+      let data;
+      userInput.password
+        ? (data = {
+            name: userInput.name,
+            email: userInput.email,
+            password: userInput.password,
+          })
+        : (data = {
+            name: userInput.name,
+            email: userInput.email,
+          });
 
-    dispatch(updateUser(data))
-      .then((user) => {
-        setSaveButton(false);
-      })
-      .catch((err) => alert("Update user failed"));
-  }, [userInput]);
+      dispatch(updateUser(data))
+        .then((user) => {
+          setSaveButton(false);
+        })
+        .catch((err) => alert("Update user failed"));
+    },
+    [userInput],
+  );
 
   const onLogout = () => {
     dispatch(logout()).then((res: Response) => {

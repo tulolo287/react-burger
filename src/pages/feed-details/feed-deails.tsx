@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import styles from "./feed-details.module.css";
 
 const FeedDetails = () => {
-  // const ingredients: TIngredient[] = useSelector(getIngredientsSelector);
   const [order, setOrder] = useState();
   const params = useParams();
   console.log(params);

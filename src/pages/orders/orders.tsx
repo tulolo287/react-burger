@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {useSelector} from "../../services/hooks"
 import { NavLink } from "react-router-dom";
 import { AppDispatch, State } from "../../services/store";
 import { logout } from "../../services/actions/auth";

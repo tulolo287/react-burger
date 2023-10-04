@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useSelector } from "react-redux";
+import {useSelector} from "../../services/hooks"
 import { Link } from "react-router-dom";
 import { getIngredientsSelector } from "../../services/actions/ingredients";
 import { TIngredient } from "../../utils/types";

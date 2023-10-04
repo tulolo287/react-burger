@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import { useParams } from "react-router-dom";
 import { AppDispatch, State } from "../../services/store";
 import {
@@ -15,10 +16,10 @@ const IngredientDetailPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const ingredients = useSelector(getIngredientsSelector);
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError
+    (state: State) => state.ingredientsReducer.fetchError,
   );
   const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading
+    (state: State) => state.ingredientsReducer.isLoading,
   );
 
   let ingredientDetails;
@@ -44,7 +45,7 @@ const IngredientDetailPage = () => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id
+      (item: TIngredient) => item._id === id,
     );
   }
 

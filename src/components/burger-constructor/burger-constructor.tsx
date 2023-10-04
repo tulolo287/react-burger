@@ -5,7 +5,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useMemo, useState } from "react";
 import { useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useSelector } from "../../services/hooks";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { AppDispatch, State } from "../../services/store";
