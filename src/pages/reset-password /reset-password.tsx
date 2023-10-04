@@ -5,12 +5,12 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {useSelector} from "../../services/hooks"
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../../services/store";
 import { getUser, resetPassword } from "../../services/actions/auth";
-import styles from "./reset-password.module.css";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import { TResetPassword } from "../../utils/types";
+import styles from "./reset-password.module.css";
 
 const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");

@@ -11,8 +11,8 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
-  qty: number;
-  key?: string;
+  qty: number | null;
+  key: string;
 };
 
 export type TIngredientsData = {

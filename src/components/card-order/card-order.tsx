@@ -23,19 +23,15 @@ type TCardOrderProps = {
   orders: TOrder[] | null;
 };
 
-type TResponseOrders = {
-  orders: TOrder[];
-  total: number;
-  totalToday: number;
-} & TResponse;
 
-const CardOrder: FC<TCardOrderProps> = ({ orders }) => {
-  const ingredients: Array<TIngredient> = useSelector(getIngredientsSelector);
+const CardOrder = () => {
+  const ingredients: Array<TIngredient> | null = useSelector(getIngredientsSelector);
   const lastIngredientCount: number = 5;
-
+  const messages = useSelector(state => state.wsReducer.messages)
+console.log(messages)
   return (
     <>
-      {orders?.map((order, idx) => (
+      {messages?.orders?.map((order, idx) => (
         <Link to={`/feed/${order?._id}`}>
           <div className={styles.card_order}>
             <div className={`${styles.title} mt-6`}>
@@ -54,7 +50,7 @@ const CardOrder: FC<TCardOrderProps> = ({ orders }) => {
                       >
                         <img
                           src={
-                            ingredients.find((item) => item._id === id)?.image
+                            ingredients?.find((item) => item._id === id)?.image
                           }
                         />
                         {idx === lastIngredientCount - 1 &&

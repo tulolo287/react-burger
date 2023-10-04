@@ -5,10 +5,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../../services/store";
 import { getUser, login } from "../../services/actions/auth";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import styles from "./login.module.css";
 
 const Login = () => {
@@ -41,7 +41,7 @@ const Login = () => {
         dispatch(login(data));
       }
     },
-    [emailValue, passwordValue, dispatch],
+    [emailValue, passwordValue, dispatch]
   );
 
   return (

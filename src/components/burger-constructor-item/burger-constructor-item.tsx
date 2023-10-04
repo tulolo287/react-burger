@@ -7,11 +7,11 @@ import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { changeConstructorIngredient, removeIngredientConstructor } from "../../services/actions/constructor";
 import { decreaseIngredientQty } from "../../services/actions/ingredients";
-import { TConstructorIngredient } from "../../utils/types";
+import { TConstructorIngredient, TIngredient } from "../../utils/types";
 import styles from "./burger-constructor-item.module.css";
 
 type IConstructorIngredientProps = {
-  item: TConstructorIngredient;
+  item: TIngredient;
   idx: number;
 };
 
@@ -49,7 +49,7 @@ const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
 
   drag(drop(ref));
 
-  const removeBurgerIngredient = (item: TConstructorIngredient): void => {
+  const removeBurgerIngredient = (item: TIngredient): void => {
     dispatch(removeIngredientConstructor(item));
     dispatch(decreaseIngredientQty(item));
   };

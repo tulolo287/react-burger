@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import {useSelector} from "../../services/hooks"
 import { NavLink } from "react-router-dom";
-import { AppDispatch, State } from "../../services/store";
 import { logout } from "../../services/actions/auth";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import styles from "./orders.module.css";
 
 const Orders = () => {

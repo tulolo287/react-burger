@@ -1,4 +1,4 @@
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../types";
 import { postOrderApi } from "../../utils/api";
 import { orderActions } from "../constants/order-details";
 

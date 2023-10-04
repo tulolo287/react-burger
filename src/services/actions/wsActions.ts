@@ -1,10 +1,46 @@
-export const WS_CONNECTION_START: "WS_CONNECTION_START" = "WS_CONNECTION_START";
-export const WS_CONNECTION_SUCCESS: "WS_CONNECTION_SUCCESS" =
-  "WS_CONNECTION_SUCCESS";
-export const WS_CONNECTION_ERROR: "WS_CONNECTION_ERROR" = "WS_CONNECTION_ERROR";
-export const WS_CONNECTION_CLOSED: "WS_CONNECTION_CLOSED" =
-  "WS_CONNECTION_CLOSED";
-export const WS_GET_MESSAGE: "WS_GET_MESSAGE" = "WS_GET_MESSAGE";
-export const WS_SEND_MESSAGE: "WS_SEND_MESSAGE" = "WS_SEND_MESSAGE";
+import { actions } from '../constants';
+import {
+  wsActions
+} from '../constants/wsConsts';
+import type { AppDispatch, IMessage} from '../types';
 
-export const wsActions = {WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_START} 
+
+export interface IWSConnectionStart {
+  readonly type: typeof wsActions.WS_CONNECTION_START;
+}
+
+export interface IWSConnectionSuccessAction {
+  readonly type: typeof wsActions.WS_CONNECTION_SUCCESS;
+}
+
+export interface IWSConnectionErrorAction {
+  readonly type: typeof wsActions.WS_CONNECTION_ERROR;
+  readonly payload: Event;
+}
+
+export interface IWSConnectionClosedAction {
+  readonly type: typeof wsActions.WS_CONNECTION_CLOSED;
+}
+
+export interface IWSGetMessageAction {
+  readonly type: typeof wsActions.WS_GET_MESSAGE;
+  readonly payload: any;
+}
+
+export interface IWSSendMessageAction {
+  readonly type: typeof wsActions.WS_SEND_MESSAGE;
+  readonly payload: {message: string};
+}
+
+export type TWSActions =
+  | IWSConnectionStart
+  | IWSConnectionSuccessAction
+  | IWSConnectionErrorAction
+  | IWSConnectionClosedAction
+  | IWSGetMessageAction
+  | IWSSendMessageAction;
+
+  export const getOrders = (url: string) => async (dispatch: AppDispatch) => {
+    dispatch({ type: actions.WS_CONNECTION_START, url});
+    
+  };

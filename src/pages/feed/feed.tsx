@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import CardOrder from "../../components/card-order/card-order";
 import OrdersTotal from "../../components/orders-total/orders-total";
+import { actions } from "../../services/constants";
+import { AppDispatch } from "../../services/types";
 import styles from "./feed.module.css";
+import { useSelector } from "../../services/hooks";
+import { getOrders } from "../../services/actions/wsActions";
 
 type TResponse = {
   success: boolean;
@@ -24,33 +29,33 @@ type TResponseOrders = {
 } & TResponse;
 
 const Feed = () => {
-  const [orders, setOrders] = useState<Array<TOrder> | null>(null);
+ // const [orders, setOrders] = useState<Array<TOrder> | null>(null);
   const [ordersDone, setOrdersDone] = useState<Array<TOrder> | null>(null);
   const [ordersInWork, setOrdersInWork] = useState<Array<TOrder> | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const messages = useSelector(state => state.wsReducer.messages)
 
+const orders: TOrder | null = null
   useEffect(() => {
-    const socket = new WebSocket("wss://norma.nomoreparties.space/orders/all");
-    socket.onmessage = async (event) => {
-      const message: TResponseOrders = await JSON.parse(event.data);
-      if (message.success) {
-        setOrders(message.orders);
-        const done = message.orders.filter(order => order.status === "done")
-        const inWork = message.orders.filter(order => order.status === "inWork")
-        setOrdersDone(done);
-        setOrdersInWork(inWork);
-      }
-    };
+   getOrders("/all")
+    
+    console.log(orders)
   }, []);
+
+const getOrders = async (url:string) => {
+  dispatch({ type: actions.WS_CONNECTION_START});
+}
+  
 
   return (
     <div>
       <h2 className={styles.header}>Лента заказов</h2>
       <section className={styles.content}>
         <article className={`${styles.orders} mr-15`}>
-          <CardOrder orders={orders} />
+          <CardOrder  />
         </article>
         <article className={styles.orders_total}>
-          <OrdersTotal ordersDone={ordersDone} ordersInWork={ordersInWork} />
+         <OrdersTotal/>
         </article>
       </section>
     </div>

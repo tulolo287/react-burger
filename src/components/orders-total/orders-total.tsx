@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "../../services/hooks";
 import styles from "./order-total.module.css";
 
 type TOrder = {
@@ -11,12 +12,27 @@ type TOrder = {
   number: number;
 };
 
-type TOrderTotalProps = {
-  ordersDone: TOrder[] | null;
-  ordersInWork: TOrder[] | null;
+
+type TCardOrderTotal = {
+  orders: TOrder[] | null;
 };
 
-const OrdersTotal: FC<TOrderTotalProps> = ({ ordersDone, ordersInWork }) => {
+const OrdersTotal = () => {
+  const messages = useSelector(state => state.wsReducer.messages)
+
+  const [ordersDone, setOrdersDone] = useState<Array<TOrder> | null>(null);
+  const [ordersInWork, setOrdersInWork] = useState<Array<TOrder> | null>(null);
+ 
+
+  useEffect(() => {
+    console.log("lLLLL", messages)
+        const done: any = messages?.orders?.filter(order => order?.status === "done")
+        const inWork: any = messages?.orders?.filter(order => order?.status === "inWork")
+        setOrdersDone(done);
+        setOrdersInWork(inWork);
+      
+  }, [])
+
   return (
     <div>
       <div className={styles.board}>
@@ -28,9 +44,8 @@ const OrdersTotal: FC<TOrderTotalProps> = ({ ordersDone, ordersInWork }) => {
         </div>
         <div className={styles.inWork}>
           <h4 className={`${styles.title} mt-6`}>In work:</h4>
-
           {ordersInWork?.map((order) => (
-            <h5 className={`${styles.order_inWork} mt-2`}>{order.number}</h5>
+            <h5 className={`${styles.order_done} mt-2`}>{order.number}</h5>
           ))}
         </div>
       </div>

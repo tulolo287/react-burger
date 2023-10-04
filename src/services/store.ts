@@ -1,24 +1,15 @@
-
 import {
-  legacy_createStore as createStore,
-  compose,
   applyMiddleware,
-  ActionCreator,
-  Action,
+  compose,
+  legacy_createStore as createStore,
 } from "redux";
-import thunk, { ThunkAction } from "redux-thunk";
-import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 import { rootReducer } from "./reducer";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { BrowserRouter } from "react-router-dom";
-import { ThunkDispatch } from "redux-thunk";
-import { AnyAction } from "redux";
-import { Actions } from "./actions";
 import { socketMiddleware } from "./middleware/socketMiddleware";
+import { wsActions } from "./constants/wsConsts";
 
 
-
+const wsUrl: string = "wss://norma.nomoreparties.space/orders";
 
 declare global {
   interface Window {
@@ -26,17 +17,9 @@ declare global {
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+export const composeEnhancers =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk), applyMiddleware(socketMiddleware("lll")))
-);
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl)));
 
-
-export type State = ReturnType<typeof store.getState>;
-export type AppDispatch = ThunkDispatch<State, any, Actions>;
-export type AppThunk<TReturn = void> = ActionCreator<
-  ThunkAction<TReturn, Action, State, Actions>
->;
-export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, State, unknown, Actions>;
+export const store = createStore(rootReducer, enhancer);

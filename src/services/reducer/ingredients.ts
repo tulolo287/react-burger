@@ -2,23 +2,24 @@
 import { TIngredientsActions } from "../actions/ingredients";
 import { ingredientsActions } from "../constants/ingredients";
 import {TIngredient} from "../../utils/types"
+import { State } from "../types";
 
 
 
 type TInitialState = {
   ingredients: TIngredient[] | null,
-  sortedIngredients: TIngredient[] | null,
+  sortedIngredients: TIngredient[] | undefined,
   isLoading: boolean,
   fetchError: boolean
 }
 export const initialState: TInitialState = {
   ingredients: null,
-  sortedIngredients: null,
+  sortedIngredients: undefined,
   isLoading: true,
   fetchError: false,
 };
 
-export const ingredientsReducer = (state = initialState, action: TIngredientsActions) => {
+export const ingredientsReducer = (state = initialState, action: TIngredientsActions): TInitialState => {
   switch (action.type) {
     case ingredientsActions.GET_INGREDIENTS_SUCCESS:
       return {
@@ -34,7 +35,7 @@ export const ingredientsReducer = (state = initialState, action: TIngredientsAct
     case ingredientsActions.DECREASE_INGREDIENT_QTY: {
       const newSortedIngredients = state.sortedIngredients?.map((item) =>
         item._id === action.item._id
-          ? { ...item, qty: item.qty <= 1 ? null : item.qty - 1 }
+          ? { ...item, qty: item.qty ? item.qty <= 1 ? null : item.qty - 1 : null}
           : item,
       );
       return {

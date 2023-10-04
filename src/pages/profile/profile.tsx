@@ -6,10 +6,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../../services/store";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import { TUser } from "../../utils/types";
 import styles from "./profile.module.css";
 
@@ -48,7 +48,7 @@ const Profile = () => {
         })
         .catch((err) => alert("Update user failed"));
     },
-    [userInput],
+    [userInput]
   );
 
   const onLogout = () => {

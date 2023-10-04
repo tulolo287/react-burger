@@ -1,7 +1,8 @@
-// socketMiddleware.ts
+
 import type { Middleware, MiddlewareAPI } from "redux";
 import { Actions } from "../actions";
-import type { AppDispatch, State } from "../store";
+import type { AppDispatch, State } from "../types";
+import { wsActions } from "../constants/wsConsts";
 
 export const socketMiddleware = (wsUrl: string): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, State>) => {
@@ -9,11 +10,17 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
 
     return (next) => (action: Actions) => {
       const { dispatch, getState } = store;
-      const { type, payload } = action;
+      const { type } = action;
 
-      if (type === "WS_CONNECTION_START") {
-        socket = new WebSocket(wsUrl);
-      }
+   //   const { user } = getState().authReducer.user;
+      const accessToken = localStorage.getItem('accessToken');
+const user = null;
+
+      if (type === wsActions.WS_CONNECTION_START) {
+        socket = new WebSocket(`${wsUrl}/all`);
+      } 
+        
+      
       if (socket) {
         socket.onopen = (event) => {
           dispatch({ type: "WS_CONNECTION_SUCCESS", payload: event });
@@ -25,15 +32,20 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
 
         socket.onmessage = (event) => {
           const { data } = event;
-          dispatch({ type: "WS_GET_MESSAGE", payload: data });
+          const parsedData = JSON.parse(data);
+          const { success, ...restParsedData } = parsedData;
+
+          dispatch({ type: "WS_GET_MESSAGE", payload: { ...restParsedData } });
         };
+          
+      
 
         socket.onclose = (event) => {
           dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
         };
 
         if (type === "WS_SEND_MESSAGE") {
-          const message = payload;
+          const message = "payload";
           socket.send(JSON.stringify(message));
         }
       }
@@ -42,3 +54,7 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
     };
   }) as Middleware;
 };
+
+export const getOrders = async () => {
+
+}

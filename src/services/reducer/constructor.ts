@@ -3,8 +3,12 @@ import { TConstructorActions } from "../actions/constructor";
 
 import { actions } from "../constants";
 
+type TInitialState = {
+  constructorIngredients: TIngredient[],
+  orderDetails: any
+}
 
-export const initialState = {
+export const initialState: TInitialState = {
   constructorIngredients: [
     {
       _id: "60666c42cc7b410027a1a9b1",
@@ -23,9 +27,10 @@ export const initialState = {
       key: ""
     },
   ],
+  orderDetails: null
 };
 
-export const constructorReducer = (state = initialState, action: TConstructorActions) => {
+export const constructorReducer = (state = initialState, action: TConstructorActions): TInitialState => {
   switch (action.type) {
   
     case actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR: {

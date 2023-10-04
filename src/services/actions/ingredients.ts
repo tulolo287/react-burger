@@ -1,4 +1,4 @@
-import { AppDispatch, State } from "../store";
+import { AppDispatch, State } from "../types";
 import { getIngredientsApi } from "../../utils/api";
 import { TIngredient } from "../../utils/types";
 import { ingredientsActions } from "../constants/ingredients";

@@ -1,10 +1,9 @@
-import React from "react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
 import { Navigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
-import { AppDispatch, State } from "../../services/store";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 
 const ProtectedRouteElement = ({
   element,

@@ -1,4 +1,4 @@
-import { AppDispatch } from "../../services/store";
+import { AppDispatch } from "../../services/types";
 import {
   forgotPasswordApi,
   getUserApi,
@@ -16,12 +16,12 @@ import {
   TTokens,
   TUser,
 } from "../../utils/types";
-import { LOGIN_SUCCESS, authActions } from "../constants/auth";
+import { authActions } from "../constants/auth";
 
 export type ILoginSuccess = {
   readonly type: typeof authActions.LOGIN_SUCCESS;
   readonly user: TUser | null;
-}
+};
 export interface ILoginFailed {
   readonly type: typeof authActions.LOGIN_FAILED;
   readonly err: any;

@@ -1,16 +1,16 @@
-import styles from "./ingredient-details.module.css";
-import useModal from "../../hooks/useModal";
-import Modal from "../modal/modal";
-import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import useModal from "../../hooks/useModal";
 import {
   getIngredients,
   getIngredientsSelector,
 } from "../../services/actions/ingredients";
-import { AppDispatch } from "../../services/store";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { TIngredient } from "../../utils/types";
+import Modal from "../modal/modal";
+import styles from "./ingredient-details.module.css";
 
 const IngredientDetails = () => {
   const ingredients = useSelector(getIngredientsSelector);
@@ -31,7 +31,7 @@ const IngredientDetails = () => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id,
+      (item: TIngredient) => item._id === id
     );
   }
 

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
 import { useParams } from "react-router-dom";
-import { AppDispatch, State } from "../../services/store";
 import {
   getIngredients,
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import styles from "./ingredient-detail-page.module.css";
@@ -16,10 +16,10 @@ const IngredientDetailPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const ingredients = useSelector(getIngredientsSelector);
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError,
+    (state: State) => state.ingredientsReducer.fetchError
   );
   const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading,
+    (state: State) => state.ingredientsReducer.isLoading
   );
 
   let ingredientDetails;
@@ -45,7 +45,7 @@ const IngredientDetailPage = () => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id,
+      (item: TIngredient) => item._id === id
     );
   }
 

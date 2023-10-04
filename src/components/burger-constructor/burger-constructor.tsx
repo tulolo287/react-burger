@@ -6,10 +6,8 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { AppDispatch, State } from "../../services/store";
 import useModal from "../../hooks/useModal";
 import { getUser } from "../../services/actions/auth";
 import {
@@ -18,6 +16,8 @@ import {
 } from "../../services/actions/constructor";
 import { increaseIngredientQty } from "../../services/actions/ingredients";
 import { postOrder } from "../../services/actions/order-details";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import { TConstructorIngredient, TIngredient } from "../../utils/types";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 import Modal from "../modal/modal";
@@ -30,7 +30,7 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
 
   const constructorIngredients = useSelector(
-    (state: State) => state.constructorReducer.constructorIngredients,
+    (state: State) => state.constructorReducer.constructorIngredients
   );
   const bun = constructorIngredients[0];
   const [disableOrder, setDisableOrder] = useState<boolean>(true);
@@ -39,8 +39,8 @@ const BurgerConstructor = () => {
   const totalOrderPrice = useMemo(() => {
     constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
     return constructorIngredients.reduce(
-      (val: number, acc: TIngredient) => (val += acc.qty * acc.price),
-      0,
+      (val: number, acc: TIngredient) => (val += acc.qty ? acc.qty * acc.price: 0),
+      0
     );
   }, [constructorIngredients, bun]);
 
@@ -77,7 +77,7 @@ const BurgerConstructor = () => {
       return;
     }
     const ingredientsId = constructorIngredients.map(
-      (item: TConstructorIngredient) => item._id,
+      (item) => item._id
     );
 
     const request = {
@@ -108,10 +108,10 @@ const BurgerConstructor = () => {
           </ul>
           <ul className={styles.burgerConstructor_group}>
             {constructorIngredients?.map(
-              (item: TConstructorIngredient, idx: number) =>
+              (item, idx: number) =>
                 item.type !== "bun" ? (
                   <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-                ) : null,
+                ) : null
             )}
           </ul>
           <ul>

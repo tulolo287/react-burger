@@ -1,20 +1,19 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import {useSelector} from "../../services/hooks"
+import { useSelector } from "../../services/hooks";
 
-import { AppDispatch, State } from "../../services/store";
 import {
   getIngredients,
   getIngredientsSelector,
   getSortedIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
+import { AppDispatch, State } from "../../services/types";
 import { SORT_ORDER, TYPES } from "../../utils/consts";
-import { AssociativeArray, TIngredient, TIngredients } from "../../utils/types";
+import { AssociativeArray, TIngredient } from "../../utils/types";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
-
 
 const BurgerIngredients = () => {
   const ingredients = useSelector(getIngredientsSelector);
@@ -28,13 +27,14 @@ const BurgerIngredients = () => {
     (state: State) => state.ingredientsReducer.isLoading
   );
 
-
-let currentType: string = "";
-let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
+  let currentType: string = "";
+  let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = { bun: null };
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(getIngredients()).then((ingredients) => ingredients && sortData(ingredients));
+      dispatch(getIngredients()).then(
+        (ingredients) => ingredients && sortData(ingredients)
+      );
     };
     if (!ingredients) {
       fetchData();
