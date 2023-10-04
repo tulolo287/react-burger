@@ -20,6 +20,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { TActions } from "./services/actions";
 import { socketMiddleware } from "./services/middleware/socketMiddleware";
+import {store} from "./services/store"
 
 
 const root = ReactDOM.createRoot(

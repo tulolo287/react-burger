@@ -1,10 +1,20 @@
 
 import { TIngredientsActions } from "../actions/ingredients";
 import { ingredientsActions } from "../constants/ingredients";
+import {State} from "../store"
+import {TIngredient} from "../../utils/types"
 
-export const initialState = {
+
+
+type TInitialState = {
+  ingredients: TIngredient[] | null,
+  sortedIngredients: TIngredient[] | null,
+  isLoading: boolean,
+  fetchError: boolean
+}
+export const initialState: TInitialState = {
   ingredients: null,
-  sortedIngredients: [],
+  sortedIngredients: null,
   isLoading: true,
   fetchError: false,
 };
@@ -23,7 +33,7 @@ export const ingredientsReducer = (state = initialState, action: TIngredientsAct
     case ingredientsActions.SET_SORTED_INGREDIENTS:
       return { ...state, sortedIngredients: action.ingredients };
     case ingredientsActions.DECREASE_INGREDIENT_QTY: {
-      const newSortedIngredients = state.sortedIngredients.map((item) =>
+      const newSortedIngredients = state.sortedIngredients?.map((item) =>
         item._id === action.item._id
           ? { ...item, qty: item.qty <= 1 ? null : item.qty - 1 }
           : item,
@@ -34,7 +44,7 @@ export const ingredientsReducer = (state = initialState, action: TIngredientsAct
       };
     }
     case ingredientsActions.INCREASE_INGREDIENT_QTY: {
-      let newSortedIngredients = state.sortedIngredients.map((item) => {
+      let newSortedIngredients = state.sortedIngredients?.map((item) => {
         if (item._id === action.ingredient._id) {
           return { ...item, qty: item.qty ? item.qty + 1 : 1 };
         }

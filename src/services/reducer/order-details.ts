@@ -1,4 +1,5 @@
-import { actions } from "../actions";
+import { orderActions } from "../constants/order-details";
+import { TOrderDetailsActions } from "../actions/order-details";
 
 export const initialState = {
   orderDetails: null,
@@ -6,18 +7,18 @@ export const initialState = {
   postOrderError: false,
 };
 
-export const orderDetailsReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (state = initialState, action: TOrderDetailsActions) => {
   switch (action.type) {
-    case actions.POST_ORDER_SUCCESS:
+    case orderActions.POST_ORDER_SUCCESS:
       return {
         ...state,
-        orderDetails: action.payload,
+        orderDetails: action.order,
         isOrderFetching: false,
         postOrderError: false,
       };
-    case actions.POST_ORDER_FAILED:
-      return { ...state, ...initialState, postOrderError: action.payload };
-    case actions.POST_ORDER_FETCHING:
+    case orderActions.POST_ORDER_FAILED:
+      return { ...state, ...initialState, postOrderError: action.err };
+    case orderActions.POST_ORDER_FETCHING:
       return { ...state, isOrderFetching: true, postOrderError: false };
 
     default:
