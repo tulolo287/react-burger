@@ -12,6 +12,8 @@ import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
 import { TUser } from "../../utils/types";
 import styles from "./profile.module.css";
+import { actions } from "../../services/constants";
+
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -25,7 +27,15 @@ const Profile = () => {
     if (!user) {
       dispatch(getUser());
     }
+    getOrders("/all")
+   
   }, []);
+
+
+const getOrders = async (url:string) => {
+  dispatch({ type: actions.WS_CONNECTION_START, url: ''});
+}
+  
 
   const onSubmit = useCallback(
     (e: React.SyntheticEvent) => {

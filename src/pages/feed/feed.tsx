@@ -3,10 +3,19 @@ import { useDispatch } from "react-redux";
 import CardOrder from "../../components/card-order/card-order";
 import OrdersTotal from "../../components/orders-total/orders-total";
 import { actions } from "../../services/constants";
-import { AppDispatch } from "../../services/types";
 import styles from "./feed.module.css";
 import { useSelector } from "../../services/hooks";
 import { getOrders } from "../../services/actions/wsActions";
+import {
+  getIngredients,
+  getIngredientsSelector,
+  getSortedIngredientsSelector,
+  setSortedIngredients,
+} from "../../services/actions/ingredients";
+import { AssociativeArray, TIngredient } from "../../utils/types";
+import { AppDispatch, State } from "../../services/types";
+import { SORT_ORDER, TYPES } from "../../utils/consts";
+
 
 type TResponse = {
   success: boolean;
@@ -30,20 +39,45 @@ type TResponseOrders = {
 
 const Feed = () => {
  // const [orders, setOrders] = useState<Array<TOrder> | null>(null);
+    const ingredients = useSelector(getIngredientsSelector);
+
   const [ordersDone, setOrdersDone] = useState<Array<TOrder> | null>(null);
   const [ordersInWork, setOrdersInWork] = useState<Array<TOrder> | null>(null);
   const dispatch = useDispatch<AppDispatch>();
   const messages = useSelector(state => state.wsReducer.messages)
+  
+ const fetchError = useSelector(
+    (state: State) => state.ingredientsReducer.fetchError
+  );
+  const isLoading = useSelector(
+    (state: State) => state.ingredientsReducer.isLoading
+  );
 
+  useEffect(() => {
+    if (!ingredients) {
+      const fetchData = async () => {
+        dispatch(getIngredients()).then((ingredients) => {
+          ingredients && sortData(ingredients);
+        });
+      };
+      fetchData();
+    }
+  }, []);
+const sortData = (ingredients: TIngredient[]) => {
+    const sortedData = ingredients?.sort((a, b) => {
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+    });
+    dispatch(setSortedIngredients(sortedData));
+  };
 const orders: TOrder | null = null
   useEffect(() => {
-   getOrders("/all")
+   getOrders("wss://norma.nomoreparties.space/orders/all")
     
     console.log(orders)
   }, []);
 
 const getOrders = async (url:string) => {
-  dispatch({ type: actions.WS_CONNECTION_START});
+  dispatch({ type: actions.WS_CONNECTION_START, payload: url});
 }
   
 

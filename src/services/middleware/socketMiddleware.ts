@@ -1,23 +1,25 @@
 
 import type { Middleware, MiddlewareAPI } from "redux";
-import { Actions } from "../actions";
+import { TWSActions } from "../actions/wsActions";
 import type { AppDispatch, State } from "../types";
 import { wsActions } from "../constants/wsConsts";
 
-export const socketMiddleware = (wsUrl: string): Middleware => {
+export const socketMiddleware = (): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, State>) => {
     let socket: WebSocket | null = null;
 
-    return (next) => (action: Actions) => {
+    return (next) => (action: TWSActions) => {
       const { dispatch, getState } = store;
-      const { type } = action;
+      const { type, payload } = action;
 
    //   const { user } = getState().authReducer.user;
       const accessToken = localStorage.getItem('accessToken');
 const user = null;
 
       if (type === wsActions.WS_CONNECTION_START) {
-        socket = new WebSocket(`${wsUrl}/all`);
+       // socket = new WebSocket(`${wsUrl}/all`);
+         socket = new WebSocket(payload);
+      
       } 
         
       

@@ -24,7 +24,7 @@ export const path = {
   RESET_PASSWORD: "/reset-password",
   FORGOT_PASSWORD: "/forgot-password",
   PROFILE: "/profile",
-  ORDERS: "orders",
+  ORDERS: "/profile/orders",
   FEED: "/feed",
   FEED_DETAILS: "/feed/:id",
 };

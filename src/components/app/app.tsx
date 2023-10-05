@@ -36,8 +36,9 @@ function App() {
           path={path.PROFILE}
           element={<ProtectedRouteElement element={<Profile />} />}
         >
-          <Route path={path.ORDERS} element={<Orders />} />
-        </Route>
+         </Route>
+         <Route path="/profile/orders" element={<Orders />} />
+        
         <Route path="*" element={<NotFound />} />
       </Routes>
       {state?.modal && (

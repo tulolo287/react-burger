@@ -7,6 +7,7 @@ import type { AppDispatch, IMessage} from '../types';
 
 export interface IWSConnectionStart {
   readonly type: typeof wsActions.WS_CONNECTION_START;
+  readonly payload: string;
 }
 
 export interface IWSConnectionSuccessAction {
