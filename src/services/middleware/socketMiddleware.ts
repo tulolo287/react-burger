@@ -1,5 +1,5 @@
 
-import type { Middleware, MiddlewareAPI } from "redux";
+/*import type { Middleware, MiddlewareAPI } from "redux";
 import { TWSActions } from "../actions/wsActions";
 import { Actions } from "../actions";
 import type { AppDispatch, State } from "../types";
@@ -60,7 +60,7 @@ const user = null;
 
 export const getOrders = async () => {
 
-}
+}*/
 
 
 
@@ -74,7 +74,7 @@ import type {
   RootState,
   IMessageResponse,
 } from '../types';
-import { getCurrentTimestamp } from '../../utils/datetime';
+//import { getCurrentTimestamp } from '../../utils/datetime';
 
 export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
@@ -84,9 +84,9 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
       const { dispatch, getState } = store;
       const { type } = action;
       const { wsInit, wsSendMessage, onOpen, onClose, onError, onMessage } = wsActions;
-      const { user } = getState().user;
-      if (type === wsInit && user) {
-        socket = new WebSocket(`${wsUrl}?token=${user.token}`);
+      //const { user } = getState().user;
+      if (type === wsInit) {
+        socket = new WebSocket(`${wsUrl}`);
       }
       if (socket) {
         socket.onopen = event => {
@@ -102,7 +102,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
           const parsedData: IMessageResponse = JSON.parse(data);
           const { success, ...restParsedData } = parsedData;
 
-          dispatch({ type: onMessage, payload: { ...restParsedData, timestamp: getCurrentTimestamp() } });
+          dispatch({ type: onMessage, payload: { ...restParsedData, timestamp: "getCurrentTimestamp()" } });
         };
 
         socket.onclose = event => {
@@ -111,7 +111,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSStoreActions): Mid
 
         if (type === wsSendMessage) {
           const payload = action.payload;
-          const message = { ...(payload as IMessage), token: user?.token };
+          const message = { ...(payload as IMessage), token: "user?.token" };
           socket.send(JSON.stringify(message));
         }
       }

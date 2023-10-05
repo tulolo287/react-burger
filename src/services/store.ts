@@ -6,7 +6,7 @@ import {
 import thunk from "redux-thunk";
 import { rootReducer } from "./reducer";
 import { socketMiddleware } from "./middleware/socketMiddleware";
-import { wsActions } from "./constants/wsConsts";
+//import { wsActions } from "./constants/wsConsts";
 
 
 const wsUrl: string = "wss://norma.nomoreparties.space/orders";
@@ -20,9 +20,9 @@ declare global {
 export const composeEnhancers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware()));
+//const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware()));
 
-export const store = createStore(rootReducer, enhancer);
+//export const store = createStore(rootReducer, enhancer);
 
 const wsActions: TWSStoreActions = {
   wsInit: WS_CONNECTION_START,
@@ -36,4 +36,4 @@ const wsActions: TWSStoreActions = {
 export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunkMiddleware, socketMiddleware(wsUrl, wsActions))) // Ваш код здесь
-);dl
+);
