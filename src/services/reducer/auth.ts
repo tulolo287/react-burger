@@ -9,6 +9,7 @@ export const initialState = {
   isLoading: false,
   isPasswordReset: false,
   isForgotPassword: false,
+  ordersHistory: null,
 };
 
 

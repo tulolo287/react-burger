@@ -54,6 +54,8 @@ const Feed = () => {
   );
 
   useEffect(() => {
+     getOrders("wss://norma.nomoreparties.space/orders/all")
+    
     if (!ingredients) {
       const fetchData = async () => {
         dispatch(getIngredients()).then((ingredients) => {
@@ -69,12 +71,7 @@ const sortData = (ingredients: TIngredient[]) => {
     });
     dispatch(setSortedIngredients(sortedData));
   };
-const orders: TOrder | null = null
-  useEffect(() => {
-   getOrders("wss://norma.nomoreparties.space/orders/all")
-    
-    console.log(orders)
-  }, []);
+
 
 const getOrders = async (url:string) => {
   dispatch({ type: actions.WS_CONNECTION_START, payload: url});

@@ -5,6 +5,8 @@ export const initialState = {
   orderDetails: null,
   isOrderFetching: false,
   postOrderError: false,
+  allOrders: null,
+  
 };
 
 export const orderDetailsReducer = (state = initialState, action: TOrderDetailsActions) => {
