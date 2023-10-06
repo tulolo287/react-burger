@@ -34,7 +34,7 @@ const OrdersTotal = () => {
   }, [])
 
   return (
-    <div>
+    <section className={styles.container}>
       <div className={styles.board}>
         <div className={`${styles.done} mr-9`}>
           <h4 className={`${styles.title} mt-6`}>Done:</h4>
@@ -57,7 +57,7 @@ const OrdersTotal = () => {
         <h4>Выполнено за сегодня:</h4>
         <span className="text text_type_digits-large">432</span>
       </div>
-    </div>
+    </section>
   );
 };
 

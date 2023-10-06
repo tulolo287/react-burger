@@ -7,7 +7,7 @@ import {
 
 export interface IWSConnectionStart {
   readonly type: typeof wsActions.WS_CONNECTION_START;
-  readonly payload: string;
+  readonly url: string;
 }
 
 export interface IWSConnectionSuccessAction {

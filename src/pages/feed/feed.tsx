@@ -2,20 +2,17 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import CardOrder from "../../components/card-order/card-order";
 import OrdersTotal from "../../components/orders-total/orders-total";
-import { actions } from "../../services/constants";
-import styles from "./feed.module.css";
-import { useSelector } from "../../services/hooks";
-import { getOrders } from "../../services/actions/wsActions";
 import {
   getIngredients,
   getIngredientsSelector,
-  getSortedIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { AssociativeArray, TIngredient } from "../../utils/types";
+import { actions } from "../../services/constants";
+import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
-import { SORT_ORDER, TYPES } from "../../utils/consts";
-
+import { SORT_ORDER } from "../../utils/consts";
+import { TIngredient } from "../../utils/types";
+import styles from "./feed.module.css";
 
 type TResponse = {
   success: boolean;
@@ -38,15 +35,15 @@ type TResponseOrders = {
 } & TResponse;
 
 const Feed = () => {
- // const [orders, setOrders] = useState<Array<TOrder> | null>(null);
-    const ingredients = useSelector(getIngredientsSelector);
+  // const [orders, setOrders] = useState<Array<TOrder> | null>(null);
+  const ingredients = useSelector(getIngredientsSelector);
 
   const [ordersDone, setOrdersDone] = useState<Array<TOrder> | null>(null);
   const [ordersInWork, setOrdersInWork] = useState<Array<TOrder> | null>(null);
   const dispatch = useDispatch<AppDispatch>();
-  const messages = useSelector(state => state.wsReducer.messages)
-  
- const fetchError = useSelector(
+  const messages = useSelector((state) => state.wsReducer.messages);
+
+  const fetchError = useSelector(
     (state: State) => state.ingredientsReducer.fetchError
   );
   const isLoading = useSelector(
@@ -54,8 +51,8 @@ const Feed = () => {
   );
 
   useEffect(() => {
-     getOrders("wss://norma.nomoreparties.space/orders/all")
-    
+    getOrders("wss://norma.nomoreparties.space/orders/all");
+
     if (!ingredients) {
       const fetchData = async () => {
         dispatch(getIngredients()).then((ingredients) => {
@@ -64,29 +61,32 @@ const Feed = () => {
       };
       fetchData();
     }
+    return function() {
+      dispatch({ type: actions.WS_CONNECTION_CLOSED });
+    }
+      
+    
   }, []);
-const sortData = (ingredients: TIngredient[]) => {
+  const sortData = (ingredients: TIngredient[]) => {
     const sortedData = ingredients?.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
     dispatch(setSortedIngredients(sortedData));
   };
 
-
-const getOrders = async (url:string) => {
-  dispatch({ type: actions.WS_CONNECTION_START, payload: url});
-}
-  
+  const getOrders = async (url: string) => {
+    dispatch({ type: actions.WS_CONNECTION_START, url });
+  };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2 className={styles.header}>Лента заказов</h2>
       <section className={styles.content}>
         <article className={`${styles.orders} mr-15`}>
-          <CardOrder  />
+          <CardOrder />
         </article>
         <article className={styles.orders_total}>
-         <OrdersTotal/>
+          <OrdersTotal />
         </article>
       </section>
     </div>

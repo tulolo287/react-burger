@@ -39,7 +39,8 @@ const BurgerConstructor = () => {
   const totalOrderPrice = useMemo(() => {
     constructorIngredients[1] ? setDisableOrder(false) : setDisableOrder(true);
     return constructorIngredients.reduce(
-      (val: number, acc: TIngredient) => (val += acc.qty ? acc.qty * acc.price: 0),
+      (val: number, acc: TIngredient) =>
+        (val += acc.qty ? acc.qty * acc.price : 0),
       0
     );
   }, [constructorIngredients, bun]);
@@ -67,8 +68,8 @@ const BurgerConstructor = () => {
       dispatch(addBuntToConstructor({ ...item, key: uuidv4() }));
     } else {
       dispatch(addIngredientToConstructor({ ...item, key: uuidv4() }));
+      dispatch(increaseIngredientQty(item));
     }
-    dispatch(increaseIngredientQty(item));
   };
 
   const makeOrder = async () => {
@@ -76,10 +77,8 @@ const BurgerConstructor = () => {
       navigate("/login", { state: { from: "/" } });
       return;
     }
-    const ingredientsId = constructorIngredients.map(
-      (item) => item._id
-    );
-
+    const ingredientsId = constructorIngredients.map((item) => item._id);
+    ingredientsId.splice(0, 1, bun._id);
     const request = {
       ingredients: ingredientsId,
     };
@@ -107,11 +106,10 @@ const BurgerConstructor = () => {
             </li>
           </ul>
           <ul className={styles.burgerConstructor_group}>
-            {constructorIngredients?.map(
-              (item, idx: number) =>
-                item.type !== "bun" ? (
-                  <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-                ) : null
+            {constructorIngredients?.map((item, idx: number) =>
+              item.type !== "bun" ? (
+                <BurgerConstructorItem key={item.key} item={item} idx={idx} />
+              ) : null
             )}
           </ul>
           <ul>

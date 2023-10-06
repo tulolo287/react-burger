@@ -19,11 +19,13 @@ export const getIngredientsApi = async (): Promise<
 
 export const postOrderApi = async (request: []) => {
   try {
+    const token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token!);
     const response = await fetch(`${API_URL}/orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
+      headers,
       body: JSON.stringify(request),
     });
     const result = await checkResponse(response);
@@ -89,11 +91,11 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
     if (Date.now() >= accessTokenExp * 1000) {
       const result = await refreshTokenApi();
       if (result.success) {
-        token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!!;
+        token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
       } else throw Error("No token found");
     }
   }
-  token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!!;
+  token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);
@@ -113,6 +115,7 @@ export const updateUserApi = async (
   data: TUser
 ): Promise<TResponseBody<"user", TUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
+  alert(token)
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);

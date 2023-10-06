@@ -1,12 +1,18 @@
 .content {
+  max-height: 700px;
+  margin-top: 100px;
   display: inline-flex;
   align-items: center;
   gap: 24px;
   background: var(--interface-bg, #131316);
-  position: fixed;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
+}
+.form {
+  display: flex;
+  width: 480px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
 }
 .navigation {
   display: inline-flex;

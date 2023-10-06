@@ -1,6 +1,7 @@
 import { AppDispatch } from "../types";
 import { postOrderApi } from "../../utils/api";
 import { orderActions } from "../constants/order-details";
+import { WS_SEND_MESSAGE } from "../constants/wsConsts";
 
 export interface IOrderFetching {
   readonly type: typeof orderActions.POST_ORDER_FETCHING;
@@ -35,6 +36,7 @@ export const postOrderFailed = (err: any): IPostOrderFailed => ({
 
 export const postOrder = (request: any) => async (dispatch: AppDispatch) => {
   dispatch({ type: orderActions.POST_ORDER_FETCHING });
+ 
   return postOrderApi(request)
     .then((order) => {
       dispatch(postOrderSuccess(order));

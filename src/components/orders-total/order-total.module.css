@@ -4,5 +4,23 @@
 }
 .order_done {
    color: #00CCCC;
+}
+.container {
+   max-height: 780px;
+   overflow-y: scroll;
+   scrollbar-color: #8585ad #2f2f37;
 
 }
+.container::-webkit-scrollbar-thumb {
+   width: 30px;
+   background-color: #8585ad;
+   border: 3px;
+ }
+ .container::-webkit-scrollbar {
+   display: block;
+   width: 5px;
+ }
+ .container::-webkit-scrollbar-track {
+   background: #2f2f37;
+ }
+ 

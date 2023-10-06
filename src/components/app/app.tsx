@@ -1,5 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import Constructor from "../../pages/constructor/constructor";
+import FeedDetails from "../../pages/feed-details/feed-deails";
+import Feed from "../../pages/feed/feed";
 import ForgotPassword from "../../pages/forgot-password/forgot-password";
 import IngredientDetailPage from "../../pages/ingredient-detail-page/ingredient-detail-page";
 import Login from "../../pages/login/login";
@@ -13,8 +15,6 @@ import AppHeader from "../app-header/app-header";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import styles from "./app.module.css";
-import Feed from "../../pages/feed/feed";
-import FeedDetails from "../../pages/feed-details/feed-deails";
 
 function App() {
   let location = useLocation();
@@ -35,10 +35,15 @@ function App() {
         <Route
           path={path.PROFILE}
           element={<ProtectedRouteElement element={<Profile />} />}
-        >
-         </Route>
-         <Route path="/profile/orders" element={<Orders />} />
-        
+        ></Route>
+        <Route
+          path="/profile/orders"
+          element={<ProtectedRouteElement element={<Orders />} />}
+        ></Route>
+        <Route
+          path="/profile/orders/:id"
+          element={<ProtectedRouteElement element={<FeedDetails />} />}
+        ></Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
       {state?.modal && (

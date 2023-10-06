@@ -19,3 +19,26 @@
 .time_price {
    margin-top: 40px;
 }
+.ingredients {
+   display: flex;
+ }
+ .ingredient_preview {
+   position: relative;
+   height: 80px;
+   width: 80px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background:
+     linear-gradient(#000000, #000000) padding-box,
+     linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box;
+   border-radius: 50%;
+   border: 2px solid transparent;
+   overflow: hidden;
+ }
+ 
+ .ingredient_preview img {
+   height: 80px;
+   width: 112px;
+   object-fit: cover;
+ }

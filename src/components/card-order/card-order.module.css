@@ -1,6 +1,9 @@
-.card_order {
-  width: 584px;
-  padding: 24px;
+.card_orders {
+  max-height: 780px;
+  overflow-y: scroll;
+  scrollbar-color: #8585ad #2f2f37;
+}
+.card_order_item {
   border-radius: 40px;
   border: 2px;
   gap: 24px;
@@ -39,8 +42,20 @@
 .moreIngredients {
   position: absolute;
   color: white;
-
 }
 .info {
   color: white;
+}
+
+.card_orders::-webkit-scrollbar-thumb {
+  width: 30px;
+  background-color: #8585ad;
+  border: 3px;
+}
+.card_orders::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.card_orders::-webkit-scrollbar-track {
+  background: #2f2f37;
 }

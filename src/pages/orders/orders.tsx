@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import CardOrder from "../../components/card-order/card-order";
 import { logout } from "../../services/actions/auth";
 import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
 import styles from "./orders.module.css";
-import CardOrder from "../../components/card-order/card-order";
-
 
 const Orders = () => {
   const user = useSelector((state: State) => state.authReducer.user);
@@ -26,7 +25,7 @@ const Orders = () => {
         </div>
         <div className={styles.navItem}>
           <NavLink
-            to="orders"
+            to="/profile/orders"
             className={({ isActive }) =>
               isActive ? styles.active : styles.link
             }
@@ -47,8 +46,10 @@ const Orders = () => {
           В этом разделе вы можете изменить свои персональные данные
         </div>
       </div>
-      
-        <div><CardOrder/>jjjkk</div>
+
+      <div className={styles.form}>
+        <CardOrder />
+      </div>
     </section>
   );
 };
