@@ -6,17 +6,35 @@ import { getIngredientsSelector } from "../../services/actions/ingredients";
 import { TIngredient } from "../../utils/types";
 import styles from "./feed-details.module.css";
 
-const FeedDetails = () => {
-  type TOrder = {
+type TOrder = {
     _id: string;
-    ingredients: Array<string>;
+    ingredients: Array<string | TOrderIngredient>;
     status: string;
     name: string;
     createdAt: string;
     updatedAt: string;
     number: number;
-  } | null;
+  };
+type TOrderInfo = {
+    _id: string;
+    ingredients: Array<TOrderIngredient | string>;
+    status: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    number: number;
+  };
 
+type TOrderIngredient = {
+    img: string;
+    
+    qty: number;
+    price: number;
+    
+  };
+
+const FeedDetails = () => {
+  
   const ingredients: Array<TIngredient> | null = useSelector(
     getIngredientsSelector
   );
@@ -26,7 +44,7 @@ const FeedDetails = () => {
   const order: TOrder = state.order;
   console.log("LLLL", state);
 
-  const [price, setPrice] = useState<number>();
+  const [orderInfo, setOrderInfo] = useState<TOrderInfo | null>(null);
 
   useEffect(() => {
     let total = 0;
@@ -34,7 +52,13 @@ const FeedDetails = () => {
       ingredients?.find((item) => {
         if (item._id === id) {
           total += item.price * (item.qty || 1);
-          setPrice(total);
+          
+          setOrderInfo({...order, ingredients: [...order?.ingredients,  {price:item.price, qty:(item.qty || 1), img:item.image}]
+           
+          });
+
+          
+          console.log(orderInfo)
         }
       });
     });
@@ -43,25 +67,25 @@ const FeedDetails = () => {
   return (
     <div className={styles.container}>
       <div className={styles.title}>
-        <h3>{state.order.number}</h3>
+        <h3>{orderInfo?.number}</h3>
       </div>
       <div className={styles.info}>
-        <h2>{state.order.name}</h2>
-        <span>{state.order.status}</span>
+        <h2>{orderInfo?.name}</h2>
+        <span>{orderInfo?.status}</span>
       </div>
       <div className={styles.ingredients}>
         <h2>Состав:</h2>
         <ul>
           <div className={styles.ingredients}>
-            {order?.ingredients.map((id) => (
+            {orderInfo?.ingredients.map((item) => (
               <div className={styles.ingredient_preview}>
                 <img
-                  src={ingredients?.find((item) => item._id === id)?.image}
+                  src={item.img}
                 />
               </div>
             ))}
             <div className={styles.burgerItem_price}>
-              <p className="text text_type_digits-default mr-2">{price}</p>
+              <p className="text text_type_digits-default mr-2">g</p>
               <CurrencyIcon type="primary" />
             </div>
           </div>

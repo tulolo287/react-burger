@@ -15,6 +15,9 @@
 }
 .ingredients {
    margin-top: 60px;
+display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .time_price {
    margin-top: 40px;
