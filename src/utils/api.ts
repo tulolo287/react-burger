@@ -42,7 +42,7 @@ export const loginApi = async (data: TLogin) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify(data),
     });
@@ -70,7 +70,7 @@ export const logoutApi = async () => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -86,29 +86,32 @@ export const logoutApi = async () => {
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
   let token: string | null = "";
 
-  token = localStorage.getItem("accessToken")
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  headers.append("Authorization", token!);
-  headers.append("Access-Control-Allow-Origin", "*");
-  const options: RequestInit = {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers,
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  };
-  
-  return fetchWithRefresh(`${API_URL}/auth/user`, options);
+  token = localStorage.getItem("accessToken");
+  if (token) {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token!);
+    headers.append("Access-Control-Allow-Origin", "*");
+    const options: RequestInit = {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers,
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    };
+
+    return fetchWithRefresh(`${API_URL}/auth/user`, options);
+  }
+  return Promise.reject();
 };
 
 export const updateUserApi = async (
   data: TUser
 ): Promise<TResponseBody<"user", TUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
-  alert(token)
+  
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);
@@ -135,7 +138,7 @@ export const registerApi = async (request: TUser) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -159,7 +162,7 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
-          'Access-Control-Allow-Origin': '*',
+          "Access-Control-Allow-Origin": "*",
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
@@ -186,7 +189,7 @@ export const resetPasswordApi = async (
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -208,7 +211,7 @@ export const forgotPasswordApi = async (request: { email: string }) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -226,7 +229,6 @@ const fetchWithRefresh = async (
   options: RequestInit
 ): Promise<TResponseBody<"user", TUser>> => {
   try {
-    
     const response = await fetch(url, options);
     const result = await checkResponse(response);
     return result.success ? result : Promise.reject(result);
@@ -306,5 +308,3 @@ export function setCookie(
 export function deleteCookie(name: string) {
   setCookie(name, null, { expires: -1 });
 }
-
-
