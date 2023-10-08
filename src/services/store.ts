@@ -6,9 +6,6 @@ import {
 import thunk from "redux-thunk";
 import { socketMiddleware } from "./middleware/socketMiddleware";
 import { rootReducer } from "./reducer";
-//import { wsActions } from "./constants/wsConsts";
-
-const wsUrl: string = "wss://norma.nomoreparties.space/orders";
 
 declare global {
   interface Window {

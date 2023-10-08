@@ -5,7 +5,7 @@ import {
 import { motion } from "framer-motion";
 import { FC } from "react";
 import { useDrag } from "react-dnd";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { TIngredient } from "../../utils/types";
 import styles from "./burger-item.module.css";
 
@@ -19,9 +19,10 @@ const BurgerItem: FC<TBurgerItemProps> = ({ item }) => {
     item: item,
   });
   const navigate = useNavigate();
+  const location = useLocation();
 
   const onItemHandler = () => {
-    navigate("/ingredient/" + item._id, { state: { modal: true } });
+    navigate("/ingredient/" + item._id, { state: { background: location } });
   };
   return (
     <motion.li

@@ -1,7 +1,8 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
+import { v4 } from "uuid";
 import {
   getIngredients,
   getIngredientsSelector,
@@ -9,10 +10,10 @@ import {
 } from "../../services/actions/ingredients";
 import { actions } from "../../services/constants";
 import { useDispatch, useSelector } from "../../services/hooks";
-import { SORT_ORDER } from "../../utils/consts";
+import { startWS } from "../../utils";
+import { SORT_ORDER, wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./feed-details.module.css";
-import { v4 } from "uuid";
 
 type TOrderInfo = {
   _id: string;
@@ -31,7 +32,7 @@ type TOrderIngredient = {
   price: number;
 };
 
-const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
+const FeedDetails = memo(() => {
   const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
     getIngredientsSelector
@@ -39,24 +40,18 @@ const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
   const messages = useSelector((state) => state.wsReducer.messages);
 
   const params = useParams();
-  const location = useLocation();
   const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<
     TIngredient[] | null
   >(null);
-  const isFetching = useSelector((state) => state.wsReducer.wsConnected);
-  //total += item.price * (item.qty || 1);
-  const fetchError = useSelector(
-    (state) => state.ingredientsReducer.fetchError
-  );
   const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
+  const { pathname } = useLocation();
+  const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
 
   useEffect(() => {
-    startWS(wsUrl);
-
     if (!ingredients) {
       const fetchData = async () => {
         dispatch(getIngredients()).then((ingredients) => {
@@ -67,6 +62,7 @@ const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
       };
       fetchData();
     }
+    !wsConnected && dispatch(startWS(url));
     return function () {
       dispatch({ type: actions.WS_CONNECTION_CLOSED });
     };
@@ -82,16 +78,6 @@ const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
     getOrder();
   }, [messages]);
 
-  const getOrderIngredients = async (ingredients: TIngredient[]) => {
-    const news = orderInfo?.ingredients.map(
-      (id) => ingredients?.find((item) => item._id === id)
-    );
-    setOrderIngredients(news as TIngredient[]);
-    console.log("NLNLNLNL", news);
-  };
-  const startWS = async (url: string) => {
-    dispatch({ type: actions.WS_CONNECTION_START, url });
-  };
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
     const orderIngredients = order?.ingredients
@@ -113,12 +99,12 @@ const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
         <div className={styles.container}>
           <h3 className={styles.title}>{orderInfo?.name}</h3>
           <p style={{ color }} className={styles.status + " mt-4"}>
-              {orderInfo?.status === "done"
-                ? "Выполнен"
-                : orderInfo?.status === "pending"
-                ? "Готовится"
-                : "Создан"}
-            </p>
+            {orderInfo?.status === "done"
+              ? "Выполнен"
+              : orderInfo?.status === "pending"
+              ? "Готовится"
+              : "Создан"}
+          </p>
           <div className={styles.info}></div>
 
           <div>
@@ -173,6 +159,6 @@ const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
       {isLoading && "Loading..."}
     </>
   );
-};
+});
 
 export default FeedDetails;

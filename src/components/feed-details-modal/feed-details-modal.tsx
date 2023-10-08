@@ -1,6 +1,6 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { memo, useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
 import {
   getIngredients,
@@ -10,40 +10,35 @@ import { useDispatch, useSelector } from "../../services/hooks";
 import Modal from "../modal/modal";
 import styles from "./feed-details-modal.module.css";
 
-import { useLocation } from "react-router-dom";
 import { v4 } from "uuid";
-import { getUser } from "../../services/actions/auth";
-import { actions } from "../../services/constants";
-import { getYesterday } from "../../utils";
-import { TIngredient, TOrder } from "../../utils/types";
-import { getMessages } from "../../services/selectors/wsSelectors";
+import { getUser } from "../../services/selectors/auth";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
+import { getMessages } from "../../services/selectors/wsSelectors";
+import { getYesterday, startWS } from "../../utils";
+import { wsAllUrl, wsAuthUrl } from "../../utils/consts";
+import { TIngredient, TOrder } from "../../utils/types";
 
-const FeedDetailsModal = () => {
+const FeedDetailsModal = memo(() => {
   const { title, setTitle, navBack } = useModal();
-
   const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
     getIngredientsSelector
   );
   const messages = useSelector(getMessages);
-
   const user = useSelector(getUser);
   const params = useParams();
-  const location = useLocation();
-
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<
     TIngredient[] | null
   >(null);
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
-
   const isLoading = useSelector(getIngredientsLoading);
+  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const { pathname } = useLocation();
+  const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
 
   useEffect(() => {
-    startWS(location.state.wsUrl);
-
     if (!ingredients) {
       const fetchData = async () => {
         dispatch(getIngredients()).then((ingredients) => {
@@ -54,16 +49,13 @@ const FeedDetailsModal = () => {
       };
       fetchData();
     }
-    getOrder();
-    return function () {
-      dispatch({ type: actions.WS_CONNECTION_CLOSE });
-    };
+    !wsConnected && dispatch(startWS(url));
   }, []);
 
   useEffect(() => {
     const setUser = async () => {
       if (!user) {
-        dispatch(getUser()).then((user) => getOrder());
+        //dispatch(getUser(store.getState())).then((user: any) => getOrder());
       }
     };
     setUser();
@@ -73,9 +65,6 @@ const FeedDetailsModal = () => {
     getOrder();
   }, [messages]);
 
-  const startWS = async (url: string) => {
-    dispatch({ type: actions.WS_CONNECTION_START, url });
-  };
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
     const orderIngredients = order?.ingredients.map(
@@ -164,6 +153,6 @@ const FeedDetailsModal = () => {
       </Modal>
     </>
   );
-};
+});
 
 export default FeedDetailsModal;

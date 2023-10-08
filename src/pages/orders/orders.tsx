@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import CardOrder from "../../components/card-order/card-order";
 import { getUser, logout } from "../../services/actions/auth";
 import { actions } from "../../services/constants";
-import { useSelector } from "../../services/hooks";
+import { useDispatch, useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
+import { startWS } from "../../utils";
+import { wsAuthUrl } from "../../utils/consts";
 import styles from "./orders.module.css";
 
 const Orders = () => {
@@ -13,10 +14,13 @@ const Orders = () => {
   const dispatch: AppDispatch = useDispatch();
   const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
   const getMessages = useSelector((state) => state.wsReducer.fetchMessages);
-  const [wsUrl, setWsUrl] = useState<string>("");
-  const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
 
   useEffect(() => {
+     const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+
+const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
+    console.log("WWWW", wsAuthUrl)
+    dispatch(startWS(wsAuthUrl));
     if (!user) {
       dispatch(getUser());
     }
@@ -64,9 +68,7 @@ const Orders = () => {
       </div>
 
       <div className={`${styles.orders}`}>
-        <CardOrder
-          wsUrl={`wss://norma.nomoreparties.space/orders?token=${accessToken}`}
-        />
+        <CardOrder />
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { FC, useEffect } from "react";
+import React, { FC, memo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import styles from "./modal.module.css";
@@ -11,7 +11,7 @@ interface IModalProps {
   height?: number;
 }
 
-const Modal: FC<IModalProps> = ({ closeModal, children, title, height }) => {
+const Modal: FC<IModalProps> = memo(({ closeModal, children, title, height }) => {
   useEffect(() => {
     const handleEsc = (evt: KeyboardEvent) => {
       if (evt.key === "Escape") {
@@ -39,5 +39,5 @@ const Modal: FC<IModalProps> = ({ closeModal, children, title, height }) => {
     </>,
     document.getElementById("modals") as HTMLDivElement
   );
-};
+})
 export default Modal;

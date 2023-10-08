@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import useModal from "../../hooks/useModal";
 import Constructor from "../../pages/constructor/constructor";
 import FeedDetails from "../../pages/feed-details/feed-deails";
 import Feed from "../../pages/feed/feed";
@@ -19,12 +20,13 @@ import styles from "./app.module.css";
 
 const App = memo(() => {
   let location = useLocation();
-
+  let background = location.state && location.state.background;
+  
   let state = location.state;
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes location={state?.modal || location}>
+      <Routes location={background || location}>
         <Route path={path.HOME} element={<Constructor />}></Route>
         <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
         <Route path={path.LOGIN} element={<Login />} />
@@ -32,12 +34,7 @@ const App = memo(() => {
         <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
         <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={path.FEED} element={<Feed />} />
-        <Route
-          path={path.FEED_DETAILS}
-          element={
-            <FeedDetails wsUrl="wss://norma.nomoreparties.space/orders/all" />
-          }
-        />
+        <Route path={path.FEED_DETAILS} element={<FeedDetails />} />
         <Route path={path.PROFILE} element={<Profile />}></Route>
         <Route
           path={path.PROFILE_ORDERS}
@@ -45,10 +42,10 @@ const App = memo(() => {
         ></Route>
         <Route
           path={path.PROFILE_ORDERS_ID}
-          element={<ProtectedRouteElement element={<FeedDetails wsUrl="" />} />}
+          element={<ProtectedRouteElement element={<FeedDetails />} />}
         ></Route>
       </Routes>
-      {state?.modal && (
+      {background && (
         <Routes>
           <Route path={path.INGREDIENT} element={<IngredientDetails />} />
           <Route path={path.FEED_DETAILS} element={<FeedDetailsModal />} />

@@ -1,22 +1,33 @@
+import { memo, useEffect } from "react";
 import CardOrder from "../../components/card-order/card-order";
 import OrdersTotal from "../../components/orders-total/orders-total";
+import { actions } from "../../services/constants";
+import { useDispatch } from "../../services/hooks";
+import { startWS } from "../../utils";
+import { wsAllUrl } from "../../utils/consts";
 import styles from "./feed.module.css";
 
-const Feed = () => {
-  
+const Feed = memo(() => {
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(startWS(wsAllUrl));
+    return () => {
+      dispatch({ type: actions.WS_CONNECTION_CLOSE });
+    };
+  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <h2 className={styles.header}>Лента заказов</h2>
 
         <section className={`${styles.orders}`}>
-          <CardOrder wsUrl="wss://norma.nomoreparties.space/orders/all" />
+          <CardOrder />
           <OrdersTotal />
         </section>
       </div>
     </div>
   );
-};
+});
 
 export default Feed;
