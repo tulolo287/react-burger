@@ -10,7 +10,7 @@ import Login from "../../pages/login/login";
 import Orders from "../../pages/orders/orders";
 import Profile from "../../pages/profile/profile";
 import Register from "../../pages/register/register";
-import ResetPassword from "../../pages/reset-password /reset-password";
+import ResetPassword from "../../pages/reset-password/reset-password";
 import { path } from "../../utils/consts";
 import AppHeader from "../app-header/app-header";
 import FeedDetailsModal from "../feed-details-modal/feed-details-modal";
