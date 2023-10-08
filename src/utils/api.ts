@@ -84,10 +84,14 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
-  let token: string | null = "";
+  let token = localStorage.getItem("accessToken");
+  if (!token) {
+    const refreshData = await refreshTokenApi();
+    saveResponse(refreshData);
+  } 
 
-  token = localStorage.getItem("accessToken");
-  if (token) {
+  let refreshToken = localStorage.getItem("refreshToken");
+  if (refreshToken) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", token!);
@@ -111,7 +115,7 @@ export const updateUserApi = async (
   data: TUser
 ): Promise<TResponseBody<"user", TUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
-  
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);
