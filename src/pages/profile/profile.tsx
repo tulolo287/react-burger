@@ -6,9 +6,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
-import { actions } from "../../services/constants";
 import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
 import { TUser } from "../../utils/types";
@@ -24,21 +23,14 @@ const Profile = () => {
   const [saveButton, setSaveButton] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      dispatch(getUser());
-    }
-  }, []);
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
-    getOrders(`wss://norma.nomoreparties.space/orders?token=${accessToken}`);
-    return function () {
-      dispatch({ type: actions.WS_CONNECTION_CLOSED });
+    const setUser = async () => {
+      if (!user) {
+        dispatch(getUser()).then((user) => setUserInput(user!));
+      }
     };
-  }, []);
 
-  const getOrders = async (url: string) => {
-    dispatch({ type: actions.WS_CONNECTION_START, url });
-  };
+    setUser();
+  }, []);
 
   const onSubmit = useCallback(
     (e: React.SyntheticEvent) => {
@@ -78,7 +70,7 @@ const Profile = () => {
 
   return (
     <>
-      {user && (
+      {userInput && (
         <section className={styles.content}>
           <div className={styles.navigation}>
             <div className={styles.navItem}>
@@ -95,7 +87,7 @@ const Profile = () => {
             </div>
             <div className={styles.navItem}>
               <NavLink
-                to="orders"
+                to="/profile/orders"
                 className={({ isActive }) =>
                   isActive ? styles.active : styles.link
                 }
@@ -104,9 +96,9 @@ const Profile = () => {
               </NavLink>
             </div>
             <div className={styles.navItem}>
-              <NavLink to="" onClick={onLogout}>
+              <Link to="" onClick={onLogout}>
                 Выход
-              </NavLink>
+              </Link>
             </div>
             <div className={styles.caption}>
               В этом разделе вы можете изменить свои персональные данные

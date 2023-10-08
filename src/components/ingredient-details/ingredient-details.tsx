@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
@@ -12,7 +12,7 @@ import { TIngredient } from "../../utils/types";
 import Modal from "../modal/modal";
 import styles from "./ingredient-details.module.css";
 
-const IngredientDetails = () => {
+const IngredientDetails = memo(() => {
   const ingredients = useSelector(getIngredientsSelector);
   const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
@@ -88,6 +88,6 @@ const IngredientDetails = () => {
       )}
     </>
   );
-};
+});
 
 export default IngredientDetails;

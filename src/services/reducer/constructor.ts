@@ -11,7 +11,7 @@ type TInitialState = {
 export const initialState: TInitialState = {
   constructorIngredients: [
     {
-      _id: "60666c42cc7b410027a1a9b1",
+      _id: "643d69a5c3f7b9001cfa093c",
       name: "Краторная булка N-200i",
       type: "bun",
       proteins: 80,

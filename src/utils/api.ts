@@ -23,6 +23,7 @@ export const postOrderApi = async (request: []) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", token!);
+    headers.append("Access-Control-Allow-Origin", "*");
     const response = await fetch(`${API_URL}/orders`, {
       method: "POST",
       headers,
@@ -41,6 +42,7 @@ export const loginApi = async (data: TLogin) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify(data),
     });
@@ -68,6 +70,7 @@ export const logoutApi = async () => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        'Access-Control-Allow-Origin': '*',
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -81,24 +84,13 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
-  let token: string = "";
-  if (
-    (localStorage.getItem("accessTokenExp") &&
-      localStorage.getItem("refreshToken")) ||
-    !getCookie("token")
-  ) {
-    const accessTokenExp = Number(localStorage.getItem("accessTokenExp") || 0);
-    if (Date.now() >= accessTokenExp * 1000) {
-      const result = await refreshTokenApi();
-      if (result.success) {
-        token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
-      } else throw Error("No token found");
-    }
-  }
-  token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
+  let token: string | null = "";
+
+  token = localStorage.getItem("accessToken")
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);
+  headers.append("Access-Control-Allow-Origin", "*");
   const options: RequestInit = {
     method: "GET",
     mode: "cors",
@@ -108,6 +100,7 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
     redirect: "follow",
     referrerPolicy: "no-referrer",
   };
+  
   return fetchWithRefresh(`${API_URL}/auth/user`, options);
 };
 
@@ -119,6 +112,7 @@ export const updateUserApi = async (
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);
+  headers.append("Access-Control-Allow-Origin", "*");
   const options: RequestInit = {
     method: "PATCH",
     mode: "cors",
@@ -141,6 +135,7 @@ export const registerApi = async (request: TUser) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        'Access-Control-Allow-Origin': '*',
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -164,6 +159,7 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
+          'Access-Control-Allow-Origin': '*',
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
@@ -190,6 +186,7 @@ export const resetPasswordApi = async (
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        'Access-Control-Allow-Origin': '*',
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -211,6 +208,7 @@ export const forgotPasswordApi = async (request: { email: string }) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        'Access-Control-Allow-Origin': '*',
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -228,6 +226,7 @@ const fetchWithRefresh = async (
   options: RequestInit
 ): Promise<TResponseBody<"user", TUser>> => {
   try {
+    
     const response = await fetch(url, options);
     const result = await checkResponse(response);
     return result.success ? result : Promise.reject(result);
@@ -236,7 +235,8 @@ const fetchWithRefresh = async (
       const refreshData = await refreshTokenApi();
       saveResponse(refreshData);
       const headers = new Headers();
-      headers.append("Authorization", "Bearer " + refreshData.accessToken);
+      headers.append("Authorization", refreshData.accessToken);
+      headers.append("Access-Control-Allow-Origin", "*");
       options.headers = headers;
       const response = await fetch(url, options);
       const result = await checkResponse(response);
@@ -306,3 +306,5 @@ export function setCookie(
 export function deleteCookie(name: string) {
   setCookie(name, null, { expires: -1 });
 }
+
+

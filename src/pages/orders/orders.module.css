@@ -1,14 +1,14 @@
 .content {
   max-height: 700px;
-  margin-top: 100px;
+  margin-top: 75px;
   display: inline-flex;
-  align-items: center;
   gap: 24px;
   background: var(--interface-bg, #131316);
 }
+
 .form {
   display: flex;
-  width: 480px;
+  width: 680px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
@@ -20,6 +20,19 @@
   align-items: flex-start;
   width: 320px;
   margin-right: 60px;
+}
+.orders {
+  display: flex;
+  height: 852px;
+  top: 208px;
+  left: 372px;
+  padding: 0px, 0px, 40px, 8px;
+  gap: 60px;
+  text-align: left;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
 }
 
 .navItem {
@@ -60,7 +73,6 @@
 }
 .form {
   display: flex;
-  width: 480px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;

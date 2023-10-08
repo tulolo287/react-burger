@@ -218,6 +218,7 @@ export const getUser = () => async (dispatch: AppDispatch) => {
   return getUserApi()
     .then((response) => {
       dispatch(getUserSuccess(response.user));
+      return response.user
     })
     .catch((err) => {
       dispatch(getUserFailed(err));

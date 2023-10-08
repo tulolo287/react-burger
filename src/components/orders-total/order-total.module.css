@@ -1,26 +1,35 @@
 .board {
-   display: flex;
-   justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 .order_done {
-   color: #00CCCC;
+  color: #00cccc;
 }
 .container {
-   max-height: 780px;
-   overflow-y: scroll;
-   scrollbar-color: #8585ad #2f2f37;
-
+  max-height: 780px;
+  overflow-y: scroll;
+  scrollbar-color: #8585ad #2f2f37;
+  width: 50%;
 }
 .container::-webkit-scrollbar-thumb {
-   width: 30px;
-   background-color: #8585ad;
-   border: 3px;
- }
- .container::-webkit-scrollbar {
-   display: block;
-   width: 5px;
- }
- .container::-webkit-scrollbar-track {
-   background: #2f2f37;
- }
- 
+  width: 30px;
+  background-color: #8585ad;
+  border: 3px;
+}
+.container::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.container::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+.title {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+
+  /* desktop/display small */
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+}

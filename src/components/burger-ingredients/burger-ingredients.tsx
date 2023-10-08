@@ -1,5 +1,5 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, memo, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../services/hooks";
 
@@ -15,7 +15,7 @@ import { AssociativeArray, TIngredient } from "../../utils/types";
 import BurgerItem from "../burger-item/burger-item";
 import styles from "./burger-ingredients.module.css";
 
-const BurgerIngredients = () => {
+const BurgerIngredients = memo(() => {
   const ingredients = useSelector(getIngredientsSelector);
   const sortedIngredients = useSelector(getSortedIngredientsSelector);
   const dispatch: AppDispatch = useDispatch();
@@ -132,6 +132,6 @@ const BurgerIngredients = () => {
       {isLoading && "Loading..."}
     </>
   );
-};
+});
 
 export default BurgerIngredients;

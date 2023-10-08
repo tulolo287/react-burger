@@ -8,6 +8,13 @@
   margin: 0 auto;
   padding: 20px;
 }
+.container {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 .header {
   font-family: JetBrains Mono;
   font-size: 36px;
@@ -16,20 +23,23 @@
   letter-spacing: 0em;
   text-align: left;
   color: #f2f2f3;
+  margin-right: 24px;
 }
 .content {
   text-align: left;
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  margin-top: 100px;
 }
 
 .orders {
-  width: 608px;
+  display: flex;
   height: 852px;
   top: 208px;
   left: 372px;
   padding: 0px, 0px, 40px, 8px;
-  gap: 24px;
+  gap: 60px;
 }
 .orders_total {
   height: 626px;

@@ -1,3 +1,5 @@
+import { string } from "prop-types";
+
 export type TIngredient = {
   _id: string;
   __v: number;
@@ -63,3 +65,14 @@ export type TTokens = {
 export interface AssociativeArray<T> {
   [key: string]: T;
 }
+
+export type TOrder = {
+  _id: string;
+  ingredients: Array<string>;
+  status: string;
+  name: string;
+  createdAt: Date | string;
+  updatedAt: string;
+  number: number;
+};
+

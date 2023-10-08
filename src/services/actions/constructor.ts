@@ -1,17 +1,7 @@
 import { TIngredient } from "../../utils/types";
 import { constructorActions } from "../constants/constructor";
 
-/*
-export const constructorActions = {
-  ADD_INGREDIENT_TO_CONSTRUCTOR: "ADD_INGREDIENT_TO_CONSTRUCTOR",
-  ADD_BUN_TO_CONSTRUCTOR: "ADD_BUN_TO_CONSTRUCTOR",
-  REMOVE_INGREDIENT_FROM_CONSTRUCTOR: "REMOVE_INGREDIENT_FROM_CONSTRUCTOR",
-  CHANGE_CONSTRUCTOR_INGREDIENT: "CHANGE_CONSTRUCTOR_INGREDIENT",
-  CLEAR_ORDER: "CLEAR_ORDER",
-  SET_ORDER_DETAILS: "SET_ORDER_DETAILS",
-  INIT_CONSTRUCTOR: "INIT_CONSTRUCTOR",
-};
-*/
+
 
 export interface IAddIngredientToConstructor {
   readonly type: typeof constructorActions.ADD_INGREDIENT_TO_CONSTRUCTOR;

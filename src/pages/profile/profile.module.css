@@ -1,6 +1,5 @@
 .content {
   display: inline-flex;
-  align-items: center;
   gap: 24px;
   background: var(--interface-bg, #131316);
   position: fixed;

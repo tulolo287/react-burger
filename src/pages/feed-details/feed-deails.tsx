@@ -1,98 +1,177 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
-import { getIngredientsSelector } from "../../services/actions/ingredients";
-import { TIngredient } from "../../utils/types";
-import styles from "./feed-details.module.css";
 
-type TOrder = {
-    _id: string;
-    ingredients: Array<string | TOrderIngredient>;
-    status: string;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    number: number;
-  };
+import { useLocation, useParams } from "react-router-dom";
+import {
+  getIngredients,
+  getIngredientsSelector,
+  setSortedIngredients,
+} from "../../services/actions/ingredients";
+import { actions } from "../../services/constants";
+import { useDispatch, useSelector } from "../../services/hooks";
+import { SORT_ORDER } from "../../utils/consts";
+import { TIngredient, TOrder } from "../../utils/types";
+import styles from "./feed-details.module.css";
+import { v4 } from "uuid";
+
 type TOrderInfo = {
-    _id: string;
-    ingredients: Array<TOrderIngredient | string>;
-    status: string;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-    number: number;
-  };
+  _id: string;
+  ingredients: Array<TIngredient>;
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+};
 
 type TOrderIngredient = {
-    img: string;
-    
-    qty: number;
-    price: number;
-    
-  };
+  img: string;
 
-const FeedDetails = () => {
-  
+  qty: number;
+  price: number;
+};
+
+const FeedDetails = ({ wsUrl }: { wsUrl: string }) => {
+  const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
     getIngredientsSelector
   );
-  const params = useParams();
-  console.log("PPP", params);
-  const { state } = useLocation();
-  const order: TOrder = state.order;
-  console.log("LLLL", state);
+  const messages = useSelector((state) => state.wsReducer.messages);
 
-  const [orderInfo, setOrderInfo] = useState<TOrderInfo | null>(null);
+  const params = useParams();
+  const location = useLocation();
+  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const [orderInfo, setOrderInfo] = useState<TOrder>();
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [orderIngredients, setOrderIngredients] = useState<
+    TIngredient[] | null
+  >(null);
+  const isFetching = useSelector((state) => state.wsReducer.wsConnected);
+  //total += item.price * (item.qty || 1);
+  const fetchError = useSelector(
+    (state) => state.ingredientsReducer.fetchError
+  );
+  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
+  const color = orderInfo?.status === "done" ? "#0CC" : "white";
 
   useEffect(() => {
-    let total = 0;
-    order?.ingredients.map((id) => {
-      ingredients?.find((item) => {
-        if (item._id === id) {
-          total += item.price * (item.qty || 1);
-          
-          setOrderInfo({...order, ingredients: [...order?.ingredients,  {price:item.price, qty:(item.qty || 1), img:item.image}]
-           
-          });
+    startWS(wsUrl);
 
-          
-          console.log(orderInfo)
-        }
-      });
-    });
-    //  const orderDetail = ingredients.find((item) => item._id === params.id);
+    if (!ingredients) {
+      const fetchData = async () => {
+        dispatch(getIngredients()).then((ingredients) => {
+          if (ingredients) {
+            sortData(ingredients);
+          }
+        });
+      };
+      fetchData();
+    }
+    return function () {
+      dispatch({ type: actions.WS_CONNECTION_CLOSED });
+    };
   }, []);
+  const sortData = (ingredients: TIngredient[]) => {
+    const sortedData = ingredients?.sort((a, b) => {
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+    });
+    dispatch(setSortedIngredients(sortedData));
+  };
+
+  useEffect(() => {
+    getOrder();
+  }, [messages]);
+
+  const getOrderIngredients = async (ingredients: TIngredient[]) => {
+    const news = orderInfo?.ingredients.map(
+      (id) => ingredients?.find((item) => item._id === id)
+    );
+    setOrderIngredients(news as TIngredient[]);
+    console.log("NLNLNLNL", news);
+  };
+  const startWS = async (url: string) => {
+    dispatch({ type: actions.WS_CONNECTION_START, url });
+  };
+  const getOrder = () => {
+    const order = messages?.orders?.find((item) => item?._id === params.id);
+    const orderIngredients = order?.ingredients
+      .filter((item, index) => order?.ingredients.indexOf(item) === index)
+      .map((id) => ingredients?.find((item) => item._id === id));
+    setOrderIngredients(orderIngredients as TIngredient[]);
+    // @ts-ignore
+    setOrderInfo(order);
+    const total = orderIngredients
+      ?.map((item) => item?.price!)
+      .reduce((x, y) => x + y, 0);
+    // @ts-ignore
+    setTotalPrice(total);
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.title}>
-        <h3>{orderInfo?.number}</h3>
-      </div>
-      <div className={styles.info}>
-        <h2>{orderInfo?.name}</h2>
-        <span>{orderInfo?.status}</span>
-      </div>
-      <div className={styles.ingredients}>
-        <h2>Состав:</h2>
-        <ul>
-          <div className={styles.ingredients}>
-            {orderInfo?.ingredients.map((item) => (
-              <div className={styles.ingredient_preview}>
-                <img
-                  src={item.img}
-                />
-              </div>
-            ))}
-            <div className={styles.burgerItem_price}>
-              <p className="text text_type_digits-default mr-2">g</p>
+    <>
+      {orderIngredients && (
+        <div className={styles.container}>
+          <h3 className={styles.title}>{orderInfo?.name}</h3>
+          <p style={{ color }} className={styles.status + " mt-4"}>
+              {orderInfo?.status === "done"
+                ? "Выполнен"
+                : orderInfo?.status === "pending"
+                ? "Готовится"
+                : "Создан"}
+            </p>
+          <div className={styles.info}></div>
+
+          <div>
+            <h2>Состав:</h2>
+
+            <div className={styles.ingredients}>
+              <ul>
+                {orderIngredients?.map((item) => (
+                  <li key={v4()}>
+                    <div className={styles.ingredientsInfo}>
+                      <div className={styles.ingredient_preview}>
+                        <img src={item.image} />
+                      </div>
+                      <span className={styles.name}>{item.name}</span>
+                      <div className={styles.price}>
+                        <p className="text text_type_digits-default mr-2">
+                          {item?.type === "bun" ? 2 : 1}
+                        </p>
+                        <span className="text text_type_digits-default mr-2">
+                          x
+                        </span>
+                        <p className="text text_type_digits-default mr-2">
+                          {item.price}
+                        </p>
+                        <CurrencyIcon type="primary" />
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className={styles.time_price}>
+            <div>
+              <p className={styles.date}>
+                {new Date(orderInfo?.createdAt!).toLocaleString("ru", {
+                  day: "numeric",
+                  month: "long",
+                })}{" "}
+                {new Date(orderInfo?.createdAt!).toLocaleString("ru", {
+                  timeStyle: "short",
+                })}
+              </p>
+            </div>
+            <div className={styles.totalPrice}>
+              <p className="text text_type_digits-default mr-2">{totalPrice}</p>
               <CurrencyIcon type="primary" />
             </div>
           </div>
-        </ul>
-      </div>
-      <div className={styles.time_price}></div>
-    </div>
+        </div>
+      )}
+      {isLoading && "Loading..."}
+    </>
   );
 };
 
