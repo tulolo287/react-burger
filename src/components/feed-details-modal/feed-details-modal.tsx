@@ -1,4 +1,7 @@
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CurrencyIcon,
+  FormattedDate,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { memo, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
@@ -14,7 +17,7 @@ import { v4 } from "uuid";
 import { getUser } from "../../services/selectors/auth";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
 import { getMessages } from "../../services/selectors/wsSelectors";
-import { getYesterday, startWS } from "../../utils";
+import { startWS } from "../../utils";
 import { wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 
@@ -129,15 +132,10 @@ const FeedDetailsModal = memo(() => {
             <div className={styles.time_price}>
               <div>
                 <p className={styles.date}>
-                  {getYesterday(orderInfo?.createdAt!)
-                    ? "Вчера,"
-                    : new Date(orderInfo?.createdAt!).toLocaleString("ru", {
-                        day: "numeric",
-                        month: "long",
-                      })}{" "}
-                  {new Date(orderInfo?.createdAt!).toLocaleString("ru", {
-                    timeStyle: "short",
-                  })}
+                  <FormattedDate
+                    date={new Date(orderInfo?.createdAt!)}
+                    className="text text_type_main-default text_color_inactive"
+                  />
                 </p>
               </div>
               <div className={styles.totalPrice}>

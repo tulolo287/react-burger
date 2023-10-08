@@ -1,9 +1,11 @@
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CurrencyIcon,
+  FormattedDate,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, Fragment, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { getIngredientsSelector } from "../../services/actions/ingredients";
 import { useSelector } from "../../services/hooks";
-import { getYesterday } from "../../utils";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./card-order-item.module.css";
 
@@ -46,15 +48,10 @@ const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
       <div className={`${styles.title} mt-6`}>
         <span className={styles.order_number}>#{order?.number}</span>
         <p className={styles.date}>
-          {getYesterday(order?.createdAt!)
-            ? "Вчера,"
-            : new Date(order?.createdAt!).toLocaleString("ru", {
-                day: "numeric",
-                month: "long",
-              })}{" "}
-          {new Date(order?.createdAt!).toLocaleString("ru", {
-            timeStyle: "short",
-          })}
+          <FormattedDate
+            date={new Date(order?.createdAt!)}
+            className="text text_type_main-default text_color_inactive"
+          />
         </p>
       </div>
       <h3 className={`${styles.name} mt-6`}>{order?.name}</h3>
