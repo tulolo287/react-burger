@@ -30,7 +30,7 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
 
   const constructorIngredients = useSelector(
-    (state: State) => state.constructorReducer.constructorIngredients
+    (state: State) => state.constructorReducer.constructorIngredients,
   );
   const bun = constructorIngredients[0];
   const [disableOrder, setDisableOrder] = useState<boolean>(true);
@@ -41,7 +41,7 @@ const BurgerConstructor = () => {
     return constructorIngredients.reduce(
       (val: number, acc: TIngredient) =>
         (val += acc.qty ? acc.qty * acc.price : 0),
-      0
+      0,
     );
   }, [constructorIngredients, bun]);
 
@@ -109,7 +109,7 @@ const BurgerConstructor = () => {
             {constructorIngredients?.map((item, idx: number) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-              ) : null
+              ) : null,
             )}
           </ul>
           <ul>

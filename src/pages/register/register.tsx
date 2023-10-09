@@ -26,7 +26,7 @@ const Register = () => {
           name: nameValue,
           email: emailValue,
           password: passwordValue,
-        })
+        }),
       );
     }
   };

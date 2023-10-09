@@ -5,13 +5,13 @@ import styles from "./order-details.module.css";
 
 const OrderDetails = () => {
   const orderDetails = useSelector(
-    (state: State) => state.orderDetailsReducer.orderDetails
+    (state: State) => state.orderDetailsReducer.orderDetails,
   );
   const isOrderFetching = useSelector(
-    (state: State) => state.orderDetailsReducer.isOrderFetching
+    (state: State) => state.orderDetailsReducer.isOrderFetching,
   );
   const postOrderError = useSelector(
-    (state: State) => state.orderDetailsReducer.postOrderError
+    (state: State) => state.orderDetailsReducer.postOrderError,
   );
 
   return (

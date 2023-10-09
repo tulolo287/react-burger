@@ -12,7 +12,6 @@ export const initialState = {
   ordersHistory: null,
 };
 
-
 export const authReducer = (state = initialState, action: TAuthActions) => {
   switch (action.type) {
     case authActions.GET_USER_FETCHING: {
@@ -47,7 +46,7 @@ export const authReducer = (state = initialState, action: TAuthActions) => {
         isLoading: false,
       };
     case authActions.RESET_PASSWORD_SUCCESS:
-      setCookie("token", JSON.stringify(action.response.accessToken),{});
+      setCookie("token", JSON.stringify(action.response.accessToken), {});
       return {
         ...state,
         isAuth: true,

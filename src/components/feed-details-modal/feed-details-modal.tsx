@@ -25,7 +25,7 @@ const FeedDetailsModal = memo(() => {
   const { title, setTitle, navBack } = useModal();
   const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector
+    getIngredientsSelector,
   );
   const messages = useSelector(getMessages);
   // const user = useSelector(getUserSelector);
@@ -56,8 +56,6 @@ const FeedDetailsModal = memo(() => {
     !wsConnected && dispatch(startWS(url));
   }, []);
 
-  
-
   useEffect(() => {
     getOrder();
   }, [messages]);
@@ -65,7 +63,7 @@ const FeedDetailsModal = memo(() => {
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
     const orderIngredients = order?.ingredients.map(
-      (id) => ingredients?.find((item) => item._id === id)
+      (id) => ingredients?.find((item) => item._id === id),
     );
     setOrderIngredients(orderIngredients as TIngredient[]);
     // @ts-ignore

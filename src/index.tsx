@@ -20,21 +20,20 @@ import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
 import { Actions } from "./services/actions";
 import { socketMiddleware } from "./services/middleware/socketMiddleware";
-import {store} from "./services/store"
-
+import { store } from "./services/store";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 root.render(
   //<React.StrictMode>
-    <Provider store={store}>
-      <DndProvider backend={HTML5Backend}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </DndProvider>
-    </Provider>
+  <Provider store={store}>
+    <DndProvider backend={HTML5Backend}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </DndProvider>
+  </Provider>,
   //</React.StrictMode>
 );
 

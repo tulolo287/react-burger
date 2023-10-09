@@ -17,7 +17,7 @@ export const initialState: TInitialState = {
 
 export const ingredientsReducer = (
   state = initialState,
-  action: TIngredientsActions
+  action: TIngredientsActions,
 ): TInitialState => {
   switch (action.type) {
     case ingredientsActions.GET_INGREDIENTS_SUCCESS:
@@ -43,7 +43,7 @@ export const ingredientsReducer = (
                   ? item.qty - 1
                   : null,
             }
-          : item
+          : item,
       );
       return {
         ...state,

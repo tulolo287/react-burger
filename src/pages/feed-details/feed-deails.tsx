@@ -35,7 +35,7 @@ type TOrderIngredient = {
 const FeedDetails = memo(() => {
   const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector
+    getIngredientsSelector,
   );
   const messages = useSelector((state) => state.wsReducer.messages);
 

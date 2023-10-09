@@ -45,7 +45,7 @@ const CardOrder = memo(() => {
         <ul className={styles.card_orders}>
           {messages?.orders?.map((order, idx) => (
             <Fragment key={uuidv4()}>
-              <Link to={`${order?._id}`} state={{background: location}}>
+              <Link to={`${order?._id}`} state={{ background: location }}>
                 <CardOrderItem order={order} />
               </Link>
             </Fragment>

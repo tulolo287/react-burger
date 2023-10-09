@@ -21,10 +21,10 @@ const BurgerIngredients = memo(() => {
   const dispatch: AppDispatch = useDispatch();
   const [current, setCurrent] = useState<string>("bun");
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError
+    (state: State) => state.ingredientsReducer.fetchError,
   );
   const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading
+    (state: State) => state.ingredientsReducer.isLoading,
   );
 
   let currentType: string = "";
@@ -33,7 +33,7 @@ const BurgerIngredients = memo(() => {
   useEffect(() => {
     const fetchData = async () => {
       dispatch(getIngredients()).then(
-        (ingredients) => ingredients && sortData(ingredients)
+        (ingredients) => ingredients && sortData(ingredients),
       );
     };
     if (!ingredients) {

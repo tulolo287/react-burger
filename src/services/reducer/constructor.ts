@@ -4,9 +4,9 @@ import { TConstructorActions } from "../actions/constructor";
 import { actions } from "../constants";
 
 type TInitialState = {
-  constructorIngredients: TIngredient[],
-  orderDetails: any
-}
+  constructorIngredients: TIngredient[];
+  orderDetails: any;
+};
 
 export const initialState: TInitialState = {
   constructorIngredients: [
@@ -24,15 +24,17 @@ export const initialState: TInitialState = {
       image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
       __v: 0,
       qty: 2,
-      key: ""
+      key: "",
     },
   ],
-  orderDetails: null
+  orderDetails: null,
 };
 
-export const constructorReducer = (state = initialState, action: TConstructorActions): TInitialState => {
+export const constructorReducer = (
+  state = initialState,
+  action: TConstructorActions,
+): TInitialState => {
   switch (action.type) {
-  
     case actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR: {
       const newBurgerIngredients = state.constructorIngredients.filter(
         (item) => item.key !== action.ingredient.key,
@@ -68,7 +70,7 @@ export const constructorReducer = (state = initialState, action: TConstructorAct
         ...state.constructorIngredients.splice(0, 1, {
           ...action.bun,
           qty: 2,
-          key: ""
+          key: "",
         }),
       };
     }

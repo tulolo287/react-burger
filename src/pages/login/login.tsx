@@ -23,7 +23,7 @@ const Login = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-       dispatch(getUser());
+      dispatch(getUser());
     };
     if (!user) {
       checkAuth();
@@ -45,7 +45,7 @@ const Login = () => {
         dispatch(login(data));
       }
     },
-    [emailValue, passwordValue, dispatch]
+    [emailValue, passwordValue, dispatch],
   );
 
   return (

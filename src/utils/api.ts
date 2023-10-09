@@ -84,13 +84,12 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
-  
   let token = localStorage.getItem("accessToken");
   if (!token) {
     //debugger
     const refreshData = await refreshTokenApi();
     saveResponse(refreshData);
-  } 
+  }
 
   let refreshToken = localStorage.getItem("refreshToken");
   if (refreshToken) {
@@ -114,7 +113,7 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
 };
 
 export const updateUserApi = async (
-  data: TUser
+  data: TUser,
 ): Promise<TResponseBody<"user", TUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
 
@@ -185,7 +184,7 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
 };
 
 export const resetPasswordApi = async (
-  request: TResetPassword
+  request: TResetPassword,
 ): Promise<TResponseBody<"password", TResetPassword>> => {
   try {
     const response = await fetch(`${API_URL}/password-reset/reset`, {
@@ -232,11 +231,9 @@ export const forgotPasswordApi = async (request: { email: string }) => {
 
 const fetchWithRefresh = async (
   url: string,
-  options: RequestInit
+  options: RequestInit,
 ): Promise<TResponseBody<"user", TUser>> => {
-  
   try {
-    
     const response = await fetch(url, options);
     const result = await checkResponse(response);
     return result.success ? result : Promise.reject(result);
@@ -276,8 +273,8 @@ export function getCookie(name: string) {
     new RegExp(
       "(?:^|; )" +
         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
+        "=([^;]*)",
+    ),
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
@@ -289,7 +286,7 @@ export function setCookie(
     path?: string;
     expires?: Date | string | number;
     [propName: string]: any;
-  }
+  },
 ) {
   props = props || {};
   let exp = props.expires;

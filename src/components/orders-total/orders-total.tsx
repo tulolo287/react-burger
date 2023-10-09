@@ -20,10 +20,10 @@ const OrdersTotal = () => {
 
   useEffect(() => {
     const done: any = messages?.orders?.filter(
-      (order) => order?.status === "done"
+      (order) => order?.status === "done",
     );
     const inWork: any = messages?.orders?.filter(
-      (order) => order?.status === "inWork"
+      (order) => order?.status === "inWork",
     );
     setOrdersDone(done);
     setOrdersInWork(inWork);

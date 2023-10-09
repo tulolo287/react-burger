@@ -17,7 +17,7 @@ export const initialState = {
 
 export const orderDetailsReducer = (
   state = initialState,
-  action: TOrderDetailsActions
+  action: TOrderDetailsActions,
 ): TOrderDetailsState => {
   switch (action.type) {
     case orderActions.POST_ORDER_SUCCESS:
@@ -29,7 +29,7 @@ export const orderDetailsReducer = (
       };
     case orderActions.SET_ORDER_FEED:
       const orderInfo = action?.payload.orders.find(
-        (item) => item?._id === action.payload.id
+        (item) => item?._id === action.payload.id,
       );
 
       return {

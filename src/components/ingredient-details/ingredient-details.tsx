@@ -31,7 +31,7 @@ const IngredientDetails = memo(() => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id
+      (item: TIngredient) => item._id === id,
     );
   }
 

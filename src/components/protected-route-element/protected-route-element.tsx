@@ -11,10 +11,7 @@ const ProtectedRouteElement = ({
   element: React.ReactElement;
 }) => {
   const user = useSelector((state) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
   const dispatch: AppDispatch = useDispatch();
-  const [auth, setAuth] = useState(false);
-  const location = useLocation();
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   const checkUser = async () => {

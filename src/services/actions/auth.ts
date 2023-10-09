@@ -171,7 +171,7 @@ export const refreshTokenFailed = (err: any): IRefreshTokenFailed => ({
 });
 
 export const resetPasswordSuccess = (
-  response: TResponseBody<"password", TResetPassword>
+  response: TResponseBody<"password", TResetPassword>,
 ): IResetPassword => ({
   type: authActions.RESET_PASSWORD_SUCCESS,
   response,
@@ -218,7 +218,7 @@ export const getUser = () => async (dispatch: AppDispatch) => {
   return getUserApi()
     .then((response) => {
       dispatch(getUserSuccess(response.user));
-      return response.user
+      return response.user;
     })
     .catch((err) => {
       dispatch(getUserFailed(err));

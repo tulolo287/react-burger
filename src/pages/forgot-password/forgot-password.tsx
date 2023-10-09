@@ -32,11 +32,11 @@ const ForgotPassword = () => {
           email: emailValue,
         };
         dispatch(forgotPassword(data)).then(() =>
-          navigate("/reset-password", { state: { from: "forgot-password" } })
+          navigate("/reset-password", { state: { from: "forgot-password" } }),
         );
       }
     },
-    [emailValue]
+    [emailValue],
   );
 
   return (

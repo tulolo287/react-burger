@@ -3,7 +3,6 @@ import type { Actions } from "../actions";
 import { wsActions } from "../constants/wsConsts";
 import type { AppDispatch, State } from "../types";
 
-
 export const socketMiddleware = (): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, State>) => {
     let socket: WebSocket | null = null;
@@ -62,4 +61,3 @@ export const socketMiddleware = (): Middleware => {
 };
 
 export const getOrders = async () => {};
-

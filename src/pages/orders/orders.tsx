@@ -11,12 +11,9 @@ import styles from "./orders.module.css";
 const Orders = () => {
   const user = useSelector((state: State) => state.authReducer.user);
   const dispatch: AppDispatch = useDispatch();
-  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
-  const getMessages = useSelector((state) => state.wsReducer.fetchMessages);
- 
+
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
-
     const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
 
     dispatch(startWS(wsAuthUrl));

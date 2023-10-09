@@ -5,7 +5,10 @@ import {
 import { FC, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { changeConstructorIngredient, removeIngredientConstructor } from "../../services/actions/constructor";
+import {
+  changeConstructorIngredient,
+  removeIngredientConstructor,
+} from "../../services/actions/constructor";
 import { decreaseIngredientQty } from "../../services/actions/ingredients";
 import { TConstructorIngredient, TIngredient } from "../../utils/types";
 import styles from "./burger-constructor-item.module.css";
@@ -32,8 +35,7 @@ const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
     drop(item) {
       const dragIndex = item.idx;
       const hoverIndex = idx;
-      dispatch(changeConstructorIngredient( { dragIndex, hoverIndex }))
-      
+      dispatch(changeConstructorIngredient({ dragIndex, hoverIndex }));
     },
   });
 

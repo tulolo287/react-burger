@@ -16,10 +16,10 @@ const IngredientDetailPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const ingredients = useSelector(getIngredientsSelector);
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError
+    (state: State) => state.ingredientsReducer.fetchError,
   );
   const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading
+    (state: State) => state.ingredientsReducer.isLoading,
   );
 
   let ingredientDetails;
@@ -45,7 +45,7 @@ const IngredientDetailPage = () => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id
+      (item: TIngredient) => item._id === id,
     );
   }
 

@@ -53,7 +53,7 @@ const Profile = () => {
         })
         .catch((err) => alert("Update user failed"));
     },
-    [userInput]
+    [userInput],
   );
 
   const onLogout = () => {

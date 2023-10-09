@@ -40,7 +40,7 @@ const initialState: TWSState = {
 
 export const wsReducer = (
   state = initialState,
-  action: TWSActions
+  action: TWSActions,
 ): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:

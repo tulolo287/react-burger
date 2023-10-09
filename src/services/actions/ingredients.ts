@@ -3,7 +3,6 @@ import { getIngredientsApi } from "../../utils/api";
 import { TIngredient } from "../../utils/types";
 import { ingredientsActions } from "../constants/ingredients";
 
-
 export interface IIngredientsFetching {
   readonly type: typeof ingredientsActions.INGREDIENTS_FETCHING;
 }
@@ -37,14 +36,14 @@ export type TIngredientsActions =
   | ISetSortedIngredients;
 
 export const setSortedIngredients = (
-  ingredients: TIngredient[]
+  ingredients: TIngredient[],
 ): ISetSortedIngredients => ({
   type: ingredientsActions.SET_SORTED_INGREDIENTS,
   ingredients,
 });
 
 export const decreaseIngredientQty = (
-  item: TIngredient
+  item: TIngredient,
 ): IDecreaseIngredientQty => ({
   type: ingredientsActions.DECREASE_INGREDIENT_QTY,
   item,
@@ -55,7 +54,7 @@ export const ingredientsFetching = (): IIngredientsFetching => ({
 });
 
 export const getIngredientsSuccess = (
-  ingredients: TIngredient[]
+  ingredients: TIngredient[],
 ): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
@@ -66,9 +65,11 @@ export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
   err,
 });
 
-export const increaseIngredientQty = (ingredient: TIngredient): IIncreaseIngredientQty => ({
+export const increaseIngredientQty = (
+  ingredient: TIngredient,
+): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
-  ingredient
+  ingredient,
 });
 
 export const getIngredients = () => async (dispatch: AppDispatch) => {

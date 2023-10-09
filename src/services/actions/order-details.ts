@@ -17,7 +17,7 @@ export interface IPostOrderFailed {
 }
 export interface ISetOrderFeed {
   readonly type: typeof orderActions.SET_ORDER_FEED;
-  readonly payload: {orders: TOrder[], id: string};
+  readonly payload: { orders: TOrder[]; id: string };
 }
 
 export type TOrderDetailsActions =
@@ -40,16 +40,17 @@ export const postOrderFailed = (err: any): IPostOrderFailed => ({
   err,
 });
 
-export const setOrderFeed = (payload: {orders: TOrder[], id: string}): ISetOrderFeed => ({
+export const setOrderFeed = (payload: {
+  orders: TOrder[];
+  id: string;
+}): ISetOrderFeed => ({
   type: orderActions.SET_ORDER_FEED,
   payload,
 });
 
-
-
 export const postOrder = (request: any) => async (dispatch: AppDispatch) => {
   dispatch({ type: orderActions.POST_ORDER_FETCHING });
- 
+
   return postOrderApi(request)
     .then((order) => {
       dispatch(postOrderSuccess(order));

@@ -15,7 +15,7 @@ type CardOrderItemProps = {
 
 const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
   const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector
+    getIngredientsSelector,
   );
   const lastIngredientCount: number = 5;
   const [orderInfo, setOrderInfo] = useState<TOrder>();
@@ -31,7 +31,7 @@ const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
 
   const getInfo = () => {
     const orderIngredients = order?.ingredients.map(
-      (id) => ingredients?.find((item) => item._id === id)
+      (id) => ingredients?.find((item) => item._id === id),
     );
     setOrderIngredients(orderIngredients as TIngredient[]);
     // @ts-ignore

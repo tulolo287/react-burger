@@ -39,12 +39,12 @@ const ResetPassword = () => {
           .then((res) =>
             res.success
               ? navigate("/login", { state: { from: "reset-password" } })
-              : alert(res.message)
+              : alert(res.message),
           )
           .catch((err) => console.log("err", err));
       }
     },
-    [tokenValue, passwordValue]
+    [tokenValue, passwordValue],
   );
 
   return (
