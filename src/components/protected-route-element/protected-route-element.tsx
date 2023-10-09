@@ -1,35 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
 import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { AppDispatch } from "../../services/types";
 
 const ProtectedRouteElement = ({
   element,
 }: {
   element: React.ReactElement;
 }) => {
-  const user = useSelector((state: State) => state.authReducer.user);
-  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
+  const user = useSelector((state) => state.authReducer.user);
+  const isLoading = useSelector((state) => state.authReducer.isLoading);
   const dispatch: AppDispatch = useDispatch();
+  const [auth, setAuth] = useState(false);
+  const location = useLocation();
+  const [isUserLoaded, setUserLoaded] = useState(false);
+
+  const checkUser = async () => {
+    await dispatch(getUser());
+    setUserLoaded(true);
+  };
 
   useEffect(() => {
     if (!user) {
-      dispatch(getUser());
+      checkUser();
+    } else {
+      setUserLoaded(true);
     }
   }, []);
 
-  if (user) {
-    return element;
+  if (!isUserLoaded) {
+    return null;
   }
 
-  return (
-    <>
-      {isLoading && "Loading..."}
-      <Navigate to={"/login"} replace />
-    </>
-  );
+  return user ? element : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRouteElement;

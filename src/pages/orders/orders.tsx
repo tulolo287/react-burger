@@ -6,7 +6,6 @@ import { actions } from "../../services/constants";
 import { useDispatch, useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
 import { startWS } from "../../utils";
-import { wsAuthUrl } from "../../utils/consts";
 import styles from "./orders.module.css";
 
 const Orders = () => {
@@ -14,12 +13,12 @@ const Orders = () => {
   const dispatch: AppDispatch = useDispatch();
   const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
   const getMessages = useSelector((state) => state.wsReducer.fetchMessages);
-
+ 
   useEffect(() => {
-     const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+    const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
 
-const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
-    console.log("WWWW", wsAuthUrl)
+    const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
+
     dispatch(startWS(wsAuthUrl));
     if (!user) {
       dispatch(getUser());

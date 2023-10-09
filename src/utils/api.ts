@@ -84,8 +84,10 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
+  
   let token = localStorage.getItem("accessToken");
   if (!token) {
+    //debugger
     const refreshData = await refreshTokenApi();
     saveResponse(refreshData);
   } 
@@ -232,7 +234,9 @@ const fetchWithRefresh = async (
   url: string,
   options: RequestInit
 ): Promise<TResponseBody<"user", TUser>> => {
+  
   try {
+    
     const response = await fetch(url, options);
     const result = await checkResponse(response);
     return result.success ? result : Promise.reject(result);
@@ -241,7 +245,7 @@ const fetchWithRefresh = async (
       const refreshData = await refreshTokenApi();
       saveResponse(refreshData);
       const headers = new Headers();
-      headers.append("Authorization", refreshData.accessToken);
+      headers.append("Authorization", "Bearer " + refreshData.accessToken);
       headers.append("Access-Control-Allow-Origin", "*");
       options.headers = headers;
       const response = await fetch(url, options);

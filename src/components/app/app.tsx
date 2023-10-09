@@ -1,6 +1,4 @@
-import { memo } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import useModal from "../../hooks/useModal";
 import Constructor from "../../pages/constructor/constructor";
 import FeedDetails from "../../pages/feed-details/feed-deails";
 import Feed from "../../pages/feed/feed";
@@ -18,10 +16,10 @@ import IngredientDetails from "../ingredient-details/ingredient-details";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import styles from "./app.module.css";
 
-const App = memo(() => {
+const App = () => {
   let location = useLocation();
   let background = location.state && location.state.background;
-  
+
   let state = location.state;
   return (
     <div className={styles.app}>
@@ -35,7 +33,10 @@ const App = memo(() => {
         <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
         <Route path={path.FEED} element={<Feed />} />
         <Route path={path.FEED_DETAILS} element={<FeedDetails />} />
-        <Route path={path.PROFILE} element={<Profile />}></Route>
+        <Route
+          path={path.PROFILE}
+          element={<ProtectedRouteElement element={<Profile />} />}
+        ></Route>
         <Route
           path={path.PROFILE_ORDERS}
           element={<ProtectedRouteElement element={<Orders />} />}
@@ -49,11 +50,14 @@ const App = memo(() => {
         <Routes>
           <Route path={path.INGREDIENT} element={<IngredientDetails />} />
           <Route path={path.FEED_DETAILS} element={<FeedDetailsModal />} />
-          <Route path={path.PROFILE_ORDERS_ID} element={<FeedDetailsModal />} />
+          <Route
+            path={path.PROFILE_ORDERS_ID}
+            element={<ProtectedRouteElement element={<FeedDetailsModal />} />}
+          />
         </Routes>
       )}
     </div>
   );
-});
+};
 
 export default App;

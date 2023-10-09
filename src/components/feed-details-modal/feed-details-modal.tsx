@@ -14,7 +14,7 @@ import Modal from "../modal/modal";
 import styles from "./feed-details-modal.module.css";
 
 import { v4 } from "uuid";
-import { getUser } from "../../services/selectors/auth";
+import { getUser } from "../../services/actions/auth";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
 import { getMessages } from "../../services/selectors/wsSelectors";
 import { startWS } from "../../utils";
@@ -28,7 +28,8 @@ const FeedDetailsModal = memo(() => {
     getIngredientsSelector
   );
   const messages = useSelector(getMessages);
-  const user = useSelector(getUser);
+  // const user = useSelector(getUserSelector);
+  const user = useSelector((state) => state.authReducer.user);
   const params = useParams();
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -55,14 +56,7 @@ const FeedDetailsModal = memo(() => {
     !wsConnected && dispatch(startWS(url));
   }, []);
 
-  useEffect(() => {
-    const setUser = async () => {
-      if (!user) {
-        //dispatch(getUser(store.getState())).then((user: any) => getOrder());
-      }
-    };
-    setUser();
-  }, []);
+  
 
   useEffect(() => {
     getOrder();
@@ -73,7 +67,6 @@ const FeedDetailsModal = memo(() => {
     const orderIngredients = order?.ingredients.map(
       (id) => ingredients?.find((item) => item._id === id)
     );
-
     setOrderIngredients(orderIngredients as TIngredient[]);
     // @ts-ignore
     setOrderInfo(order);
@@ -87,7 +80,7 @@ const FeedDetailsModal = memo(() => {
   return (
     <>
       <Modal closeModal={navBack} title={title}>
-        {orderIngredients && (
+        {!isLoading && orderIngredients && (
           <div className={styles.container}>
             <h3 className={styles.title}>{orderInfo?.name}</h3>
             <p style={{ color }} className={styles.status + " mt-4"}>

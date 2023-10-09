@@ -26,7 +26,6 @@ const Profile = () => {
     const setUser = async () => {
       if (!user) {
         dispatch(getUser()).then((user) => setUserInput(user!));
-        navigate("/login")
       }
     };
 

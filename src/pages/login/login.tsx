@@ -19,10 +19,14 @@ const Login = () => {
   const location = useLocation();
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
+  let uu = false;
 
   useEffect(() => {
+    const checkAuth = async () => {
+       dispatch(getUser());
+    };
     if (!user) {
-      dispatch(getUser());
+      checkAuth();
     }
   }, [user, dispatch]);
 
@@ -46,8 +50,9 @@ const Login = () => {
 
   return (
     <>
-      {isLoading && "Loading..."}
-      {!user ? (
+      {user && !isLoading && <Navigate to="/" />}
+
+      {!user && !isLoading && (
         <section className={styles.content}>
           <div className={styles.title}>Вход</div>
           <div className={styles.form}>
@@ -95,9 +100,8 @@ const Login = () => {
             </div>
           </div>
         </section>
-      ) : (
-        <Navigate to={location?.state?.from || "/"} />
       )}
+      {isLoading && "Loading..."}
     </>
   );
 };
