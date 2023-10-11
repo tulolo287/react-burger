@@ -41,7 +41,6 @@ const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
       (id) => ingredients?.find((item) => item._id === id)
     );
     // @ts-ignore
-    //setOrderInfo(order);
     const total = orderIngredients
       ?.map((item) => item?.price!)
       .reduce((x, y) => (x += y), 0);

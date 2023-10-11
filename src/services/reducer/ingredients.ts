@@ -64,7 +64,7 @@ export const ingredientsReducer = (
         if (item._id === action.ingredient._id) {
           return { ...item, qty: 2 };
         }
-        return { ...item, qty: undefined };
+        return item;
       });
       return { ...state, sortedIngredients: newSortedIngredients };
     }

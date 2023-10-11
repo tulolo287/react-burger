@@ -13,6 +13,7 @@ export type TIngredient = {
   image_large: string;
   image_mobile: string;
   qty?: number | undefined;
+  count?: number | undefined;
   key: string;
 };
 

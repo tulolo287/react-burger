@@ -23,7 +23,7 @@ const FeedDetailsModal = memo(() => {
   const { title, setTitle, navBack } = useModal();
   const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector
+    getIngredientsSelector,
   );
   const messages = useSelector(getMessages);
   const params = useParams();
@@ -57,13 +57,15 @@ const FeedDetailsModal = memo(() => {
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
     const orderIngredients = ingredients?.filter(
-      (item) => order?.ingredients?.some((id) => item._id === id)
+      (item) => order?.ingredients?.some((id) => item._id === id),
     );
-    orderIngredients?.forEach((item) => (item.qty = 0));
+    orderIngredients?.forEach((item: TIngredient) => (item.count = 0));
     order?.ingredients.forEach((id) => {
-      const current = orderIngredients?.find((item) => item._id === id);
-      if (current?.qty !== undefined && typeof current?.qty != null) {
-        current.qty += 1;
+      const current = orderIngredients?.find(
+        (item: TIngredient) => item._id === id,
+      );
+      if (current?.count !== undefined && typeof current?.count != null) {
+        current.count += 1;
       }
     });
 
@@ -72,7 +74,7 @@ const FeedDetailsModal = memo(() => {
     setOrderInfo(order);
     let total: number = 0;
     orderIngredients?.forEach(function (item, index) {
-      total += item.price * item?.qty!;
+      total += item.price * item?.count!;
     });
     // @ts-ignore
     setTotalPrice(total);
@@ -107,7 +109,7 @@ const FeedDetailsModal = memo(() => {
                         <span className={styles.name}>{item?.name}</span>
                         <div className={styles.price}>
                           <p className="text text_type_digits-default mr-2">
-                            {item.qty}
+                            {item.count}
                           </p>
                           <span className="text text_type_digits-default mr-2">
                             x
