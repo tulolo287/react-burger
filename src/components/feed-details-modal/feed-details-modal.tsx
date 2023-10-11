@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from "../../services/hooks";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
 import { getMessages } from "../../services/selectors/wsSelectors";
-import { startWS } from "../../utils";
+import { startWS, getOrderStatus } from "../../utils";
 import { wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import Modal from "../modal/modal";
@@ -87,11 +87,7 @@ const FeedDetailsModal = memo(() => {
           <div className={styles.container}>
             <h3 className={styles.title}>{orderInfo?.name}</h3>
             <p style={{ color }} className={styles.status + " mt-4"}>
-              {orderInfo?.status === "done"
-                ? "Выполнен"
-                : orderInfo?.status === "pending"
-                ? "Готовится"
-                : "Создан"}
+              {getOrderStatus(orderInfo?.status)}
             </p>
             <div className={styles.info}></div>
 

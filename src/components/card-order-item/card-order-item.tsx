@@ -5,6 +5,7 @@ import {
 import { FC, Fragment, useEffect, useState } from "react";
 import { getIngredientsSelector } from "../../services/actions/ingredients";
 import { useSelector } from "../../services/hooks";
+import { getOrderStatus } from "../../utils";
 import { TOrder } from "../../utils/types";
 import styles from "./card-order-item.module.css";
 
@@ -23,22 +24,9 @@ const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
     getInfo();
   }, [order]);
 
-  const getOrderStatus = (status: string | undefined): string => {
-    let orderStatus: string = "";
-    switch (status) {
-      case "done":
-        orderStatus = "Выполнен";
-        return orderStatus;
-      case "pending":
-        orderStatus = "Готовится";
-        return orderStatus;
-    }
-    return "Создан";
-  };
-
   const getInfo = () => {
     const orderIngredients = order?.ingredients.map(
-      (id) => ingredients?.find((item) => item._id === id)
+      (id) => ingredients?.find((item) => item._id === id),
     );
     // @ts-ignore
     const total = orderIngredients
