@@ -17,7 +17,9 @@ import {
 import {
   increaseBunQty,
   increaseIngredientQty,
+  clearQty,
 } from "../../services/actions/ingredients";
+import { clearOrder } from "../../services/actions/constructor";
 import { postOrder } from "../../services/actions/order-details";
 import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
@@ -89,6 +91,8 @@ const BurgerConstructor = () => {
     };
     openModal();
     dispatch(postOrder(request));
+    dispatch(clearQty());
+    dispatch(clearOrder());
   };
 
   return (

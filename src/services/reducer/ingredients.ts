@@ -71,6 +71,12 @@ export const ingredientsReducer = (
       });
       return { ...state, sortedIngredients: newSortedIngredients };
     }
+    case ingredientsActions.CLEAR_QTY: {
+      let newSortedIngredients = state.sortedIngredients?.map((item) => {
+        return { ...item, qty: undefined };
+      });
+      return { ...state, sortedIngredients: newSortedIngredients };
+    }
     case ingredientsActions.INGREDIENTS_FETCHING:
       return { ...state, isLoading: true, fetchError: false };
 

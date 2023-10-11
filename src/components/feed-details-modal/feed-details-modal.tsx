@@ -4,7 +4,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { memo, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { v4 } from "uuid";
 import useModal from "../../hooks/useModal";
 import {
   getIngredients,
@@ -68,7 +67,6 @@ const FeedDetailsModal = memo(() => {
         current.qty += 1;
       }
     });
-
     setOrderIngredients(orderIngredients as TIngredient[]);
     // @ts-ignore
     setOrderInfo(order);
@@ -90,10 +88,8 @@ const FeedDetailsModal = memo(() => {
               {getOrderStatus(orderInfo?.status)}
             </p>
             <div className={styles.info}></div>
-
             <div>
               <h2>Состав:</h2>
-
               <div className={styles.ingredients}>
                 <ul>
                   {orderIngredients.map((item, idx) => (

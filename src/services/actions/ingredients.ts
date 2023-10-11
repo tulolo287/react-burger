@@ -22,6 +22,9 @@ export interface IIncreaseBunQty {
   readonly type: typeof ingredientsActions.INCREASE_BUN_QTY;
   ingredient: TIngredient;
 }
+export interface IClearQty {
+  readonly type: typeof ingredientsActions.CLEAR_QTY;
+}
 export interface IDecreaseIngredientQty {
   readonly type: typeof ingredientsActions.DECREASE_INGREDIENT_QTY;
   item: TIngredient;
@@ -38,20 +41,25 @@ export type TIngredientsActions =
   | IIncreaseIngredientQty
   | IDecreaseIngredientQty
   | IIncreaseBunQty
+  | IClearQty
   | ISetSortedIngredients;
 
 export const setSortedIngredients = (
-  ingredients: TIngredient[]
+  ingredients: TIngredient[],
 ): ISetSortedIngredients => ({
   type: ingredientsActions.SET_SORTED_INGREDIENTS,
   ingredients,
 });
 
 export const decreaseIngredientQty = (
-  item: TIngredient
+  item: TIngredient,
 ): IDecreaseIngredientQty => ({
   type: ingredientsActions.DECREASE_INGREDIENT_QTY,
   item,
+});
+
+export const clearQty = (): IClearQty => ({
+  type: ingredientsActions.CLEAR_QTY,
 });
 
 export const ingredientsFetching = (): IIngredientsFetching => ({
@@ -59,7 +67,7 @@ export const ingredientsFetching = (): IIngredientsFetching => ({
 });
 
 export const getIngredientsSuccess = (
-  ingredients: TIngredient[]
+  ingredients: TIngredient[],
 ): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
@@ -71,15 +79,13 @@ export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
 });
 
 export const increaseIngredientQty = (
-  ingredient: TIngredient
+  ingredient: TIngredient,
 ): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
   ingredient,
 });
 
-export const increaseBunQty = (
-  ingredient: TIngredient
-): IIncreaseBunQty => ({
+export const increaseBunQty = (ingredient: TIngredient): IIncreaseBunQty => ({
   type: ingredientsActions.INCREASE_BUN_QTY,
   ingredient,
 });
