@@ -1,4 +1,3 @@
-
 export type TIngredient = {
   _id: string;
   __v: number;
@@ -13,7 +12,6 @@ export type TIngredient = {
   image_large: string;
   image_mobile: string;
   qty?: number | undefined;
-  count?: number | undefined;
   key: string;
 };
 
@@ -75,5 +73,3 @@ export type TOrder = {
   updatedAt: string;
   number: number;
 };
-
-

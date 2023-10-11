@@ -56,16 +56,16 @@ const FeedDetailsModal = memo(() => {
 
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
-    const orderIngredients = ingredients?.filter(
-      (item) => order?.ingredients?.some((id) => item._id === id),
+    const orderIngredients = JSON.parse(JSON.stringify(ingredients))?.filter(
+      (item: TIngredient) => order?.ingredients?.some((id) => item._id === id),
     );
-    orderIngredients?.forEach((item: TIngredient) => (item.count = 0));
+    orderIngredients?.forEach((item: TIngredient) => (item.qty = 0));
     order?.ingredients.forEach((id) => {
       const current = orderIngredients?.find(
         (item: TIngredient) => item._id === id,
       );
-      if (current?.count !== undefined && typeof current?.count != null) {
-        current.count += 1;
+      if (current?.qty !== undefined && typeof current?.qty != null) {
+        current.qty += 1;
       }
     });
 
@@ -73,8 +73,8 @@ const FeedDetailsModal = memo(() => {
     // @ts-ignore
     setOrderInfo(order);
     let total: number = 0;
-    orderIngredients?.forEach(function (item, index) {
-      total += item.price * item?.count!;
+    orderIngredients?.forEach(function (item: TIngredient, index: number) {
+      total += item.price * item?.qty!;
     });
     // @ts-ignore
     setTotalPrice(total);
@@ -109,7 +109,7 @@ const FeedDetailsModal = memo(() => {
                         <span className={styles.name}>{item?.name}</span>
                         <div className={styles.price}>
                           <p className="text text_type_digits-default mr-2">
-                            {item.count}
+                            {item.qty}
                           </p>
                           <span className="text text_type_digits-default mr-2">
                             x
