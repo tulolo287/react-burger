@@ -52,6 +52,7 @@ const CardOrder = memo(() => {
           ))}
         </ul>
       )}
+      {fetchMessages && "Loading..."}
     </>
   );
 });
