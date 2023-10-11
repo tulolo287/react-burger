@@ -3,10 +3,9 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, Fragment, useEffect, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { getIngredientsSelector } from "../../services/actions/ingredients";
 import { useSelector } from "../../services/hooks";
-import { TIngredient, TOrder } from "../../utils/types";
+import { TOrder } from "../../utils/types";
 import styles from "./card-order-item.module.css";
 
 type CardOrderItemProps = {
@@ -14,28 +13,35 @@ type CardOrderItemProps = {
 };
 
 const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
-  const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector,
-  );
+  const ingredients = useSelector(getIngredientsSelector);
   const lastIngredientCount: number = 5;
-  const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [orderIngredients, setOrderIngredients] = useState<
-    TIngredient[] | null
-  >(null);
+
   const color = order?.status === "done" ? "#0CC" : "white";
 
   useEffect(() => {
     getInfo();
   }, [order]);
 
+  const getOrderStatus = (status: string | undefined): string => {
+    let orderStatus: string = "";
+    switch (status) {
+      case "done":
+        orderStatus = "Выполнен";
+        return orderStatus;
+      case "pending":
+        orderStatus = "Готовится";
+        return orderStatus;
+    }
+    return "Создан";
+  };
+
   const getInfo = () => {
     const orderIngredients = order?.ingredients.map(
-      (id) => ingredients?.find((item) => item._id === id),
+      (id) => ingredients?.find((item) => item._id === id)
     );
-    setOrderIngredients(orderIngredients as TIngredient[]);
     // @ts-ignore
-    setOrderInfo(order);
+    //setOrderInfo(order);
     const total = orderIngredients
       ?.map((item) => item?.price!)
       .reduce((x, y) => (x += y), 0);
@@ -56,16 +62,12 @@ const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
       </div>
       <h3 className={`${styles.name} mt-6`}>{order?.name}</h3>
       <p className={styles.status} style={{ color }}>
-        {order?.status === "done"
-          ? "Выполнен"
-          : order?.status === "pending"
-          ? "Готовится"
-          : "Создан"}
+        {getOrderStatus(order?.status)}
       </p>
       <div className={`${styles.info} mt-6`}>
         <div className={styles.ingredients}>
           {order?.ingredients.map((id, idx) => (
-            <Fragment key={uuidv4()}>
+            <Fragment key={`${id}_${idx}`}>
               {idx < lastIngredientCount ? (
                 <div
                   style={{ zIndex: lastIngredientCount - idx }}

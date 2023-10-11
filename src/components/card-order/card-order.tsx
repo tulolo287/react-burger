@@ -44,7 +44,7 @@ const CardOrder = memo(() => {
       {wsConnected && !fetchMessages && (
         <ul className={styles.card_orders}>
           {messages?.orders?.map((order, idx) => (
-            <Fragment key={uuidv4()}>
+            <Fragment key={order._id}>
               <Link to={`${order?._id}`} state={{ background: location }}>
                 <CardOrderItem order={order} />
               </Link>

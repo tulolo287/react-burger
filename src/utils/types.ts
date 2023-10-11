@@ -1,4 +1,3 @@
-import { string } from "prop-types";
 
 export type TIngredient = {
   _id: string;
@@ -13,7 +12,7 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
-  qty: number | null;
+  qty?: number | undefined;
   key: string;
 };
 
@@ -75,3 +74,5 @@ export type TOrder = {
   updatedAt: string;
   number: number;
 };
+
+

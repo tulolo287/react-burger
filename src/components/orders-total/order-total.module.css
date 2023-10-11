@@ -1,26 +1,42 @@
 .board {
   display: flex;
   justify-content: space-between;
+  height: 50%;
+}
+.done {
+  width: 50%;
+  overflow-y: scroll;
+  scrollbar-color: #8585ad #2f2f37;
 }
 .order_done {
   color: #00cccc;
 }
-.container {
-  max-height: 780px;
-  overflow-y: scroll;
+.order_numbers {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  flex-wrap: wrap;
   scrollbar-color: #8585ad #2f2f37;
+}
+.inWork {
   width: 50%;
 }
-.container::-webkit-scrollbar-thumb {
+.total {
+  height: 40%;
+}
+.container {
+  width: 50%;
+}
+.done::-webkit-scrollbar-thumb {
   width: 30px;
   background-color: #8585ad;
   border: 3px;
 }
-.container::-webkit-scrollbar {
+.done::-webkit-scrollbar {
   display: block;
   width: 5px;
 }
-.container::-webkit-scrollbar-track {
+.done::-webkit-scrollbar-track {
   background: #2f2f37;
 }
 .title {

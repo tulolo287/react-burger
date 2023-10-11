@@ -14,7 +14,7 @@ import {
   addBuntToConstructor,
   addIngredientToConstructor,
 } from "../../services/actions/constructor";
-import { increaseIngredientQty } from "../../services/actions/ingredients";
+import { increaseBunQty, increaseIngredientQty } from "../../services/actions/ingredients";
 import { postOrder } from "../../services/actions/order-details";
 import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
@@ -66,6 +66,7 @@ const BurgerConstructor = () => {
   const onDropHandler = (item: TConstructorIngredient) => {
     if (item.type === "bun") {
       dispatch(addBuntToConstructor({ ...item, key: uuidv4() }));
+      dispatch(increaseBunQty(item));
     } else {
       dispatch(addIngredientToConstructor({ ...item, key: uuidv4() }));
       dispatch(increaseIngredientQty(item));
@@ -78,7 +79,8 @@ const BurgerConstructor = () => {
       return;
     }
     const ingredientsId = constructorIngredients.map((item) => item._id);
-    ingredientsId.splice(0, 1, bun._id);
+    ingredientsId.unshift(bun._id)
+
     const request = {
       ingredients: ingredientsId,
     };

@@ -85,14 +85,7 @@ export const logoutApi = async () => {
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
   let token = localStorage.getItem("accessToken");
-  if (!token) {
-    //debugger
-    const refreshData = await refreshTokenApi();
-    saveResponse(refreshData);
-  }
 
-  let refreshToken = localStorage.getItem("refreshToken");
-  if (refreshToken) {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Authorization", token!);
@@ -108,8 +101,7 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
     };
 
     return fetchWithRefresh(`${API_URL}/auth/user`, options);
-  }
-  return Promise.reject();
+  
 };
 
 export const updateUserApi = async (
@@ -156,7 +148,7 @@ export const registerApi = async (request: TUser) => {
 };
 
 export const refreshTokenApi = async (): Promise<TTokens> => {
-  if (localStorage.getItem("refreshToken")) {
+ 
     let token = localStorage.getItem("refreshToken")?.replace(/^"(.*)"$/, "$1");
 
     try {
@@ -179,8 +171,6 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
     } catch (err) {
       return Promise.reject(err);
     }
-  }
-  throw new Error("No refresh token");
 };
 
 export const resetPasswordApi = async (
@@ -242,7 +232,7 @@ const fetchWithRefresh = async (
       const refreshData = await refreshTokenApi();
       saveResponse(refreshData);
       const headers = new Headers();
-      headers.append("Authorization", "Bearer " + refreshData.accessToken);
+      headers.append("Authorization", refreshData.accessToken);
       headers.append("Access-Control-Allow-Origin", "*");
       options.headers = headers;
       const response = await fetch(url, options);

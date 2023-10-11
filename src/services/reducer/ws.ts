@@ -1,4 +1,4 @@
-//import { getCurrentTimestamp } from "../../utils/datetime";
+import { TOrder } from "../../utils/types";
 import { TWSActions } from "../actions/wsActions";
 import {
   WS_CONNECTION_CLOSE,
@@ -8,16 +8,6 @@ import {
   WS_GET_MESSAGE_FAILED,
   WS_GET_MESSAGE_SUCCESS,
 } from "../constants/wsConsts";
-
-type TOrder = {
-  _id: string;
-  ingredients: Array<string>;
-  status: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  number: number;
-} | null;
 
 type TMessages = {
   orders: TOrder[] | null;
@@ -40,7 +30,7 @@ const initialState: TWSState = {
 
 export const wsReducer = (
   state = initialState,
-  action: TWSActions,
+  action: TWSActions
 ): TWSState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:

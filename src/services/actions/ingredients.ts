@@ -1,7 +1,7 @@
-import { AppDispatch, State } from "../types";
 import { getIngredientsApi } from "../../utils/api";
 import { TIngredient } from "../../utils/types";
 import { ingredientsActions } from "../constants/ingredients";
+import { AppDispatch, State } from "../types";
 
 export interface IIngredientsFetching {
   readonly type: typeof ingredientsActions.INGREDIENTS_FETCHING;
@@ -16,6 +16,10 @@ export interface IGetIngredientsFailed {
 }
 export interface IIncreaseIngredientQty {
   readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
+  ingredient: TIngredient;
+}
+export interface IIncreaseBunQty {
+  readonly type: typeof ingredientsActions.INCREASE_BUN_QTY;
   ingredient: TIngredient;
 }
 export interface IDecreaseIngredientQty {
@@ -33,17 +37,18 @@ export type TIngredientsActions =
   | IGetIngredientsFailed
   | IIncreaseIngredientQty
   | IDecreaseIngredientQty
+  | IIncreaseBunQty
   | ISetSortedIngredients;
 
 export const setSortedIngredients = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): ISetSortedIngredients => ({
   type: ingredientsActions.SET_SORTED_INGREDIENTS,
   ingredients,
 });
 
 export const decreaseIngredientQty = (
-  item: TIngredient,
+  item: TIngredient
 ): IDecreaseIngredientQty => ({
   type: ingredientsActions.DECREASE_INGREDIENT_QTY,
   item,
@@ -54,7 +59,7 @@ export const ingredientsFetching = (): IIngredientsFetching => ({
 });
 
 export const getIngredientsSuccess = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
@@ -66,9 +71,16 @@ export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
 });
 
 export const increaseIngredientQty = (
-  ingredient: TIngredient,
+  ingredient: TIngredient
 ): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
+  ingredient,
+});
+
+export const increaseBunQty = (
+  ingredient: TIngredient
+): IIncreaseBunQty => ({
+  type: ingredientsActions.INCREASE_BUN_QTY,
   ingredient,
 });
 

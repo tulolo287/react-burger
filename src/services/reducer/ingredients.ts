@@ -38,10 +38,10 @@ export const ingredientsReducer = (
               ...item,
               qty:
                 item.qty === 1
-                  ? null
+                  ? undefined
                   : typeof item.qty === "number"
                   ? item.qty - 1
-                  : null,
+                  : undefined,
             }
           : item,
       );
@@ -56,6 +56,15 @@ export const ingredientsReducer = (
           return { ...item, qty: item.qty ? item.qty + 1 : 1 };
         }
         return item;
+      });
+      return { ...state, sortedIngredients: newSortedIngredients };
+    }
+    case ingredientsActions.INCREASE_BUN_QTY: {
+      let newSortedIngredients = state.sortedIngredients?.map((item) => {
+        if (item._id === action.ingredient._id) {
+          return { ...item, qty: 2 };
+        }
+        return { ...item, qty: undefined };
       });
       return { ...state, sortedIngredients: newSortedIngredients };
     }
