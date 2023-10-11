@@ -96,11 +96,11 @@ const FeedDetailsModal = memo(() => {
 
               <div className={styles.ingredients}>
                 <ul>
-                  {orderIngredients.map((item) => (
-                    <li key={v4()}>
+                  {orderIngredients.map((item, idx) => (
+                    <li key={`${item._id}_${idx}`}>
                       <div className={styles.ingredientsInfo}>
                         <div className={styles.ingredient_preview}>
-                          <img src={item?.image} />
+                          <img src={item?.image} alt={item.name} />
                         </div>
                         <span className={styles.name}>{item?.name}</span>
                         <div className={styles.price}>

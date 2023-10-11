@@ -69,7 +69,7 @@ const BurgerConstructor = () => {
   const onDropHandler = (item: TConstructorIngredient) => {
     if (item.type === "bun") {
       dispatch(addBuntToConstructor({ ...item, key: uuidv4() }));
-      //dispatch(increaseBunQty(item));
+      dispatch(increaseBunQty(item));
     } else {
       dispatch(addIngredientToConstructor({ ...item, key: uuidv4() }));
       dispatch(increaseIngredientQty(item));
