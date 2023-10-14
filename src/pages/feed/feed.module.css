@@ -1,20 +1,3 @@
-.container {
-  display: flex;
-  justify-content: center;
-  margin-top: 100px;
-  flex-wrap: wrap;
-  max-width: 1900px;
-  max-height: calc(100vh - 250px);
-  margin: 0 auto;
-  padding: 20px;
-}
-.container {
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
 .header {
   font-family: JetBrains Mono;
   font-size: 36px;
@@ -30,7 +13,6 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin-top: 100px;
 }
 
 .orders {

@@ -63,9 +63,8 @@ const Orders = () => {
         </div>
       </div>
 
-      <div className={`${styles.orders}`}>
         <CardOrder />
-      </div>
+    
     </section>
   );
 };

@@ -13,6 +13,7 @@ import { AppDispatch, State } from "../../services/types";
 import { SORT_ORDER, TYPES } from "../../utils/consts";
 import { AssociativeArray, TIngredient } from "../../utils/types";
 import BurgerItem from "../burger-item/burger-item";
+import Loader from "../ui/loader/loader";
 import styles from "./burger-ingredients.module.css";
 
 const BurgerIngredients = memo(() => {
@@ -21,10 +22,10 @@ const BurgerIngredients = memo(() => {
   const dispatch: AppDispatch = useDispatch();
   const [current, setCurrent] = useState<string>("bun");
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError,
+    (state: State) => state.ingredientsReducer.fetchError
   );
   const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading,
+    (state: State) => state.ingredientsReducer.isLoading
   );
 
   let currentType: string = "";
@@ -33,7 +34,7 @@ const BurgerIngredients = memo(() => {
   useEffect(() => {
     const fetchData = async () => {
       dispatch(getIngredients()).then(
-        (ingredients) => ingredients && sortData(ingredients),
+        (ingredients) => ingredients && sortData(ingredients)
       );
     };
     if (!ingredients) {
@@ -76,12 +77,14 @@ const BurgerIngredients = memo(() => {
 
   return (
     <>
+      {fetchError && "Sorry server error"}
+      {isLoading && <Loader />}
       {ingredients && (
         <section className={styles.constructorIngredients}>
           <p
             className={
               styles.burgerIngredients_header +
-              " text text_type_main-large mt-10 mb-5"
+              " text text_type_main-large mb-5"
             }
           >
             Соберите бургер
@@ -128,8 +131,6 @@ const BurgerIngredients = memo(() => {
           </ul>
         </section>
       )}
-      {fetchError && "Sorry server error"}
-      {isLoading && "Loading..."}
     </>
   );
 });

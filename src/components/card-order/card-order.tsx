@@ -1,6 +1,6 @@
 import { Fragment, memo, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import { Link, useLocation } from "react-router-dom";
 import {
   getIngredients,
   getIngredientsSelector,
@@ -12,7 +12,7 @@ import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import CardOrderItem from "../card-order-item/card-order-item";
 import styles from "./card-order.module.css";
-import { Link, useLocation } from "react-router-dom";
+import Loader from "../ui/loader/loader";
 
 const CardOrder = memo(() => {
   const messages = useSelector((state) => state.wsReducer.messages);
@@ -41,17 +41,18 @@ const CardOrder = memo(() => {
 
   return (
     <>
+      <ul className={styles.card_orders}>
+      {fetchMessages && <Loader />}
       {wsConnected && !fetchMessages && (
-        <ul className={styles.card_orders}>
-          {messages?.orders?.map((order, idx) => (
-            <Fragment key={order._id}>
-              <Link to={`${order?._id}`} state={{ background: location }}>
-                <CardOrderItem order={order} />
-              </Link>
-            </Fragment>
-          ))}
-        </ul>
+        messages?.orders?.map((order, idx) => (
+          <Fragment key={order._id}>
+            <Link to={`${order?._id}`} state={{ background: location }}>
+              <CardOrderItem order={order} />
+            </Link>
+          </Fragment>
+        ))
       )}
+      </ul>
     </>
   );
 });

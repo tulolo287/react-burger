@@ -24,37 +24,41 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes location={background || location}>
-        <Route path={path.HOME} element={<Constructor />}></Route>
-        <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
-        <Route path={path.LOGIN} element={<Login />} />
-        <Route path={path.REGISTER} element={<Register />} />
-        <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
-        <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
-        <Route path={path.FEED} element={<Feed />} />
-        <Route path={path.FEED_DETAILS} element={<FeedDetails />} />
-        <Route
-          path={path.PROFILE}
-          element={<ProtectedRouteElement element={<Profile />} />}
-        ></Route>
-        <Route
-          path={path.PROFILE_ORDERS}
-          element={<ProtectedRouteElement element={<Orders />} />}
-        ></Route>
-        <Route
-          path={path.PROFILE_ORDERS_ID}
-          element={<ProtectedRouteElement element={<FeedDetails />} />}
-        ></Route>
-      </Routes>
-      {background && (
-        <Routes>
-          <Route path={path.INGREDIENT} element={<IngredientDetails />} />
-          <Route path={path.FEED_DETAILS} element={<FeedDetailsModal />} />
+      <main className={styles.container}>
+        <Routes location={background || location}>
+          <Route path={path.HOME} element={<Constructor />}></Route>
+          <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
+          <Route path={path.LOGIN} element={<Login />} />
+          <Route path={path.REGISTER} element={<Register />} />
+          <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
+          <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} />
+          <Route path={path.FEED} element={<Feed />} />
+          <Route path={path.FEED_DETAILS} element={<FeedDetails />} />
+          <Route
+            path={path.PROFILE}
+            element={<ProtectedRouteElement element={<Profile />} />}
+          ></Route>
+          <Route
+            path={path.PROFILE_ORDERS}
+            element={<ProtectedRouteElement element={<Orders />} />}
+          ></Route>
           <Route
             path={path.PROFILE_ORDERS_ID}
-            element={<ProtectedRouteElement element={<FeedDetailsModal />} />}
-          />
+            element={<ProtectedRouteElement element={<FeedDetails />} />}
+          ></Route>
         </Routes>
+      </main>
+      {background && (
+        <main className={styles.container}>
+          <Routes>
+            <Route path={path.INGREDIENT} element={<IngredientDetails />} />
+            <Route path={path.FEED_DETAILS} element={<FeedDetailsModal />} />
+            <Route
+              path={path.PROFILE_ORDERS_ID}
+              element={<ProtectedRouteElement element={<FeedDetailsModal />} />}
+            />
+          </Routes>
+        </main>
       )}
     </div>
   );

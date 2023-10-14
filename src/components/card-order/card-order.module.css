@@ -1,7 +1,9 @@
 .card_orders {
-  max-height: 780px;
+  text-align: left;
   overflow-y: scroll;
   scrollbar-color: #8585ad #2f2f37;
+
+width: 70%;
 }
 .card_order_item {
   border-radius: 40px;
