@@ -76,6 +76,6 @@ export const setOrderDetails = (orderDetails: any): ISetOrderDetails => ({
   orderDetails,
 });
 
-export const clearOrder = (orderDetails: any): IClearOrder => ({
+export const clearOrder = (): IClearOrder => ({
   type: constructorActions.CLEAR_ORDER,
 });

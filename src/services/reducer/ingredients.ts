@@ -61,9 +61,18 @@ export const ingredientsReducer = (
     }
     case ingredientsActions.INCREASE_BUN_QTY: {
       let newSortedIngredients = state.sortedIngredients?.map((item) => {
+        if (item.type === "bun") {
+          item.qty = undefined;
+        }
         if (item._id === action.ingredient._id) {
           return { ...item, qty: 2 };
         }
+        return item;
+      });
+      return { ...state, sortedIngredients: newSortedIngredients };
+    }
+    case ingredientsActions.CLEAR_QTY: {
+      let newSortedIngredients = state.sortedIngredients?.map((item) => {
         return { ...item, qty: undefined };
       });
       return { ...state, sortedIngredients: newSortedIngredients };

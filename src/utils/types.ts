@@ -1,4 +1,3 @@
-
 export type TIngredient = {
   _id: string;
   __v: number;
@@ -74,5 +73,3 @@ export type TOrder = {
   updatedAt: string;
   number: number;
 };
-
-

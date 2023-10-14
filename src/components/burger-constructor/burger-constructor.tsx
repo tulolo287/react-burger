@@ -14,7 +14,12 @@ import {
   addBuntToConstructor,
   addIngredientToConstructor,
 } from "../../services/actions/constructor";
-import { increaseBunQty, increaseIngredientQty } from "../../services/actions/ingredients";
+import {
+  increaseBunQty,
+  increaseIngredientQty,
+  clearQty,
+} from "../../services/actions/ingredients";
+import { clearOrder } from "../../services/actions/constructor";
 import { postOrder } from "../../services/actions/order-details";
 import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
@@ -79,13 +84,15 @@ const BurgerConstructor = () => {
       return;
     }
     const ingredientsId = constructorIngredients.map((item) => item._id);
-    ingredientsId.unshift(bun._id)
+    ingredientsId.unshift(bun._id);
 
     const request = {
       ingredients: ingredientsId,
     };
     openModal();
     dispatch(postOrder(request));
+    dispatch(clearQty());
+    dispatch(clearOrder());
   };
 
   return (

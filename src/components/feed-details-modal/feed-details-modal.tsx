@@ -4,7 +4,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { memo, useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { v4 } from "uuid";
 import useModal from "../../hooks/useModal";
 import {
   getIngredients,
@@ -13,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "../../services/hooks";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
 import { getMessages } from "../../services/selectors/wsSelectors";
-import { startWS } from "../../utils";
+import { startWS, getOrderStatus } from "../../utils";
 import { wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import Modal from "../modal/modal";
@@ -23,7 +22,7 @@ const FeedDetailsModal = memo(() => {
   const { title, setTitle, navBack } = useModal();
   const dispatch = useDispatch();
   const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector
+    getIngredientsSelector,
   );
   const messages = useSelector(getMessages);
   const params = useParams();
@@ -56,22 +55,23 @@ const FeedDetailsModal = memo(() => {
 
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
-    const orderIngredients = ingredients?.filter(
-      (item) => order?.ingredients?.some((id) => item._id === id)
+    const orderIngredients = JSON.parse(JSON.stringify(ingredients))?.filter(
+      (item: TIngredient) => order?.ingredients?.some((id) => item._id === id),
     );
-    orderIngredients?.forEach((item) => (item.qty = 0));
+    orderIngredients?.forEach((item: TIngredient) => (item.qty = 0));
     order?.ingredients.forEach((id) => {
-      const current = orderIngredients?.find((item) => item._id === id);
+      const current = orderIngredients?.find(
+        (item: TIngredient) => item._id === id,
+      );
       if (current?.qty !== undefined && typeof current?.qty != null) {
         current.qty += 1;
       }
     });
-
     setOrderIngredients(orderIngredients as TIngredient[]);
     // @ts-ignore
     setOrderInfo(order);
     let total: number = 0;
-    orderIngredients?.forEach(function (item, index) {
+    orderIngredients?.forEach(function (item: TIngredient, index: number) {
       total += item.price * item?.qty!;
     });
     // @ts-ignore
@@ -85,24 +85,18 @@ const FeedDetailsModal = memo(() => {
           <div className={styles.container}>
             <h3 className={styles.title}>{orderInfo?.name}</h3>
             <p style={{ color }} className={styles.status + " mt-4"}>
-              {orderInfo?.status === "done"
-                ? "Выполнен"
-                : orderInfo?.status === "pending"
-                ? "Готовится"
-                : "Создан"}
+              {getOrderStatus(orderInfo?.status)}
             </p>
             <div className={styles.info}></div>
-
             <div>
               <h2>Состав:</h2>
-
               <div className={styles.ingredients}>
                 <ul>
-                  {orderIngredients.map((item) => (
-                    <li key={v4()}>
+                  {orderIngredients.map((item, idx) => (
+                    <li key={`${item._id}_${idx}`}>
                       <div className={styles.ingredientsInfo}>
                         <div className={styles.ingredient_preview}>
-                          <img src={item?.image} />
+                          <img src={item?.image} alt={item.name} />
                         </div>
                         <span className={styles.name}>{item?.name}</span>
                         <div className={styles.price}>
