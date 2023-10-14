@@ -24,7 +24,7 @@ const useModal = () => {
     closeModal,
     title,
     setTitle,
-    navBack
+    navBack,
   };
 };
 

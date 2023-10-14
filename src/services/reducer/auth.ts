@@ -1,5 +1,7 @@
 import { deleteCookie, setCookie } from "../../utils/api";
-import { actions } from "../actions";
+import { TAuthActions } from "../actions/auth";
+import { actions } from "../constants";
+import { authActions } from "../constants/auth";
 
 export const initialState = {
   user: null,
@@ -7,73 +9,73 @@ export const initialState = {
   isLoading: false,
   isPasswordReset: false,
   isForgotPassword: false,
+  ordersHistory: null,
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: TAuthActions) => {
   switch (action.type) {
-    case actions.GET_USER_FETCHING: {
+    case authActions.GET_USER_FETCHING: {
       return {
         ...state,
         isLoading: true,
       };
     }
-    case actions.LOGIN_SUCCESS:
+    case authActions.LOGIN_SUCCESS:
       return {
         ...state,
-        user: action.payload,
+        user: action.user,
         isAuth: true,
         isLoading: false,
       };
-    case actions.LOGIN_FAILED:
+    case authActions.LOGIN_FAILED:
       return {
         ...state,
         isAuth: false,
         isLoading: false,
       };
-    case actions.REFRESH_TOKEN_SUCCESS:
+    case authActions.REFRESH_TOKEN_SUCCESS:
       return {
         ...state,
         isAuth: true,
         isLoading: false,
       };
-    case actions.REFRESH_TOKEN_FAILED:
+    case authActions.REFRESH_TOKEN_FAILED:
       return {
         ...state,
         isAuth: false,
         isLoading: false,
       };
-    case actions.RESET_PASSWORD_SUCCESS:
-      setCookie("token", JSON.stringify(action.payload.accessToken));
+    case authActions.RESET_PASSWORD_SUCCESS:
+      setCookie("token", JSON.stringify(action.response.accessToken), {});
       return {
         ...state,
         isAuth: true,
         isLoading: false,
       };
-    case actions.RESET_PASSWORD_FAILED:
+    case authActions.RESET_PASSWORD_FAILED:
       return {
         ...state,
         isAuth: false,
         isLoading: false,
       };
-    case actions.FORGOT_PASSWORD_SUCCESS:
+    case authActions.FORGOT_PASSWORD_SUCCESS:
       return {
         ...state,
-        isForgotPassword: action.payload,
+        isForgotPassword: action.response,
       };
-    case actions.FORGOT_PASSWORD_FAILED:
+    case authActions.FORGOT_PASSWORD_FAILED:
       return {
         ...state,
         isForgotPassword: false,
       };
-    case actions.GET_USER_SUCCESS:
+    case authActions.GET_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload,
+        user: action.user,
         isAuth: true,
         isLoading: false,
       };
-    case actions.GET_USER_FAILED: {
-      console.log(action.payload);
+    case authActions.GET_USER_FAILED: {
       return {
         ...state,
         isAuth: false,
@@ -81,43 +83,43 @@ export const authReducer = (state = initialState, action) => {
         isLoading: false,
       };
     }
-    case actions.UPDATE_USER_SUCCESS:
+    case authActions.UPDATE_USER_SUCCESS:
       return {
         ...state,
-        user: action.payload,
+        user: action.user,
         isAuth: true,
         isLoading: false,
       };
-    case actions.UPDATE_USER_FAILED: {
+    case authActions.UPDATE_USER_FAILED: {
       return {
         ...state,
         isAuth: false,
         isLoading: false,
       };
     }
-    case actions.REGISTER_SUCCESS:
-      setCookie("token", JSON.stringify(action.payload.accessToken));
+    case authActions.REGISTER_SUCCESS:
+      setCookie("token", JSON.stringify(action.response.accessToken), {});
       localStorage.setItem(
         "refreshToken",
-        JSON.stringify(action.payload.refreshToken),
+        JSON.stringify(action.response.refreshToken),
       );
       localStorage.setItem(
         "accessToken",
-        JSON.stringify(action.payload.accessToken),
+        JSON.stringify(action.response.accessToken),
       );
       return {
         ...state,
-        user: action.payload.user,
+        user: action.response,
         isAuth: true,
       };
-    case actions.REGISTER_FAILED:
+    case authActions.REGISTER_FAILED:
       return {
         ...state,
         isAuth: false,
       };
-    case actions.LOGOUT_SUCCESS:
+    case authActions.LOGOUT_SUCCESS:
       localStorage.removeItem("accessToken");
-      deleteCookie("token", null);
+      deleteCookie("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("accessTokenExp");
       return {

@@ -1,0 +1,102 @@
+.card_orders {
+  text-align: left;
+  overflow-y: scroll;
+  scrollbar-color: #8585ad #2f2f37;
+
+width: 70%;
+}
+.card_order_item {
+  border-radius: 40px;
+  border: 2px;
+  gap: 24px;
+  background: #1c1c21;
+  margin: 24px;
+  padding: 24px;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+.ingredients {
+  display: flex;
+}
+.ingredient_preview {
+  position: relative;
+  height: 64px;
+  width: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(#000000, #000000) padding-box,
+    linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  overflow: hidden;
+  margin-right: -15px;
+}
+
+.ingredient_preview img {
+  height: 56px;
+  width: 112px;
+  object-fit: cover;
+}
+
+.moreIngredients {
+  position: absolute;
+  color: white;
+}
+.info {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+.order_number {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+
+  /* desktop/digits small */
+  font-family: Iceland;
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 85.714% */
+}
+.time {
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+  text-align: right;
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+.name {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+
+  /* desktop/display small */
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+}
+
+.card_orders::-webkit-scrollbar-thumb {
+  width: 30px;
+  background-color: #8585ad;
+  border: 3px;
+}
+.card_orders::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.card_orders::-webkit-scrollbar-track {
+  background: #2f2f37;
+}

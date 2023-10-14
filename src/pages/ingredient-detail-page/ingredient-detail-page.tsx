@@ -1,12 +1,13 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { AppDispatch, State } from "../..";
-import { actions } from "../../services/actions";
 import {
   getIngredients,
   getIngredientsSelector,
+  setSortedIngredients,
 } from "../../services/actions/ingredients";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import styles from "./ingredient-detail-page.module.css";
@@ -15,10 +16,10 @@ const IngredientDetailPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const ingredients = useSelector(getIngredientsSelector);
   const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError
+    (state: State) => state.ingredientsReducer.fetchError,
   );
   const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading
+    (state: State) => state.ingredientsReducer.isLoading,
   );
 
   let ingredientDetails;
@@ -39,12 +40,12 @@ const IngredientDetailPage = () => {
     const sortedData = ingredients.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
-    dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });
+    dispatch(setSortedIngredients(sortedData));
   };
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id
+      (item: TIngredient) => item._id === id,
     );
   }
 

@@ -19,11 +19,14 @@ export const getIngredientsApi = async (): Promise<
 
 export const postOrderApi = async (request: []) => {
   try {
+    const token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token!);
+    headers.append("Access-Control-Allow-Origin", "*");
     const response = await fetch(`${API_URL}/orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
+      headers,
       body: JSON.stringify(request),
     });
     const result = await checkResponse(response);
@@ -39,6 +42,7 @@ export const loginApi = async (data: TLogin) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify(data),
     });
@@ -66,6 +70,7 @@ export const logoutApi = async () => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -79,43 +84,35 @@ export const logoutApi = async () => {
 };
 
 export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
-  let token: string = "";
-  if (
-    (localStorage.getItem("accessTokenExp") &&
-      localStorage.getItem("refreshToken")) ||
-    !getCookie("token")
-  ) {
-    const accessTokenExp = Number(localStorage.getItem("accessTokenExp") || 0);
-    if (Date.now() >= accessTokenExp * 1000) {
-      const result = await refreshTokenApi();
-      if (result.success) {
-        token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!!;
-      } else throw Error("No token found");
-    }
-  }
-  token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!!;
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
-  headers.append("Authorization", token!);
-  const options: RequestInit = {
-    method: "GET",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
-    headers,
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
-  };
-  return fetchWithRefresh(`${API_URL}/auth/user`, options);
+  let token = localStorage.getItem("accessToken");
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token!);
+    headers.append("Access-Control-Allow-Origin", "*");
+    const options: RequestInit = {
+      method: "GET",
+      mode: "cors",
+      cache: "no-cache",
+      credentials: "same-origin",
+      headers,
+      redirect: "follow",
+      referrerPolicy: "no-referrer",
+    };
+
+    return fetchWithRefresh(`${API_URL}/auth/user`, options);
+  
 };
 
 export const updateUserApi = async (
-  data: TUser
+  data: TUser,
 ): Promise<TResponseBody<"user", TUser>> => {
   let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   headers.append("Authorization", token!);
+  headers.append("Access-Control-Allow-Origin", "*");
   const options: RequestInit = {
     method: "PATCH",
     mode: "cors",
@@ -138,6 +135,7 @@ export const registerApi = async (request: TUser) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -150,7 +148,7 @@ export const registerApi = async (request: TUser) => {
 };
 
 export const refreshTokenApi = async (): Promise<TTokens> => {
-  if (localStorage.getItem("refreshToken")) {
+ 
     let token = localStorage.getItem("refreshToken")?.replace(/^"(.*)"$/, "$1");
 
     try {
@@ -161,6 +159,7 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
         credentials: "same-origin",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
@@ -172,12 +171,10 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
     } catch (err) {
       return Promise.reject(err);
     }
-  }
-  throw new Error("No refresh token");
 };
 
 export const resetPasswordApi = async (
-  request: TResetPassword
+  request: TResetPassword,
 ): Promise<TResponseBody<"password", TResetPassword>> => {
   try {
     const response = await fetch(`${API_URL}/password-reset/reset`, {
@@ -187,6 +184,7 @@ export const resetPasswordApi = async (
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -208,6 +206,7 @@ export const forgotPasswordApi = async (request: { email: string }) => {
       credentials: "same-origin",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
       },
       redirect: "follow",
       referrerPolicy: "no-referrer",
@@ -222,7 +221,7 @@ export const forgotPasswordApi = async (request: { email: string }) => {
 
 const fetchWithRefresh = async (
   url: string,
-  options: RequestInit
+  options: RequestInit,
 ): Promise<TResponseBody<"user", TUser>> => {
   try {
     const response = await fetch(url, options);
@@ -233,7 +232,8 @@ const fetchWithRefresh = async (
       const refreshData = await refreshTokenApi();
       saveResponse(refreshData);
       const headers = new Headers();
-      headers.append("Authorization", "Bearer " + refreshData.accessToken);
+      headers.append("Authorization", refreshData.accessToken);
+      headers.append("Access-Control-Allow-Origin", "*");
       options.headers = headers;
       const response = await fetch(url, options);
       const result = await checkResponse(response);
@@ -263,8 +263,8 @@ export function getCookie(name: string) {
     new RegExp(
       "(?:^|; )" +
         name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
+        "=([^;]*)",
+    ),
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
@@ -276,7 +276,7 @@ export function setCookie(
     path?: string;
     expires?: Date | string | number;
     [propName: string]: any;
-  }
+  },
 ) {
   props = props || {};
   let exp = props.expires;

@@ -11,7 +11,8 @@ export type TIngredient = {
   image: string;
   image_large: string;
   image_mobile: string;
-  qty: number;
+  qty?: number | undefined;
+  key: string;
 };
 
 export type TIngredientsData = {
@@ -62,3 +63,13 @@ export type TTokens = {
 export interface AssociativeArray<T> {
   [key: string]: T;
 }
+
+export type TOrder = {
+  _id: string;
+  ingredients: Array<string>;
+  status: string;
+  name: string;
+  createdAt: Date | string;
+  updatedAt: string;
+  number: number;
+};

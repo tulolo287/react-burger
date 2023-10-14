@@ -1,0 +1,159 @@
+.align_left {
+  margin-right: auto;
+}
+
+.align_right {
+  margin-left: auto;
+}
+
+.ingredients {
+  max-height: 410px;
+}
+
+.scroll {
+  overflow-y: scroll;
+}
+
+.ingredient {
+  width: 600px;
+  display: flex;
+
+  align-items: center;
+}
+
+.ingredient_image {
+  object-fit: none;
+
+  border-radius: 50%;
+  border: 2px dashed royalblue;
+  background: var(--background-alt);
+}
+
+.ingredient_total {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.bottom {
+  display: flex;
+  width: 600px;
+}
+.container {
+  text-align: left;
+  width: 640px;
+  max-height: 500px;
+  top: 230px;
+  left: 680px;
+  border: 2px;
+  margin: 0 auto;
+  padding-top: 10px;
+}
+.title {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+
+  /* desktop/display small */
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+}
+.status {
+  color: var(--interface-success, #0cc);
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+.info {
+  margin-top: 40px;
+}
+.ingredients {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: scroll;
+  max-height: 250px;
+  scrollbar-color: #8585ad #2f2f37;
+}
+.ingredients::-webkit-scrollbar-thumb {
+  width: 30px;
+  background-color: #8585ad;
+  border: 3px;
+}
+.ingredients::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.ingredients::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+}
+.totalPrice {
+  display: flex;
+  justify-content: center;
+}
+.ingredientsInfo {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.time_price {
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+.date {
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+}
+.ingredients {
+  display: flex;
+}
+.name {
+  color: var(--text-primary-light-standart-text, #f2f2f3);
+
+  /* desktop/text */
+  font-family: JetBrains Mono;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  margin: auto;
+  margin-left: 16px;
+}
+.ingredient_preview {
+  position: relative;
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(#000000, #000000) padding-box,
+    linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%) border-box;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+
+.ingredient_preview img {
+  height: 80px;
+  width: 112px;
+  object-fit: cover;
+}

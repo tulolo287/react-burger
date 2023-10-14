@@ -1,22 +1,24 @@
-import styles from "./ingredient-details.module.css";
-import useModal from "../../hooks/useModal";
-import Modal from "../modal/modal";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getIngredients, getIngredientsSelector } from "../../services/actions/ingredients";
-import { AppDispatch } from "../..";
+import useModal from "../../hooks/useModal";
+import {
+  getIngredients,
+  getIngredientsSelector,
+} from "../../services/actions/ingredients";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { TIngredient } from "../../utils/types";
+import Modal from "../modal/modal";
+import styles from "./ingredient-details.module.css";
 
-const IngredientDetails = () => {
-  
+const IngredientDetails = memo(() => {
   const ingredients = useSelector(getIngredientsSelector);
   const dispatch: AppDispatch = useDispatch();
   const { id } = useParams();
-  const { title, setTitle, navBack } =
-    useModal();
+  const { title, setTitle, navBack } = useModal();
   let ingredientDetails;
-  
+
   useEffect(() => {
     setTitle("Детали ингредиента");
     if (!ingredients) {
@@ -28,7 +30,9 @@ const IngredientDetails = () => {
   }, []);
 
   if (ingredients) {
-    ingredientDetails = ingredients.find((item: TIngredient) => item._id === id);
+    ingredientDetails = ingredients.find(
+      (item: TIngredient) => item._id === id,
+    );
   }
 
   return (
@@ -84,6 +88,6 @@ const IngredientDetails = () => {
       )}
     </>
   );
-};
+});
 
 export default IngredientDetails;

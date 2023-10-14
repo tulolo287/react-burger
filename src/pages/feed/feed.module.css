@@ -1,0 +1,32 @@
+.header {
+  font-family: JetBrains Mono;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #f2f2f3;
+  margin-right: 24px;
+}
+.content {
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.orders {
+  display: flex;
+  height: 852px;
+  top: 208px;
+  left: 372px;
+  padding: 0px, 0px, 40px, 8px;
+  gap: 60px;
+}
+.orders_total {
+  height: 626px;
+  top: 208px;
+  left: 1040px;
+  border: 2px;
+  gap: 60px;
+}

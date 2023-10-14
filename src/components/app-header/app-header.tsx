@@ -7,7 +7,6 @@ import {
 import styles from "./app-header.module.css";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
-
 const AppHeader = () => {
   const { pathname } = useLocation();
 
@@ -29,12 +28,10 @@ const AppHeader = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/profile/orders">
+              <NavLink to="/feed">
                 <i className="p-2">
                   <ListIcon
-                    type={
-                      pathname === "/profile/orders" ? "primary" : "secondary"
-                    }
+                    type={pathname === "/feed" ? "primary" : "secondary"}
                   />
                 </i>
                 <span className={"text text_type_main-default"}>

@@ -7,8 +7,10 @@ import {
   legacy_createStore as createStore,
   compose,
   applyMiddleware,
+  ActionCreator,
+  Action,
 } from "redux";
-import thunk from "redux-thunk";
+import thunk, { ThunkAction } from "redux-thunk";
 import { Provider } from "react-redux";
 import { rootReducer } from "./services/reducer";
 import { DndProvider } from "react-dnd";
@@ -16,36 +18,22 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { BrowserRouter } from "react-router-dom";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { actions } from "./services/actions";
-
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-  }
-}
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
-);
-export const state = store.getState();
-export type State = typeof state;
-type Actions = typeof actions;
-export type AppDispatch = ThunkDispatch<State, any, AnyAction>;
+import { Actions } from "./services/actions";
+import { socketMiddleware } from "./services/middleware/socketMiddleware";
+import { store } from "./services/store";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 root.render(
   //<React.StrictMode>
-    <Provider store={store}>
-      <DndProvider backend={HTML5Backend}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </DndProvider>
-    </Provider>
+  <Provider store={store}>
+    <DndProvider backend={HTML5Backend}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </DndProvider>
+  </Provider>,
   //</React.StrictMode>
 );
 

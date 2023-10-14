@@ -7,8 +7,8 @@ import {
 import { SyntheticEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { AppDispatch } from "../..";
 import { register } from "../../services/actions/auth";
+import { AppDispatch } from "../../services/types";
 import styles from "./register.module.css";
 
 const Register = () => {
@@ -26,7 +26,7 @@ const Register = () => {
           name: nameValue,
           email: emailValue,
           password: passwordValue,
-        })
+        }),
       );
     }
   };

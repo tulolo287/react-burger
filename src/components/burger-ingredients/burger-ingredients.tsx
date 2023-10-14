@@ -1,20 +1,22 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, State } from "../..";
-import { actions } from "../../services/actions";
+import { Fragment, memo, useEffect, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "../../services/hooks";
+
 import {
   getIngredients,
   getIngredientsSelector,
   getSortedIngredientsSelector,
+  setSortedIngredients,
 } from "../../services/actions/ingredients";
+import { AppDispatch, State } from "../../services/types";
 import { SORT_ORDER, TYPES } from "../../utils/consts";
-import { AssociativeArray, TIngredient, TIngredients } from "../../utils/types";
+import { AssociativeArray, TIngredient } from "../../utils/types";
 import BurgerItem from "../burger-item/burger-item";
+import Loader from "../ui/loader/loader";
 import styles from "./burger-ingredients.module.css";
 
-
-const BurgerIngredients = () => {
+const BurgerIngredients = memo(() => {
   const ingredients = useSelector(getIngredientsSelector);
   const sortedIngredients = useSelector(getSortedIngredientsSelector);
   const dispatch: AppDispatch = useDispatch();
@@ -26,13 +28,14 @@ const BurgerIngredients = () => {
     (state: State) => state.ingredientsReducer.isLoading
   );
 
-
-let currentType: string = "";
-let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
+  let currentType: string = "";
+  let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = { bun: null };
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(getIngredients()).then((ingredients) => ingredients && sortData(ingredients));
+      dispatch(getIngredients()).then(
+        (ingredients) => ingredients && sortData(ingredients)
+      );
     };
     if (!ingredients) {
       fetchData();
@@ -43,7 +46,7 @@ let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
     const sortedData = ingredients?.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
     });
-    dispatch({ type: actions.SET_SORTED_INGREDIENTS, payload: sortedData });
+    dispatch(setSortedIngredients(sortedData));
   };
 
   useEffect(() => {
@@ -74,12 +77,14 @@ let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
 
   return (
     <>
+      {fetchError && "Sorry server error"}
+      {isLoading && <Loader />}
       {ingredients && (
         <section className={styles.constructorIngredients}>
           <p
             className={
               styles.burgerIngredients_header +
-              " text text_type_main-large mt-10 mb-5"
+              " text text_type_main-large mb-5"
             }
           >
             Соберите бургер
@@ -126,10 +131,8 @@ let categoryRefs: AssociativeArray<HTMLHeadingElement | null> = {"bun": null}
           </ul>
         </section>
       )}
-      {fetchError && "Sorry server error"}
-      {isLoading && "Loading..."}
     </>
   );
-};
+});
 
 export default BurgerIngredients;

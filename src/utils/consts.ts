@@ -24,7 +24,16 @@ export const path = {
   RESET_PASSWORD: "/reset-password",
   FORGOT_PASSWORD: "/forgot-password",
   PROFILE: "/profile",
-  ORDERS: "orders",
+  PROFILE_ORDERS: "/profile/orders",
+  PROFILE_ORDERS_ID: "/profile/orders/:id",
+  ORDERS: "/profile/orders",
+  FEED: "/feed",
+  FEED_DETAILS: "/feed/:id",
 };
 
 export type TPath = typeof path;
+
+export const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+
+export const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
+export const wsAllUrl = "wss://norma.nomoreparties.space/orders/all";

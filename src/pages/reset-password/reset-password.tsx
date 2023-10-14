@@ -4,12 +4,14 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useDispatch } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../..";
 import { getUser, resetPassword } from "../../services/actions/auth";
-import styles from "./reset-password.module.css";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import { TResetPassword } from "../../utils/types";
+import styles from "./reset-password.module.css";
 
 const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");
@@ -38,12 +40,12 @@ const ResetPassword = () => {
           .then((res) =>
             res.success
               ? navigate("/login", { state: { from: "reset-password" } })
-              : alert(res.message)
+              : alert(res.message),
           )
           .catch((err) => console.log("err", err));
       }
     },
-    [tokenValue, passwordValue]
+    [tokenValue, passwordValue],
   );
 
   return (

@@ -4,10 +4,11 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { AppDispatch, State } from "../..";
 import { getUser, login } from "../../services/actions/auth";
+import { useSelector } from "../../services/hooks";
+import { AppDispatch, State } from "../../services/types";
 import styles from "./login.module.css";
 
 const Login = () => {
@@ -18,10 +19,14 @@ const Login = () => {
   const location = useLocation();
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
+  let uu = false;
 
   useEffect(() => {
-    if (!user) {
+    const checkAuth = async () => {
       dispatch(getUser());
+    };
+    if (!user) {
+      checkAuth();
     }
   }, [user, dispatch]);
 
@@ -40,13 +45,14 @@ const Login = () => {
         dispatch(login(data));
       }
     },
-    [emailValue, passwordValue, dispatch]
+    [emailValue, passwordValue, dispatch],
   );
 
   return (
     <>
-      {isLoading && "Loading..."}
-      {!user ? (
+      {user && !isLoading && <Navigate to="/" />}
+
+      {!user && !isLoading && (
         <section className={styles.content}>
           <div className={styles.title}>Вход</div>
           <div className={styles.form}>
@@ -94,9 +100,8 @@ const Login = () => {
             </div>
           </div>
         </section>
-      ) : (
-        <Navigate to={location?.state?.from || "/"} />
       )}
+      {isLoading && "Loading..."}
     </>
   );
 };

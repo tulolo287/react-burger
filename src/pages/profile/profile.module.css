@@ -1,18 +1,18 @@
 .content {
   display: inline-flex;
-  align-items: center;
+  justify-content: space-between;
+  max-height: 700px;
+  margin-top: 100px;
   gap: 24px;
   background: var(--interface-bg, #131316);
-  position: fixed;
+
   left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
 }
 .navigation {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 320px;
+  width: 30%;
   margin-right: 60px;
 }
 
@@ -54,7 +54,7 @@
 }
 .form {
   display: flex;
-  width: 480px;
+  width: 70%;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
@@ -65,7 +65,7 @@
 }
 .form input {
   padding: 12px 0 12px 24px;
-  width: 480px;
+  width: 70%;
   border-radius: 40px;
   border: 2px solid var(--interface-accent, #2f2f37);
   background: var(--interface-input, #2f2f37);
