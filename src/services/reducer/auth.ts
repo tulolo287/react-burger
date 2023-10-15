@@ -1,6 +1,5 @@
 import { deleteCookie, setCookie } from "../../utils/api";
 import { TAuthActions } from "../actions/auth";
-import { actions } from "../constants";
 import { authActions } from "../constants/auth";
 
 export const initialState = {
@@ -101,11 +100,11 @@ export const authReducer = (state = initialState, action: TAuthActions) => {
       setCookie("token", JSON.stringify(action.response.accessToken), {});
       localStorage.setItem(
         "refreshToken",
-        JSON.stringify(action.response.refreshToken),
+        JSON.stringify(action.response.refreshToken)
       );
       localStorage.setItem(
         "accessToken",
-        JSON.stringify(action.response.accessToken),
+        JSON.stringify(action.response.accessToken)
       );
       return {
         ...state,
