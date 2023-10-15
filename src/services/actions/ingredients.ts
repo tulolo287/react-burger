@@ -107,5 +107,4 @@ export const getIngredientsSelector = (state: State) =>
   state.ingredientsReducer.ingredients;
 export const getSortedIngredientsSelector = (state: State) =>
   state.ingredientsReducer.sortedIngredients;
-export const getIngredientDetailSelector = (state: State) =>
-  state.ingredientDetailsReducer.ingredientDetails;
+

@@ -32,12 +32,12 @@ export const initialState: TInitialState = {
 
 export const constructorReducer = (
   state = initialState,
-  action: TConstructorActions,
+  action: TConstructorActions
 ): TInitialState => {
   switch (action.type) {
     case actions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR: {
       const newBurgerIngredients = state.constructorIngredients.filter(
-        (item) => item.key !== action.ingredient.key,
+        (item) => item.key !== action.ingredient.key
       );
       return {
         ...state,
@@ -46,12 +46,12 @@ export const constructorReducer = (
     }
     case actions.CHANGE_CONSTRUCTOR_INGREDIENT: {
       const sortCards = state.constructorIngredients.filter(
-        (item, idx) => idx !== action.ingredient.dragIndex,
+        (item, idx) => idx !== action.ingredient.dragIndex
       );
       sortCards.splice(
         action.ingredient.hoverIndex,
         0,
-        state.constructorIngredients[action.ingredient.dragIndex],
+        state.constructorIngredients[action.ingredient.dragIndex]
       );
       return { ...state, constructorIngredients: sortCards };
     }
@@ -74,8 +74,6 @@ export const constructorReducer = (
         }),
       };
     }
-    case actions.SET_ORDER_DETAILS:
-      return { ...state, orderDetails: action.orderDetails };
     case actions.CLEAR_ORDER:
       return { ...state, ...initialState };
     default:

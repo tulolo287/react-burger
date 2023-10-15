@@ -28,7 +28,7 @@ export const ingredientsReducer = (
         fetchError: false,
       };
     case ingredientsActions.GET_INGREDIENTS_FAILED:
-      return { ...state, fetchError: action.err };
+      return { ...state, isLoading: false, fetchError: action.err };
     case ingredientsActions.SET_SORTED_INGREDIENTS:
       return { ...state, sortedIngredients: action.ingredients };
     case ingredientsActions.DECREASE_INGREDIENT_QTY: {
