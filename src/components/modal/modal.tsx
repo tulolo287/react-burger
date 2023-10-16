@@ -28,11 +28,11 @@ const Modal: FC<IModalProps> = memo(
     return createPortal(
       <>
         <ModalOverlay closeModal={closeModal} />
-        <section style={{ height }} className={styles.modal}>
+        <section data-cy="modal_close" style={{ height }} className={styles.modal}>
           <div className={styles.title_button}>
             {title && <h2 className={styles.title}>{title}</h2>}
             <i>
-              <CloseIcon data-cy="modal_close" onClick={() => closeModal()} type="primary" />
+              <CloseIcon onClick={() => closeModal()} type="primary" />
             </i>
           </div>
           {children}
