@@ -19,7 +19,7 @@ const OrderDetails = () => {
       {(isOrderFetching && "Sending order...") ||
         (postOrderError && "Send order error") ||
         (orderDetails && (
-          <div className={styles.orderDetails}>
+          <div data-cy="order_details" className={styles.orderDetails}>
             <p className="text text_type_digits-large mt-10">
               {orderDetails?.order.number}
             </p>

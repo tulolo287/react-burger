@@ -101,7 +101,7 @@ const BurgerIngredients = memo(() => {
               </Tab>
             ))}
           </div>
-          <ul className={styles.burgerItems + " mt-10 pr-5"}>
+          <ul data-cy="ingredients_container" className={styles.burgerItems + " mt-10 pr-5"}>
             {sortedIngredients?.map((item: TIngredient) => {
               let showTitle = false;
               if (currentType !== item.type) {

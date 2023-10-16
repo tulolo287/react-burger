@@ -13,13 +13,13 @@ import { getUser } from "../../services/actions/auth";
 import {
   addBuntToConstructor,
   addIngredientToConstructor,
+  clearOrder,
 } from "../../services/actions/constructor";
 import {
+  clearQty,
   increaseBunQty,
   increaseIngredientQty,
-  clearQty,
 } from "../../services/actions/ingredients";
-import { clearOrder } from "../../services/actions/constructor";
 import { postOrder } from "../../services/actions/order-details";
 import { useSelector } from "../../services/hooks";
 import { AppDispatch, State } from "../../services/types";
@@ -35,7 +35,7 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
 
   const constructorIngredients = useSelector(
-    (state: State) => state.constructorReducer.constructorIngredients,
+    (state: State) => state.constructorReducer.constructorIngredients
   );
   const bun = constructorIngredients[0];
   const [disableOrder, setDisableOrder] = useState<boolean>(true);
@@ -46,7 +46,7 @@ const BurgerConstructor = () => {
     return constructorIngredients.reduce(
       (val: number, acc: TIngredient) =>
         (val += acc.qty ? acc.qty * acc.price : 0),
-      0,
+      0
     );
   }, [constructorIngredients, bun]);
 
@@ -99,6 +99,7 @@ const BurgerConstructor = () => {
     <>
       <section className={styles.burgerConstructor + " mt-25 ml-10"}>
         <div
+          data-cy="constructor_container"
           ref={dropTarget}
           style={{ borderColor }}
           className={styles.burgerConstructor_drop}
@@ -118,7 +119,7 @@ const BurgerConstructor = () => {
             {constructorIngredients?.map((item, idx: number) =>
               item.type !== "bun" ? (
                 <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-              ) : null,
+              ) : null
             )}
           </ul>
           <ul>
@@ -144,6 +145,7 @@ const BurgerConstructor = () => {
             htmlType="button"
             type="primary"
             size="large"
+            data-cy="make_order"
           >
             Оформить заказ
           </Button>
