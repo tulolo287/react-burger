@@ -135,7 +135,7 @@ const BurgerConstructor = () => {
           </ul>
         </div>
         <div className={styles.burgerConstructor_checkout + " mt-10"}>
-          <p className="text text_type_digits-medium mr-2">{totalOrderPrice}</p>
+          <p className="text text_type_digits-medium mr-2" data-cy="burger_price">{totalOrderPrice}</p>
           <i className="mr-10">
             <CurrencyIcon type="primary" />
           </i>

@@ -171,7 +171,7 @@ export const refreshTokenFailed = (err: any): IRefreshTokenFailed => ({
 });
 
 export const resetPasswordSuccess = (
-  response: TResponseBody<"password", TResetPassword>,
+  response: TResponseBody<"password", TResetPassword>
 ): IResetPassword => ({
   type: authActions.RESET_PASSWORD_SUCCESS,
   response,

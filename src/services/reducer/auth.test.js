@@ -122,9 +122,9 @@ describe('auth reducer', () => {
       )
    })
    it('should handle REGISTER_SUCCESS', () => {
-      expect(authReducer({}, { type: authActions.REGISTER_SUCCESS,  response: { email: '123' } })).toEqual(
+      expect(authReducer({}, { type: authActions.REGISTER_SUCCESS, response: { email: '123' } })).toEqual(
          {
-            user: {email: '123'},
+            user: { email: '123' },
             isAuth: true,
          }
       )
