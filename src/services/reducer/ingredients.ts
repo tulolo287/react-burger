@@ -73,7 +73,10 @@ export const ingredientsReducer = (
     }
     case ingredientsActions.CLEAR_QTY: {
       let newSortedIngredients = state.sortedIngredients?.map((item) => {
-        return { ...item, qty: undefined };
+        if(item.type != 'bun') {
+          return { ...item, qty: undefined };
+        }
+        return item;
       });
       return { ...state, sortedIngredients: newSortedIngredients };
     }

@@ -10,22 +10,7 @@ type TInitialState = {
 
 export const initialState: TInitialState = {
   constructorIngredients: [
-    {
-      _id: "643d69a5c3f7b9001cfa093c",
-      name: "Краторная булка N-200i",
-      type: "bun",
-      proteins: 80,
-      fat: 24,
-      carbohydrates: 53,
-      calories: 420,
-      price: 1255,
-      image: "https://code.s3.yandex.net/react/code/bun-02.png",
-      image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-      image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-      __v: 0,
-      qty: 2,
-      key: "",
-    },
+
   ],
   orderDetails: null,
 };
@@ -65,13 +50,13 @@ export const constructorReducer = (
       };
     }
     case actions.ADD_BUN_TO_CONSTRUCTOR: {
+     
       return {
         ...state,
-        ...state.constructorIngredients.splice(0, 1, {
-          ...action.bun,
-          qty: 2,
-          key: "",
-        }),
+        constructorIngredients: [...state.constructorIngredients,
+          action.bun]
+        
+      
       };
     }
     case actions.CLEAR_ORDER:

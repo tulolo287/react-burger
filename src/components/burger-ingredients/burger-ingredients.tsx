@@ -2,7 +2,6 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Fragment, memo, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../services/hooks";
-
 import {
   getIngredients,
   getIngredientsSelector,
@@ -15,6 +14,7 @@ import { AssociativeArray, TIngredient } from "../../utils/types";
 import BurgerItem from "../burger-item/burger-item";
 import Loader from "../ui/loader/loader";
 import styles from "./burger-ingredients.module.css";
+import { addBuntToConstructor } from "../../services/actions/constructor";
 
 const BurgerIngredients = memo(() => {
   const ingredients = useSelector(getIngredientsSelector);
@@ -42,10 +42,14 @@ const BurgerIngredients = memo(() => {
     }
   }, []);
 
+  
+
   const sortData = (ingredients: TIngredient[]) => {
+    const bun = ingredients.find(item => item.type === 'bun');
+    dispatch(addBuntToConstructor(bun!))
     const sortedData = ingredients?.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-    });
+    }).map(item => item._id === bun?._id ? {...item, qty : 2} : item);
     dispatch(setSortedIngredients(sortedData));
   };
 

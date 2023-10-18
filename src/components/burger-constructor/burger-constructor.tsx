@@ -28,16 +28,28 @@ import BurgerConstructorItem from "../burger-constructor-item/burger-constructor
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
+import {getIngredientsSelector} from "../../services/actions/ingredients";
+import Loader from "../ui/loader/loader";
 
 const BurgerConstructor = () => {
+  const [bun, setBun] = useState<TIngredient>()
   const dispatch: AppDispatch = useDispatch();
   const user = useSelector((state: State) => state.authReducer.user);
   const navigate = useNavigate();
+  const ingredients = useSelector(getIngredientsSelector);
+   const isLoading = useSelector(
+    (state: State) => state.ingredientsReducer.isLoading
+  );
 
   const constructorIngredients = useSelector(
     (state: State) => state.constructorReducer.constructorIngredients
   );
-  const bun = constructorIngredients[0];
+
+  useEffect(() => {
+    console.log( constructorIngredients)
+    setBun( constructorIngredients[0])
+  },[ingredients, isLoading])
+
   const [disableOrder, setDisableOrder] = useState<boolean>(true);
   const { isModal, openModal, closeModal } = useModal();
 
@@ -84,7 +96,7 @@ const BurgerConstructor = () => {
       return;
     }
     const ingredientsId = constructorIngredients.map((item) => item._id);
-    ingredientsId.unshift(bun._id);
+    ingredientsId.unshift(bun?._id || '');
 
     const request = {
       ingredients: ingredientsId,
@@ -97,6 +109,8 @@ const BurgerConstructor = () => {
 
   return (
     <>
+     {isLoading && <Loader />}
+      {ingredients && (
       <section className={styles.burgerConstructor + " mt-25 ml-10"}>
         <div
           data-cy="constructor_container"
@@ -109,9 +123,9 @@ const BurgerConstructor = () => {
               <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={`${bun.name} (верх)`}
-                price={bun.price}
-                thumbnail={bun.image}
+                text={`${bun?.name} (верх)`}
+                price={bun?.price || 0}
+                thumbnail={bun?.image || ''}
               />
             </li>
           </ul>
@@ -127,9 +141,9 @@ const BurgerConstructor = () => {
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={`${bun.name} (низ)`}
-                price={bun.price}
-                thumbnail={bun.image}
+                text={`${bun?.name} (низ)`}
+                price={bun?.price || 0}
+                thumbnail={bun?.image || ''}
               />
             </li>
           </ul>
@@ -150,7 +164,7 @@ const BurgerConstructor = () => {
             Оформить заказ
           </Button>
         </div>
-      </section>
+      </section>)}
 
       {isModal && (
         <Modal title={null} closeModal={closeModal} height={718}>
