@@ -14,6 +14,7 @@ import { startWS } from "../../utils";
 import { SORT_ORDER, wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./feed-details.module.css";
+import { addBuntToConstructor } from "../../services/actions/constructor";
 
 type TOrderInfo = {
   _id: string;
@@ -67,10 +68,15 @@ const FeedDetails = memo(() => {
       dispatch({ type: actions.WS_CONNECTION_CLOSED });
     };
   }, []);
+  
   const sortData = (ingredients: TIngredient[]) => {
-    const sortedData = ingredients?.sort((a, b) => {
-      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-    });
+    const bun = ingredients.find((item) => item.type === "bun");
+    dispatch(addBuntToConstructor(bun!));
+    const sortedData = ingredients
+      ?.sort((a, b) => {
+        return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+      })
+      .map((item) => (item._id === bun?._id ? { ...item, qty: 2 } : item));
     dispatch(setSortedIngredients(sortedData));
   };
 

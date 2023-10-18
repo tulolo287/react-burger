@@ -11,6 +11,7 @@ import { AppDispatch, State } from "../../services/types";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import styles from "./ingredient-detail-page.module.css";
+import { addBuntToConstructor } from "../../services/actions/constructor";
 
 const IngredientDetailPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -37,9 +38,13 @@ const IngredientDetailPage = () => {
   }, []);
 
   const sortData = (ingredients: TIngredient[]) => {
-    const sortedData = ingredients.sort((a, b) => {
-      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-    });
+    const bun = ingredients.find((item) => item.type === "bun");
+    dispatch(addBuntToConstructor(bun!));
+    const sortedData = ingredients
+      ?.sort((a, b) => {
+        return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+      })
+      .map((item) => (item._id === bun?._id ? { ...item, qty: 2 } : item));
     dispatch(setSortedIngredients(sortedData));
   };
 
