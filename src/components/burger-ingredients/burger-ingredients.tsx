@@ -42,8 +42,6 @@ const BurgerIngredients = memo(() => {
     }
   }, []);
 
-  
-
   const sortData = (ingredients: TIngredient[]) => {
     const bun = ingredients.find(item => item.type === 'bun');
     dispatch(addBuntToConstructor(bun!))

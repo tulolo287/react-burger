@@ -5,13 +5,13 @@ import { actions } from "../constants";
 
 type TInitialState = {
   constructorIngredients: TIngredient[];
+  bun: TIngredient | undefined;
   orderDetails: any;
 };
 
 export const initialState: TInitialState = {
-  constructorIngredients: [
-
-  ],
+  constructorIngredients: [],
+  bun: undefined,
   orderDetails: null,
 };
 
@@ -50,17 +50,13 @@ export const constructorReducer = (
       };
     }
     case actions.ADD_BUN_TO_CONSTRUCTOR: {
-     
       return {
         ...state,
-        constructorIngredients: [...state.constructorIngredients,
-          action.bun]
-        
-      
+        bun: action.bun,
       };
     }
     case actions.CLEAR_ORDER:
-      return { ...state, ...initialState };
+      return { ...state, constructorIngredients: [] };
     default:
       return state;
   }

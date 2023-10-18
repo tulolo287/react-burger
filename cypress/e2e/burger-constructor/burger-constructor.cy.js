@@ -49,5 +49,4 @@ describe('service is available', function () {
       cy.get('[data-cy=modal_close]').should('not.exist')
    });
 
-
 }); 
