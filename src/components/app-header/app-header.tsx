@@ -1,11 +1,11 @@
 import {
-  Logo,
   BurgerIcon,
   ListIcon,
+  Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink, useLocation } from "react-router-dom";
 import styles from "./app-header.module.css";
-import { Link, NavLink, useLocation } from "react-router-dom";
 
 const AppHeader = () => {
   const { pathname } = useLocation();
@@ -42,11 +42,11 @@ const AppHeader = () => {
           </ul>
           <ul>
             <li>
-              <a href="#">
+              <NavLink to="/">
                 <i className="p-2">
                   <Logo />
                 </i>
-              </a>
+              </NavLink>
             </li>
           </ul>
           <ul>
