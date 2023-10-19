@@ -3,7 +3,7 @@ import { localHost, testEmail, testPassword, testUrl } from "../../consts";
 describe('service is available', function () {
    beforeEach(function () {
       cy.intercept('GET', `${testUrl}/api/ingredients`, { fixture: 'ingredients.json' })
-      window.localStorage.setItem("refreshTokenTest", JSON.stringify("test-refreshToken"))
+      window.localStorage.setItem("refreshToken", JSON.stringify("test-refreshToken"))
       cy.setCookie('accessToken', 'test-accessToken')
       cy.visit(localHost);
       cy.viewport(1000, 1000)
