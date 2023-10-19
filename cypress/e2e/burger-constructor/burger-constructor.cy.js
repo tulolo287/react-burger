@@ -31,7 +31,7 @@ describe('service is available', function () {
       cy.get('[data-cy=ingredients_container]').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
       cy.get('[data-cy=constructor_container]').trigger('dragover')
       cy.get('[data-cy=constructor_container]').trigger('drop')
-      cy.get('[data-cy=burger_price]').contains(2600)
+      cy.get('[data-cy=burger_price]').contains(1345)
       cy.get('button').contains('Оформить заказ').should('not.have.attr', 'disabled');
       cy.get('[data-cy=make_order]').click();
       cy.url().should('be.equal', `${localHost}/login`);

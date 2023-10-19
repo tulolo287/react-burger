@@ -53,7 +53,7 @@ const BurgerConstructor = () => {
         (val += acc.qty ? acc.qty * acc.price : 0),
       0
     );
-    sumPrice += bun?.price! * 2;
+    sumPrice += bun?.price || 0 * 2;
     return sumPrice;
   }, [constructorIngredients, bun]);
 
