@@ -9,10 +9,10 @@ import {
   getIngredients,
   getIngredientsSelector,
 } from "../../services/actions/ingredients";
-import { useDispatch, useSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
 import { getMessages } from "../../services/selectors/wsSelectors";
-import { startWS, getOrderStatus } from "../../utils";
+import { getOrderStatus, startWS } from "../../utils";
 import { wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import Modal from "../modal/modal";
@@ -20,18 +20,18 @@ import styles from "./feed-details-modal.module.css";
 
 const FeedDetailsModal = memo(() => {
   const { title, setTitle, navBack } = useModal();
-  const dispatch = useDispatch();
-  const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector,
+  const dispatch = useAppDispatch();
+  const ingredients: Array<TIngredient> | null = useAppSelector(
+    getIngredientsSelector
   );
-  const messages = useSelector(getMessages);
+  const messages = useAppSelector(getMessages);
   const params = useParams();
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<TIngredient[]>();
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
-  const isLoading = useSelector(getIngredientsLoading);
-  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const isLoading = useAppSelector(getIngredientsLoading);
+  const wsConnected = useAppSelector((state) => state.wsReducer.wsConnected);
   const { pathname } = useLocation();
   const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
 
@@ -56,12 +56,12 @@ const FeedDetailsModal = memo(() => {
   const getOrder = () => {
     const order = messages?.orders?.find((item) => item?._id === params.id);
     const orderIngredients = JSON.parse(JSON.stringify(ingredients))?.filter(
-      (item: TIngredient) => order?.ingredients?.some((id) => item._id === id),
+      (item: TIngredient) => order?.ingredients?.some((id) => item._id === id)
     );
     orderIngredients?.forEach((item: TIngredient) => (item.qty = 0));
     order?.ingredients.forEach((id) => {
       const current = orderIngredients?.find(
-        (item: TIngredient) => item._id === id,
+        (item: TIngredient) => item._id === id
       );
       if (current?.qty !== undefined && typeof current?.qty != null) {
         current.qty += 1;

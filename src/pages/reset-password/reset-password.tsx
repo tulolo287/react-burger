@@ -5,11 +5,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 
-import { useDispatch } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { getUser, resetPassword } from "../../services/actions/auth";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { TResetPassword } from "../../utils/types";
 import styles from "./reset-password.module.css";
 
@@ -17,10 +16,10 @@ const ResetPassword = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [tokenValue, setTokenValue] = useState("");
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const location = useLocation();
-  const user = useSelector((state: State) => state.authReducer.user);
-  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
+  const user = useAppSelector((state) => state.authReducer.user);
+  const isLoading = useAppSelector((state) => state.authReducer.isLoading);
 
   useEffect(() => {
     if (!user) {
@@ -40,12 +39,12 @@ const ResetPassword = () => {
           .then((res) =>
             res.success
               ? navigate("/login", { state: { from: "reset-password" } })
-              : alert(res.message),
+              : alert(res.message)
           )
           .catch((err) => console.log("err", err));
       }
     },
-    [tokenValue, passwordValue],
+    [tokenValue, passwordValue]
   );
 
   return (

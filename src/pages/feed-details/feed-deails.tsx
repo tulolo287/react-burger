@@ -3,18 +3,18 @@ import { memo, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
 import { v4 } from "uuid";
+import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
   getIngredients,
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
 import { actions } from "../../services/constants";
-import { useDispatch, useSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { startWS } from "../../utils";
 import { SORT_ORDER, wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./feed-details.module.css";
-import { addBuntToConstructor } from "../../services/actions/constructor";
 
 type TOrderInfo = {
   _id: string;
@@ -34,20 +34,22 @@ type TOrderIngredient = {
 };
 
 const FeedDetails = memo(() => {
-  const dispatch = useDispatch();
-  const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector,
+  const dispatch = useAppDispatch();
+  const ingredients: Array<TIngredient> | null = useAppSelector(
+    getIngredientsSelector
   );
-  const messages = useSelector((state) => state.wsReducer.messages);
+  const messages = useAppSelector((state) => state.wsReducer.messages);
 
   const params = useParams();
-  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const wsConnected = useAppSelector((state) => state.wsReducer.wsConnected);
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<
     TIngredient[] | null
   >(null);
-  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
+  const isLoading = useAppSelector(
+    (state) => state.ingredientsReducer.isLoading
+  );
   const { pathname } = useLocation();
   const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
@@ -68,7 +70,7 @@ const FeedDetails = memo(() => {
       dispatch({ type: actions.WS_CONNECTION_CLOSED });
     };
   }, []);
-  
+
   const sortData = (ingredients: TIngredient[]) => {
     const bun = ingredients.find((item) => item.type === "bun");
     dispatch(addBuntToConstructor(bun!));

@@ -3,19 +3,18 @@ import {
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { forgotPassword, getUser } from "../../services/actions/auth";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import styles from "./forgot-password.module.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const [emailValue, setEmailValue] = useState("");
-  const user = useSelector((state: State) => state.authReducer.user);
-  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
+  const user = useAppSelector((state) => state.authReducer.user);
+  const isLoading = useAppSelector((state) => state.authReducer.isLoading);
   const location = useLocation();
 
   useEffect(() => {
@@ -32,11 +31,11 @@ const ForgotPassword = () => {
           email: emailValue,
         };
         dispatch(forgotPassword(data)).then(() =>
-          navigate("/reset-password", { state: { from: "forgot-password" } }),
+          navigate("/reset-password", { state: { from: "forgot-password" } })
         );
       }
     },
-    [emailValue],
+    [emailValue]
   );
 
   return (

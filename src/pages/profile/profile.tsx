@@ -5,20 +5,19 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { TUser } from "../../utils/types";
 import styles from "./profile.module.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const user: TUser = useSelector((state: State) => state.authReducer.user);
-  const isLoading = useSelector((state) => state.authReducer.isLoading);
+  const user: TUser = useAppSelector((state) => state.authReducer.user);
+  const isLoading = useAppSelector((state) => state.authReducer.isLoading);
   const [userInput, setUserInput] = useState<TUser>(user);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
 
@@ -53,7 +52,7 @@ const Profile = () => {
         })
         .catch((err) => alert("Update user failed"));
     },
-    [userInput],
+    [userInput]
   );
 
   const onLogout = () => {

@@ -1,5 +1,4 @@
 import { Fragment, memo, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
@@ -7,8 +6,7 @@ import {
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import CardOrderItem from "../card-order-item/card-order-item";
@@ -16,11 +14,13 @@ import Loader from "../ui/loader/loader";
 import styles from "./card-order.module.css";
 
 const CardOrder = memo(() => {
-  const messages = useSelector((state) => state.wsReducer.messages);
-  const ingredients = useSelector(getIngredientsSelector);
-  const dispatch = useDispatch<AppDispatch>();
-  const fetchMessages = useSelector((state) => state.wsReducer.fetchMessages);
-  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const messages = useAppSelector((state) => state.wsReducer.messages);
+  const ingredients = useAppSelector(getIngredientsSelector);
+  const dispatch = useAppDispatch();
+  const fetchMessages = useAppSelector(
+    (state) => state.wsReducer.fetchMessages
+  );
+  const wsConnected = useAppSelector((state) => state.wsReducer.wsConnected);
   const location = useLocation();
 
   useEffect(() => {

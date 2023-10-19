@@ -4,13 +4,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
 import {
   changeConstructorIngredient,
   removeIngredientConstructor,
 } from "../../services/actions/constructor";
 import { decreaseIngredientQty } from "../../services/actions/ingredients";
-import { TConstructorIngredient, TIngredient } from "../../utils/types";
+import { useAppDispatch } from "../../services/hooks";
+import { TIngredient } from "../../utils/types";
 import styles from "./burger-constructor-item.module.css";
 
 type IConstructorIngredientProps = {
@@ -20,7 +20,7 @@ type IConstructorIngredientProps = {
 
 const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
   const { item, idx } = props;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const ref = useRef<HTMLLIElement>(null);
 
   const [{ isOver }, drop] = useDrop<

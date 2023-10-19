@@ -5,9 +5,9 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { register } from "../../services/actions/auth";
+import { useAppDispatch } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
 import styles from "./register.module.css";
 
@@ -16,7 +16,7 @@ const Register = () => {
   const [emailValue, setEmailValue] = useState("");
   const [nameValue, setNameValue] = useState("");
 
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const handleRegister = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const Register = () => {
           name: nameValue,
           email: emailValue,
           password: passwordValue,
-        }),
+        })
       );
     }
   };

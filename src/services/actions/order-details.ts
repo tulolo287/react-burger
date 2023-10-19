@@ -1,7 +1,6 @@
 import { AppDispatch } from "../types";
 import { postOrderApi } from "../../utils/api";
 import { orderActions } from "../constants/order-details";
-import { WS_SEND_MESSAGE } from "../constants/wsConsts";
 import { TOrder } from "../../utils/types";
 
 export interface IOrderFetching {

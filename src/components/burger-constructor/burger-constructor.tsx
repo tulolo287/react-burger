@@ -5,7 +5,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useMemo, useState } from "react";
 import { useDrop } from "react-dnd";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import useModal from "../../hooks/useModal";
@@ -22,8 +21,8 @@ import {
   increaseIngredientQty,
 } from "../../services/actions/ingredients";
 import { postOrder } from "../../services/actions/order-details";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { TConstructorIngredient, TIngredient } from "../../utils/types";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
 import Modal from "../modal/modal";
@@ -31,17 +30,17 @@ import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
 
 const BurgerConstructor = () => {
-  const bun = useSelector((state) => state.constructorReducer.bun);
-  const dispatch: AppDispatch = useDispatch();
-  const user = useSelector((state: State) => state.authReducer.user);
+  const bun = useAppSelector((state) => state.constructorReducer.bun);
+  const dispatch: AppDispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.authReducer.user);
   const navigate = useNavigate();
-  const ingredients = useSelector(getIngredientsSelector);
-  const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading
+  const ingredients = useAppSelector(getIngredientsSelector);
+  const isLoading = useAppSelector(
+    (state) => state.ingredientsReducer.isLoading
   );
 
-  const constructorIngredients = useSelector(
-    (state: State) => state.constructorReducer.constructorIngredients
+  const constructorIngredients = useAppSelector(
+    (state) => state.constructorReducer.constructorIngredients
   );
 
   const [disableOrder, setDisableOrder] = useState<boolean>(true);

@@ -1,26 +1,25 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
   getIngredients,
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import styles from "./ingredient-detail-page.module.css";
-import { addBuntToConstructor } from "../../services/actions/constructor";
 
 const IngredientDetailPage = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const ingredients = useSelector(getIngredientsSelector);
-  const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError,
+  const dispatch: AppDispatch = useAppDispatch();
+  const ingredients = useAppSelector(getIngredientsSelector);
+  const fetchError = useAppSelector(
+    (state) => state.ingredientsReducer.fetchError
   );
-  const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading,
+  const isLoading = useAppSelector(
+    (state) => state.ingredientsReducer.isLoading
   );
 
   let ingredientDetails;
@@ -50,7 +49,7 @@ const IngredientDetailPage = () => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id,
+      (item: TIngredient) => item._id === id
     );
   }
 

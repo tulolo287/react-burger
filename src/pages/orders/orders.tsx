@@ -3,14 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 import CardOrder from "../../components/card-order/card-order";
 import { getUser, logout } from "../../services/actions/auth";
 import { actions } from "../../services/constants";
-import { useDispatch, useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { startWS } from "../../utils";
 import styles from "./orders.module.css";
 
 const Orders = () => {
-  const user = useSelector((state: State) => state.authReducer.user);
-  const dispatch: AppDispatch = useDispatch();
+  const user = useAppSelector((state) => state.authReducer.user);
+  const dispatch: AppDispatch = useAppDispatch();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
@@ -63,8 +63,7 @@ const Orders = () => {
         </div>
       </div>
 
-        <CardOrder />
-    
+      <CardOrder />
     </section>
   );
 };

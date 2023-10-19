@@ -4,22 +4,19 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { getUser, login } from "../../services/actions/auth";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import styles from "./login.module.css";
 
 const Login = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const user = useSelector((state: State) => state.authReducer.user);
-  const isLoading = useSelector((state: State) => state.authReducer.isLoading);
+  const dispatch: AppDispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.authReducer.user);
+  const isLoading = useAppSelector((state) => state.authReducer.isLoading);
   const navigate = useNavigate();
-  const location = useLocation();
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
-  let uu = false;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -45,7 +42,7 @@ const Login = () => {
         dispatch(login(data));
       }
     },
-    [emailValue, passwordValue, dispatch],
+    [emailValue, passwordValue, dispatch]
   );
 
   return (

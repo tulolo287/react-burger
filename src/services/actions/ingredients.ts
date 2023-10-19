@@ -45,14 +45,14 @@ export type TIngredientsActions =
   | ISetSortedIngredients;
 
 export const setSortedIngredients = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): ISetSortedIngredients => ({
   type: ingredientsActions.SET_SORTED_INGREDIENTS,
   ingredients,
 });
 
 export const decreaseIngredientQty = (
-  item: TIngredient,
+  item: TIngredient
 ): IDecreaseIngredientQty => ({
   type: ingredientsActions.DECREASE_INGREDIENT_QTY,
   item,
@@ -67,7 +67,7 @@ export const ingredientsFetching = (): IIngredientsFetching => ({
 });
 
 export const getIngredientsSuccess = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
@@ -79,7 +79,7 @@ export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
 });
 
 export const increaseIngredientQty = (
-  ingredient: TIngredient,
+  ingredient: TIngredient
 ): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
   ingredient,
@@ -102,9 +102,7 @@ export const getIngredients = () => async (dispatch: AppDispatch) => {
     });
 };
 
-const ingredients = (state: State) => state.ingredientsReducer.ingredients;
 export const getIngredientsSelector = (state: State) =>
   state.ingredientsReducer.ingredients;
 export const getSortedIngredientsSelector = (state: State) =>
   state.ingredientsReducer.sortedIngredients;
-
