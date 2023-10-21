@@ -6,53 +6,43 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useForm } from "../../hooks/useForm";
 import { getUser, logout, updateUser } from "../../services/actions/auth";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
-import { TUser } from "../../utils/types";
 import styles from "./profile.module.css";
 
 const Profile = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.authReducer.user);
   const isLoading = useAppSelector((state) => state.authReducer.isLoading);
-  const [userInput, setUserInput] = useState<TUser | null>(user);
   const dispatch: AppDispatch = useAppDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
+  const { values, handleChange, setValues } = useForm(user);
 
   useEffect(() => {
     const setUser = async () => {
       if (!user) {
-        dispatch(getUser()).then((user) => setUserInput(user!));
+        dispatch(getUser()).then((user) => setValues(user!));
       }
     };
 
     setUser();
-  }, []);
+  }, [dispatch, setValues, user]);
 
   const onSubmit = useCallback(
     (e: React.SyntheticEvent) => {
       e.preventDefault();
-      let data: TUser;
-      userInput?.password
-        ? (data = {
-            name: userInput.name,
-            email: userInput.email,
-            password: userInput.password,
-          })
-        : (data = {
-            name: userInput?.name || 'unknown',
-            email: userInput?.email || 'unknown'
-          });
 
-      dispatch(updateUser(data))
+      dispatch(updateUser(values))
         .then((user) => {
+          console.log(user)
           setSaveButton(false);
         })
         .catch((err) => alert("Update user failed"));
     },
-    [userInput]
+    [dispatch, values]
   );
 
   const onLogout = () => {
@@ -63,13 +53,13 @@ const Profile = () => {
   };
 
   const onCancel = () => {
-    setUserInput(user!);
+    setValues(user!);
     setSaveButton(false);
   };
 
   return (
     <>
-      {userInput && (
+      {values && (
         <section className={styles.content}>
           <div className={styles.navigation}>
             <div className={styles.navItem}>
@@ -108,9 +98,9 @@ const Profile = () => {
               <Input
                 type={"text"}
                 placeholder={"Имя"}
-                value={userInput.name}
+                value={values.name}
                 onChange={(e) => {
-                  setUserInput({ ...userInput, name: e.target.value });
+                  handleChange(e);
                   setSaveButton(true);
                 }}
                 icon="EditIcon"
@@ -122,19 +112,19 @@ const Profile = () => {
 
               <EmailInput
                 name={"email"}
-                value={userInput.email}
+                value={values.email}
                 isIcon={true}
                 onChange={(e) => {
-                  setUserInput({ ...userInput, email: e.target.value });
+                  handleChange(e);
                   setSaveButton(true);
                 }}
                 placeholder="E-mail"
               />
 
               <PasswordInput
-                value={userInput.password || ""}
+                value={values.password || ""}
                 onChange={(e) => {
-                  setUserInput({ ...userInput, password: e.target.value });
+                  handleChange(e);
                   setSaveButton(true);
                 }}
                 name={"password"}

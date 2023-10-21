@@ -107,7 +107,7 @@ export const getUserApi = async (): Promise<TResponseBody<"user", TUser>> => {
 export const updateUserApi = async (
   data: TUser
 ): Promise<TResponseBody<"user", TUser>> => {
-  let token = getCookie("token")?.replace(/^"(.*)"$/, "$1");
+  let token = localStorage.getItem("accessToken");
 
   const headers = new Headers();
   headers.append("Content-Type", "application/json");

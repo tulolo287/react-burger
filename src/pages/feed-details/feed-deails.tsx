@@ -2,7 +2,6 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { memo, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
-import { v4 } from "uuid";
 import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
   getIngredients,
@@ -16,22 +15,6 @@ import { SORT_ORDER, wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./feed-details.module.css";
 
-type TOrderInfo = {
-  _id: string;
-  ingredients: Array<TIngredient>;
-  status: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  number: number;
-};
-
-type TOrderIngredient = {
-  img: string;
-
-  qty: number;
-  price: number;
-};
 
 const FeedDetails = memo(() => {
   const dispatch = useAppDispatch();
@@ -69,7 +52,7 @@ const FeedDetails = memo(() => {
     return function () {
       dispatch({ type: actions.WS_CONNECTION_CLOSED });
     };
-  }, []);
+  }, [dispatch, url, wsConnected, ingredients]);
 
   const sortData = (ingredients: TIngredient[]) => {
     const bun = ingredients.find((item) => item.type === "bun");
@@ -120,8 +103,8 @@ const FeedDetails = memo(() => {
 
             <div className={styles.ingredients}>
               <ul>
-                {orderIngredients?.map((item) => (
-                  <li key={v4()}>
+                {orderIngredients?.map((item, idx) => (
+                  <li key={`${item._id}_${idx}`}>
                     <div className={styles.ingredientsInfo}>
                       <div className={styles.ingredient_preview}>
                         <img src={item.image} />
