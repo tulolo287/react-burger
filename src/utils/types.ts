@@ -73,3 +73,16 @@ export type TOrder = {
   updatedAt: string;
   number: number;
 };
+
+export type TMessage = {
+  orders: TOrder[] | null;
+  total: number;
+  totalToday: number;
+};
+
+export type TPostOrder = { ingredients: string[] };
+
+export type TError = {
+  success?: boolean;
+  message: string;
+};

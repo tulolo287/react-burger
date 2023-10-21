@@ -12,7 +12,7 @@ export interface IGetIngredientsSuccess {
 }
 export interface IGetIngredientsFailed {
   readonly type: typeof ingredientsActions.GET_INGREDIENTS_FAILED;
-  readonly err: any;
+  readonly err: boolean;
 }
 export interface IIncreaseIngredientQty {
   readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
@@ -73,7 +73,7 @@ export const getIngredientsSuccess = (
   ingredients,
 });
 
-export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
+export const getIngredientsFailed = (err: boolean): IGetIngredientsFailed => ({
   type: ingredientsActions.GET_INGREDIENTS_FAILED,
   err,
 });

@@ -1,4 +1,4 @@
-import { TIngredient } from "../../utils/types";
+import { TIngredient, TOrder } from "../../utils/types";
 import { TConstructorActions } from "../actions/constructor";
 
 import { actions } from "../constants";
@@ -6,7 +6,7 @@ import { actions } from "../constants";
 type TInitialState = {
   constructorIngredients: TIngredient[];
   bun: TIngredient | undefined;
-  orderDetails: any;
+  orderDetails: TOrder | null;
 };
 
 export const initialState: TInitialState = {
@@ -56,7 +56,7 @@ export const constructorReducer = (
       };
     }
     case actions.CLEAR_ORDER:
-      return { ...state, constructorIngredients: [] };
+      return { ...state, ...initialState };
     default:
       return state;
   }

@@ -20,7 +20,7 @@ const OrderDetails = () => {
         (orderDetails && (
           <div data-cy="order_details" className={styles.orderDetails}>
             <p className="text text_type_digits-large mt-10">
-              {orderDetails?.order.number}
+              {orderDetails?.number}
             </p>
             <p className="text text_type_main-medium mt-15 mb-15">
               идентификатор заказа

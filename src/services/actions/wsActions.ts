@@ -1,5 +1,5 @@
+import { TMessage } from "../../utils/types";
 import { wsActions } from "../constants/wsConsts";
-//import type { AppDispatch, IMessage} from '../types';
 
 export interface IWSConnectionStart {
   readonly type: typeof wsActions.WS_CONNECTION_START;
@@ -25,7 +25,7 @@ export interface IWSConnectionClose {
 
 export interface IWSGetMessageAction {
   readonly type: typeof wsActions.WS_GET_MESSAGE_SUCCESS;
-  readonly payload: any;
+  readonly payload: TMessage;
 }
 
 export interface IWSGetMessageActionFailed {

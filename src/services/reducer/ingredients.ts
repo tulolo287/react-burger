@@ -17,7 +17,7 @@ export const initialState: TInitialState = {
 
 export const ingredientsReducer = (
   state = initialState,
-  action: TIngredientsActions,
+  action: TIngredientsActions
 ): TInitialState => {
   switch (action.type) {
     case ingredientsActions.GET_INGREDIENTS_SUCCESS:
@@ -43,7 +43,7 @@ export const ingredientsReducer = (
                   ? item.qty - 1
                   : undefined,
             }
-          : item,
+          : item
       );
       return {
         ...state,
@@ -73,10 +73,7 @@ export const ingredientsReducer = (
     }
     case ingredientsActions.CLEAR_QTY: {
       let newSortedIngredients = state.sortedIngredients?.map((item) => {
-        if(item.type != 'bun') {
-          return { ...item, qty: undefined };
-        }
-        return item;
+        return { ...item, qty: undefined };
       });
       return { ...state, sortedIngredients: newSortedIngredients };
     }

@@ -14,9 +14,9 @@ import styles from "./profile.module.css";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const user: TUser = useAppSelector((state) => state.authReducer.user);
+  const user = useAppSelector((state) => state.authReducer.user);
   const isLoading = useAppSelector((state) => state.authReducer.isLoading);
-  const [userInput, setUserInput] = useState<TUser>(user);
+  const [userInput, setUserInput] = useState<TUser | null>(user);
   const dispatch: AppDispatch = useAppDispatch();
   const { pathname } = useLocation();
   const [saveButton, setSaveButton] = useState(false);
@@ -34,16 +34,16 @@ const Profile = () => {
   const onSubmit = useCallback(
     (e: React.SyntheticEvent) => {
       e.preventDefault();
-      let data;
-      userInput.password
+      let data: TUser;
+      userInput?.password
         ? (data = {
             name: userInput.name,
             email: userInput.email,
             password: userInput.password,
           })
         : (data = {
-            name: userInput.name,
-            email: userInput.email,
+            name: userInput?.name || 'unknown',
+            email: userInput?.email || 'unknown'
           });
 
       dispatch(updateUser(data))
@@ -63,7 +63,7 @@ const Profile = () => {
   };
 
   const onCancel = () => {
-    setUserInput(user);
+    setUserInput(user!);
     setSaveButton(false);
   };
 

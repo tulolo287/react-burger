@@ -67,7 +67,6 @@ const BurgerConstructorItem: FC<IConstructorIngredientProps> = (props) => {
       </i>
       <ConstructorElement
         handleClose={() => removeBurgerIngredient(item)}
-        type="top"
         isLocked={false}
         text={item.name}
         price={item.price}

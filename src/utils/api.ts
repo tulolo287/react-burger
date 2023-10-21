@@ -1,8 +1,11 @@
 import jwtDecode from "jwt-decode";
 import { API_URL } from "./consts";
 import {
+  TError,
   TIngredient,
   TLogin,
+  TOrder,
+  TPostOrder,
   TResetPassword,
   TResponseBody,
   TTokens,
@@ -17,7 +20,9 @@ export const getIngredientsApi = async (): Promise<
     .then((data) => data)
     .catch((err) => Promise.reject(err));
 
-export const postOrderApi = async (request: []) => {
+export const postOrderApi = async (
+  request: TPostOrder
+): Promise<TResponseBody<"order", TOrder>> => {
   const token = getCookie("token")?.replace(/^"(.*)"$/, "$1")!;
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
@@ -28,7 +33,7 @@ export const postOrderApi = async (request: []) => {
     headers,
     body: JSON.stringify(request),
   };
-
+  
   return fetchWithRefresh(`${API_URL}/orders`, options);
 };
 
@@ -169,7 +174,7 @@ export const refreshTokenApi = async (): Promise<TTokens> => {
 
 export const resetPasswordApi = async (
   request: TResetPassword
-): Promise<TResponseBody<"password", TResetPassword>> => {
+): Promise<TError> => {
   try {
     const response = await fetch(`${API_URL}/password-reset/reset`, {
       method: "POST",
@@ -191,7 +196,7 @@ export const resetPasswordApi = async (
   }
 };
 
-export const forgotPasswordApi = async (request: { email: string }) => {
+export const forgotPasswordApi = async (request: { email: string }): Promise<TError> => {
   try {
     const response = await fetch(`${API_URL}/password-reset`, {
       method: "POST",
@@ -213,10 +218,7 @@ export const forgotPasswordApi = async (request: { email: string }) => {
   }
 };
 
-const fetchWithRefresh = async (
-  url: string,
-  options: RequestInit
-): Promise<TResponseBody<"user", TUser>> => {
+const fetchWithRefresh = async (url: string, options: RequestInit) => {
   try {
     const response = await fetch(url, options);
     const result = await checkResponse(response);
@@ -239,7 +241,7 @@ const fetchWithRefresh = async (
 };
 
 const saveResponse = (result: TTokens) => {
-  const decodedToken: any = jwtDecode(result.accessToken);
+  const decodedToken: {exp: string} = jwtDecode(result.accessToken);
   localStorage.setItem("accessTokenExp", decodedToken.exp);
   localStorage.setItem("refreshToken", result.refreshToken);
   localStorage.setItem("accessToken", result.accessToken);

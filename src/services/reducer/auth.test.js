@@ -1,17 +1,10 @@
 import { authActions } from '../constants/auth'
-import { authReducer } from './auth'
+import { authReducer, initialState } from './auth'
 
 describe('auth reducer', () => {
    it('should return initial state', () => {
       expect(authReducer(undefined, {})).toEqual(
-         {
-            user: null,
-            isAuth: false,
-            isLoading: false,
-            isPasswordReset: false,
-            isForgotPassword: false,
-            ordersHistory: null,
-         }
+        initialState
       )
    })
    it('should handle GET_USER_FETCHING', () => {
@@ -138,14 +131,7 @@ describe('auth reducer', () => {
    })
    it('should handle LOGOUT_SUCCESS', () => {
       expect(authReducer({}, { type: authActions.LOGOUT_SUCCESS })).toEqual(
-         {
-            user: null,
-            isAuth: false,
-            isLoading: false,
-            isPasswordReset: false,
-            isForgotPassword: false,
-            ordersHistory: null,
-         }
+         initialState
       )
    })
 

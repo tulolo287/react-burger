@@ -1,4 +1,4 @@
-import { TOrder } from "../../utils/types";
+import { TMessage } from "../../utils/types";
 import { TWSActions } from "../actions/wsActions";
 import {
   WS_CONNECTION_CLOSE,
@@ -9,20 +9,14 @@ import {
   WS_GET_MESSAGE_SUCCESS,
 } from "../constants/wsConsts";
 
-type TMessages = {
-  orders: TOrder[] | null;
-  total: number;
-  totalToday: number;
-};
-
 type TWSState = {
   wsConnected: boolean;
-  messages: TMessages | null;
+  messages: TMessage | null;
   fetchMessages: boolean;
   error?: Event;
 };
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   messages: null,
   fetchMessages: false,

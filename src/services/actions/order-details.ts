@@ -1,18 +1,18 @@
-import { AppDispatch } from "../types";
 import { postOrderApi } from "../../utils/api";
+import { TOrder, TPostOrder } from "../../utils/types";
 import { orderActions } from "../constants/order-details";
-import { TOrder } from "../../utils/types";
+import { AppDispatch } from "../types";
 
 export interface IOrderFetching {
   readonly type: typeof orderActions.POST_ORDER_FETCHING;
 }
 export interface IPostOrderSuccess {
   readonly type: typeof orderActions.POST_ORDER_SUCCESS;
-  readonly order: any;
+  readonly order: TOrder;
 }
 export interface IPostOrderFailed {
   readonly type: typeof orderActions.POST_ORDER_FAILED;
-  readonly err: any;
+  readonly err: boolean;
 }
 export interface ISetOrderFeed {
   readonly type: typeof orderActions.SET_ORDER_FEED;
@@ -29,12 +29,12 @@ export const orderFetching = (): IOrderFetching => ({
   type: orderActions.POST_ORDER_FETCHING,
 });
 
-export const postOrderSuccess = (order: any): IPostOrderSuccess => ({
+export const postOrderSuccess = (order: TOrder): IPostOrderSuccess => ({
   type: orderActions.POST_ORDER_SUCCESS,
   order,
 });
 
-export const postOrderFailed = (err: any): IPostOrderFailed => ({
+export const postOrderFailed = (err: boolean): IPostOrderFailed => ({
   type: orderActions.POST_ORDER_FAILED,
   err,
 });
@@ -47,14 +47,15 @@ export const setOrderFeed = (payload: {
   payload,
 });
 
-export const postOrder = (request: any) => async (dispatch: AppDispatch) => {
-  dispatch({ type: orderActions.POST_ORDER_FETCHING });
+export const postOrder =
+  (request: TPostOrder) => async (dispatch: AppDispatch) => {
+    dispatch({ type: orderActions.POST_ORDER_FETCHING });
 
-  return postOrderApi(request)
-    .then((order) => {
-      dispatch(postOrderSuccess(order));
-    })
-    .catch((err) => {
-      dispatch(postOrderFailed(err));
-    });
-};
+    return postOrderApi(request)
+      .then((response) => {
+        dispatch(postOrderSuccess(response.order));
+      })
+      .catch((err) => {
+        dispatch(postOrderFailed(err));
+      });
+  };

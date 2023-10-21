@@ -1,14 +1,10 @@
 import { wsActions } from "../constants/wsConsts";
-import { wsReducer } from "./ws";
+import { initialState, wsReducer } from "./ws";
 
 describe('order details redcer', () => {
    it('should return initial state', () => {
       expect(wsReducer(undefined, {})).toEqual(
-         {
-            wsConnected: false,
-            messages: null,
-            fetchMessages: false,
-         }
+         initialState
       )
    })
    it('should handle WS_CONNECTION_SUCCESS', () => {

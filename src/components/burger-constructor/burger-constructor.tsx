@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
 import { TConstructorIngredient, TIngredient } from "../../utils/types";
 import BurgerConstructorItem from "../burger-constructor-item/burger-constructor-item";
+import EmptyConstructorElement from "../empty-constructor-element/empty-constructor-element";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./burger-constructor.module.css";
@@ -35,9 +36,6 @@ const BurgerConstructor = () => {
   const user = useAppSelector((state) => state.authReducer.user);
   const navigate = useNavigate();
   const ingredients = useAppSelector(getIngredientsSelector);
-  const isLoading = useAppSelector(
-    (state) => state.ingredientsReducer.isLoading
-  );
 
   const constructorIngredients = useAppSelector(
     (state) => state.constructorReducer.constructorIngredients
@@ -65,7 +63,7 @@ const BurgerConstructor = () => {
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item: any) {
+    drop(item: TIngredient) {
       onDropHandler(item);
     },
     collect: (monitor) => ({
@@ -114,33 +112,49 @@ const BurgerConstructor = () => {
             className={styles.burgerConstructor_drop}
           >
             <ul>
-              <li>
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${bun?.name} (верх)`}
-                  price={bun?.price || 0}
-                  thumbnail={bun?.image || ""}
-                />
-              </li>
+              {!bun ? (
+                <EmptyConstructorElement type={{style: 'top', name: "Перетащите булкy"}} />
+              ) : (
+                <li>
+                  <ConstructorElement
+                    type="top"
+                    isLocked={true}
+                    text={`${bun?.name} (верх)`}
+                    price={bun?.price || 0}
+                    thumbnail={bun?.image || ""}
+                  />
+                </li>
+              )}
             </ul>
             <ul className={styles.burgerConstructor_group}>
-              {constructorIngredients?.map((item, idx: number) =>
-                item.type !== "bun" ? (
-                  <BurgerConstructorItem key={item.key} item={item} idx={idx} />
-                ) : null
+              {constructorIngredients.length === 0 ? (
+                <EmptyConstructorElement type={{style: '', name: "Перетащите ингрeдиенты"}} />
+              ) : (
+                constructorIngredients?.map((item, idx: number) =>
+                  item.type !== "bun" ? (
+                    <BurgerConstructorItem
+                      key={item.key}
+                      item={item}
+                      idx={idx}
+                    />
+                  ) : null
+                )
               )}
             </ul>
             <ul>
-              <li>
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${bun?.name} (низ)`}
-                  price={bun?.price || 0}
-                  thumbnail={bun?.image || ""}
-                />
-              </li>
+              {!bun ? (
+                <EmptyConstructorElement type={{style: 'bottom', name: "Перетащите булкy "}} />
+              ) : (
+                <li>
+                  <ConstructorElement
+                    type="bottom"
+                    isLocked={true}
+                    text={`${bun?.name} (низ)`}
+                    price={bun?.price || 0}
+                    thumbnail={bun?.image || ""}
+                  />
+                </li>
+              )}
             </ul>
           </div>
           <div className={styles.burgerConstructor_checkout + " mt-10"}>

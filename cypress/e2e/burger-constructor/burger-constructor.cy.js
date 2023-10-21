@@ -1,12 +1,15 @@
 import { localHost, testEmail, testPassword, testUrl } from "../../consts";
 
 describe('service is available', function () {
+
    beforeEach(function () {
       cy.intercept('GET', `${testUrl}/api/ingredients`, { fixture: 'ingredients.json' })
       window.localStorage.setItem("refreshToken", JSON.stringify("test-refreshToken"))
       cy.setCookie('accessToken', 'test-accessToken')
-      cy.visit(localHost);
+      cy.visit("/");
       cy.viewport(1000, 1000)
+      cy.get('[data-cy=constructor_container]').as('constructorContainer')
+      cy.get('[data-cy=ingredients_container]').as('ingredientsContainer')
    });
    it('should contain Соберите бургер', function () {
       cy.contains('Соберите бургер')
@@ -16,23 +19,29 @@ describe('service is available', function () {
       cy.get('button').contains('Оформить заказ').should('have.attr', 'disabled');
    });
    it('should set ingredient to constructor', function () {
-      cy.get('[data-cy=ingredients_container]').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
-      cy.get('[data-cy=constructor_container]').trigger('dragover')
-      cy.get('[data-cy=constructor_container]').trigger('drop')
+      cy.get('@ingredientsContainer').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
+      cy.get('@constructorContainer').trigger('dragover')
+      cy.get('@constructorContainer').trigger('drop')
       cy.get('button').contains('Оформить заказ').should('not.have.attr', 'disabled');
    });
    it('should be redirect to login page', function () {
-      cy.get('[data-cy=ingredients_container]').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
-      cy.get('[data-cy=constructor_container]').trigger('dragover')
-      cy.get('[data-cy=constructor_container]').trigger('drop')
+      cy.get('@ingredientsContainer').contains('Test булка N-200i').trigger('dragstart').trigger('drag', {})
+      cy.get('@constructorContainer').trigger('dragover')
+      cy.get('@constructorContainer').trigger('drop')
+      cy.get('@ingredientsContainer').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
+      cy.get('@constructorContainer').trigger('dragover')
+      cy.get('@constructorContainer').trigger('drop')
       cy.get('button').contains('Оформить заказ').should('not.have.attr', 'disabled');
       cy.get('[data-cy=make_order]').click();
       cy.url().should('be.equal', `${localHost}/login`)
    });
    it('should make order', function () {
-      cy.get('[data-cy=ingredients_container]').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
-      cy.get('[data-cy=constructor_container]').trigger('dragover')
-      cy.get('[data-cy=constructor_container]').trigger('drop')
+      cy.get('@ingredientsContainer').contains('Test булка N-200i').trigger('dragstart').trigger('drag', {})
+      cy.get('@constructorContainer').trigger('dragover')
+      cy.get('@constructorContainer').trigger('drop')
+      cy.get('@ingredientsContainer').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
+      cy.get('@constructorContainer').trigger('dragover')
+      cy.get('@constructorContainer').trigger('drop')
       cy.get('[data-cy=burger_price]').contains(2600)
       cy.get('button').contains('Оформить заказ').should('not.have.attr', 'disabled');
       cy.get('[data-cy=make_order]').click();

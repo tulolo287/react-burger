@@ -42,13 +42,13 @@ const BurgerIngredients = memo(() => {
   }, []);
 
   const sortData = (ingredients: TIngredient[]) => {
-    const bun = ingredients.find((item) => item.type === "bun");
-    dispatch(addBuntToConstructor(bun!));
+   // const bun = ingredients.find((item) => item.type === "bun");
+   // dispatch(addBuntToConstructor(bun!));
     const sortedData = ingredients
       ?.sort((a, b) => {
         return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
       })
-      .map((item) => (item._id === bun?._id ? { ...item, qty: 2 } : item));
+     
     dispatch(setSortedIngredients(sortedData));
   };
 
