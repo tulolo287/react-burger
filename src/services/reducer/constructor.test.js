@@ -1,14 +1,10 @@
 import { constructorActions } from "../constants/constructor"
-import { constructorReducer } from "./constructor"
+import { constructorReducer, initialState } from "./constructor"
 
 describe('constructor reducer', () => {
    it('should return initial state', () => {
       expect(constructorReducer(undefined, {})).toEqual(
-         {
-            constructorIngredients: [],
-            bun: undefined,
-            orderDetails: null,
-         }
+        initialState
       )
    })
    it('should handle REMOVE_INGREDIENT_FROM_CONSTRUCTOR', () => {
@@ -81,9 +77,9 @@ describe('constructor reducer', () => {
       )
    })
    it('should handle CLEAR_ORDER', () => {
-      expect(constructorReducer({ constructorIngredients: [{ name: 'test' }] }, { type: constructorActions.CLEAR_ORDER })).toEqual(
+      expect(constructorReducer({}, { type: constructorActions.CLEAR_ORDER })).toEqual(
          {
-            constructorIngredients: [],
+            ...initialState
          }
       )
    })

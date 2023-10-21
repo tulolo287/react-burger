@@ -34,6 +34,5 @@ export const path = {
 export type TPath = typeof path;
 
 export const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
-
 export const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
 export const wsAllUrl = "wss://norma.nomoreparties.space/orders/all";

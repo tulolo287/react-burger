@@ -9,31 +9,35 @@ import {
   getIngredients,
   getIngredientsSelector,
 } from "../../services/actions/ingredients";
+import { wsAuthStart, wsStart } from "../../services/actions/wsActions";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { getIngredientsLoading } from "../../services/selectors/ingredients";
-import { getMessages } from "../../services/selectors/wsSelectors";
-import { getOrderStatus, startWS } from "../../utils";
+import { getOrderStatus } from "../../utils";
 import { wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import Modal from "../modal/modal";
 import styles from "./feed-details-modal.module.css";
 
 const FeedDetailsModal = memo(() => {
+  const { pathname } = useLocation();
+  const profile = pathname.includes("/profile") ? true : false;
   const { title, setTitle, navBack } = useModal();
   const dispatch = useAppDispatch();
   const ingredients: Array<TIngredient> | null = useAppSelector(
     getIngredientsSelector
   );
-  const messages = useAppSelector(getMessages);
   const params = useParams();
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<TIngredient[]>();
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
   const isLoading = useAppSelector(getIngredientsLoading);
-  const wsConnected = useAppSelector((state) => state.wsReducer.wsConnected);
-  const { pathname } = useLocation();
-  const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
+  const wsConnected = useAppSelector((state) =>
+    profile ? state.wsReducer.wsConnectedAuth : state.wsReducer.wsConnected
+  );
+  const messages = useAppSelector((state) =>
+    profile ? state.wsReducer.messagesAuth : state.wsReducer.messages
+  );
 
   useEffect(() => {
     if (!ingredients) {
@@ -46,7 +50,9 @@ const FeedDetailsModal = memo(() => {
       };
       fetchData();
     }
-    !wsConnected && dispatch(startWS(url));
+    if (!wsConnected) {
+      profile ? dispatch(wsAuthStart(wsAuthUrl)) : dispatch(wsStart(wsAllUrl));
+    }
   }, []);
 
   useEffect(() => {

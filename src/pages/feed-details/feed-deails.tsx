@@ -2,29 +2,32 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { memo, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
-import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
   getIngredients,
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { actions } from "../../services/constants";
+import { wsAuthStart, wsStart } from "../../services/actions/wsActions";
+import { wsActions } from "../../services/constants/wsConsts";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { startWS } from "../../utils";
 import { SORT_ORDER, wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./feed-details.module.css";
 
-
 const FeedDetails = memo(() => {
+  const { pathname } = useLocation();
+  const profile = pathname.includes("/profile") ? true : false;
+  const params = useParams();
   const dispatch = useAppDispatch();
   const ingredients: Array<TIngredient> | null = useAppSelector(
     getIngredientsSelector
   );
-  const messages = useAppSelector((state) => state.wsReducer.messages);
-
-  const params = useParams();
-  const wsConnected = useAppSelector((state) => state.wsReducer.wsConnected);
+  const wsConnected = useAppSelector((state) =>
+    profile ? state.wsReducer.wsConnectedAuth : state.wsReducer.wsConnected
+  );
+  const messages = useAppSelector((state) =>
+    profile ? state.wsReducer.messagesAuth : state.wsReducer.messages
+  );
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<
@@ -33,8 +36,7 @@ const FeedDetails = memo(() => {
   const isLoading = useAppSelector(
     (state) => state.ingredientsReducer.isLoading
   );
-  const { pathname } = useLocation();
-  const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
+
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
 
   useEffect(() => {
@@ -48,20 +50,22 @@ const FeedDetails = memo(() => {
       };
       fetchData();
     }
-    !wsConnected && dispatch(startWS(url));
+    if (!wsConnected) {
+      profile ? dispatch(wsAuthStart(wsAuthUrl)) : dispatch(wsStart(wsAllUrl));
+    }
     return function () {
-      dispatch({ type: actions.WS_CONNECTION_CLOSED });
+      if (wsConnected) {
+        profile
+          ? dispatch({ type: wsActions.WS_AUTH_CONNECTION_CLOSE })
+          : dispatch({ type: wsActions.WS_CONNECTION_CLOSE });
+      }
     };
-  }, [dispatch, url, wsConnected, ingredients]);
+  }, []);
 
   const sortData = (ingredients: TIngredient[]) => {
-    const bun = ingredients.find((item) => item.type === "bun");
-    dispatch(addBuntToConstructor(bun!));
-    const sortedData = ingredients
-      ?.sort((a, b) => {
-        return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-      })
-      .map((item) => (item._id === bun?._id ? { ...item, qty: 2 } : item));
+    const sortedData = ingredients?.sort((a, b) => {
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+    });
     dispatch(setSortedIngredients(sortedData));
   };
 

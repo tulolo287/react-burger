@@ -113,7 +113,9 @@ const BurgerConstructor = () => {
           >
             <ul>
               {!bun ? (
-                <EmptyConstructorElement type={{style: 'top', name: "Перетащите булкy"}} />
+                <EmptyConstructorElement
+                  type={{ style: "top", name: "Перетащите сюда булку" }}
+                />
               ) : (
                 <li>
                   <ConstructorElement
@@ -128,7 +130,9 @@ const BurgerConstructor = () => {
             </ul>
             <ul className={styles.burgerConstructor_group}>
               {constructorIngredients.length === 0 ? (
-                <EmptyConstructorElement type={{style: '', name: "Перетащите ингрeдиенты"}} />
+                <EmptyConstructorElement
+                  type={{ style: "", name: "Перетащите сюда ингредиенты" }}
+                />
               ) : (
                 constructorIngredients?.map((item, idx: number) =>
                   item.type !== "bun" ? (
@@ -143,7 +147,9 @@ const BurgerConstructor = () => {
             </ul>
             <ul>
               {!bun ? (
-                <EmptyConstructorElement type={{style: 'bottom', name: "Перетащите булкy "}} />
+                <EmptyConstructorElement
+                  type={{ style: "bottom", name: "Перетащите сюда булку " }}
+                />
               ) : (
                 <li>
                   <ConstructorElement

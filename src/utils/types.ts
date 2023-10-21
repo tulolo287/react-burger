@@ -86,3 +86,13 @@ export type TError = {
   success?: boolean;
   message: string;
 };
+
+export type TWSMiddlewareActions = {
+  wsStart: string;
+  wsOpen: string;
+  wsClose: string;
+  wsError: string;
+  wsGetMessage: string;
+  wsGetMessageFailed: string;
+  wsSendMessage: string;
+};

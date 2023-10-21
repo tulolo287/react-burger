@@ -67,8 +67,6 @@ export const initConstructor = (bun: TIngredient): IAddBuntToConstructor => ({
   bun,
 });
 
-
-
 export const clearOrder = (): IClearOrder => ({
   type: constructorActions.CLEAR_ORDER,
 });
