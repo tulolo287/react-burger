@@ -11,7 +11,7 @@ type TInitialState = {
 export const initialState: TInitialState = {
   ingredients: null,
   sortedIngredients: undefined,
-  isLoading: true,
+  isLoading: false,
   fetchError: false,
 };
 

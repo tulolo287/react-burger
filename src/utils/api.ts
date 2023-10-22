@@ -141,7 +141,9 @@ export const registerApi = async (request: TUser) => {
       referrerPolicy: "no-referrer",
       body: JSON.stringify(request),
     });
-    return await checkResponse(response);
+    const result = await checkResponse(response);
+    result.success && saveResponse(result)
+    return result.success ? result.user : null;
   } catch (err) {
     return Promise.reject(err);
   }

@@ -1,6 +1,12 @@
 import { wsActions } from "../constants/wsConsts";
 import { initialState, wsReducer } from "./ws";
 
+const testMessage = {
+   number: 1,
+   orders: [],
+   total: 1,
+}
+
 describe('order details redcer', () => {
    it('should return initial state', () => {
       expect(wsReducer(undefined, {})).toEqual(
@@ -8,54 +14,54 @@ describe('order details redcer', () => {
       )
    })
    it('should handle WS_CONNECTION_SUCCESS', () => {
-      expect(wsReducer({}, { type: wsActions.WS_CONNECTION_SUCCESS })).toEqual(
+      expect(wsReducer(initialState, { type: wsActions.WS_CONNECTION_SUCCESS })).toEqual(
          {
-            error: undefined,
-            fetchMessages: true,
+            ...initialState, error: undefined,
+            fetchMessages: false,
             wsConnected: true,
          }
       )
    })
    it('should handle WS_CONNECTION_ERROR', () => {
-      expect(wsReducer({}, { type: wsActions.WS_CONNECTION_ERROR, payload: { name: 'test' } })).toEqual(
+      expect(wsReducer(initialState, { type: wsActions.WS_CONNECTION_ERROR, payload: { name: 'test' } })).toEqual(
          {
-            error: { name: 'test' },
+            ...initialState, error: { name: 'test' },
             fetchMessages: false,
             wsConnected: false,
          }
       )
    })
    it('should handle WS_CONNECTION_CLOSED', () => {
-      expect(wsReducer({}, { type: wsActions.WS_CONNECTION_CLOSED })).toEqual(
+      expect(wsReducer(initialState, { type: wsActions.WS_CONNECTION_CLOSED })).toEqual(
          {
-            error: undefined,
+            ...initialState, error: undefined,
             fetchMessages: false,
             wsConnected: false,
          }
       )
    })
    it('should handle WS_CONNECTION_CLOSE', () => {
-      expect(wsReducer({}, { type: wsActions.WS_CONNECTION_CLOSE })).toEqual(
+      expect(wsReducer(initialState, { type: wsActions.WS_CONNECTION_CLOSE })).toEqual(
          {
-            error: undefined,
+            ...initialState, error: undefined,
             fetchMessages: false,
             wsConnected: false,
          }
       )
    })
    it('should handle WS_GET_MESSAGE_SUCCESS', () => {
-      expect(wsReducer({}, { type: wsActions.WS_GET_MESSAGE_SUCCESS, payload: { name: 'test' } })).toEqual(
+      expect(wsReducer(initialState, { type: wsActions.WS_GET_MESSAGE_SUCCESS, payload: testMessage })).toEqual(
          {
-            fetchMessages: false,
+            ...initialState, fetchMessages: false,
             error: undefined,
-            messages: { name: 'test' },
+            messages: testMessage,
          }
       )
    })
    it('should handle WS_GET_MESSAGE_FAILED', () => {
-      expect(wsReducer({}, { type: wsActions.WS_GET_MESSAGE_FAILED })).toEqual(
+      expect(wsReducer(initialState, { type: wsActions.WS_GET_MESSAGE_FAILED })).toEqual(
          {
-            fetchMessages: false,
+            ...initialState, fetchMessages: false,
             error: undefined,
          }
       )

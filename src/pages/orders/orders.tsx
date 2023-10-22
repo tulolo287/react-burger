@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import CardOrder from "../../components/card-order/card-order";
 import { getUser, logout } from "../../services/actions/auth";
@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { wsAuthUrl } from "../../utils/consts";
 import styles from "./orders.module.css";
 
-const Orders = memo(() => {
+const Orders = () => {
   const user = useAppSelector((state) => state.authReducer.user);
   const dispatch = useAppDispatch();
   const messagesAuth = useAppSelector((state) => state.wsReducer.messagesAuth);
@@ -74,6 +74,6 @@ const Orders = memo(() => {
       />
     </section>
   );
-});
+};
 
 export default Orders;

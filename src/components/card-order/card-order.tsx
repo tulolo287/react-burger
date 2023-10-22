@@ -18,7 +18,7 @@ type TCardOrder = {
   messages: TMessage | null;
 };
 
-const CardOrder: FC<TCardOrder> = memo(({ fetchMessages, wsConnected, messages }) => {
+const CardOrder: FC<TCardOrder> = ({ fetchMessages, wsConnected, messages }) => {
   const ingredients = useAppSelector(getIngredientsSelector);
   const dispatch = useAppDispatch();
 
@@ -58,6 +58,6 @@ const CardOrder: FC<TCardOrder> = memo(({ fetchMessages, wsConnected, messages }
       </ul>
     </>
   );
-});
+}
 
 export default CardOrder;

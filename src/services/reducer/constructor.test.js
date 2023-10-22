@@ -1,51 +1,35 @@
 import { constructorActions } from "../constants/constructor"
 import { constructorReducer, initialState } from "./constructor"
 
+const testConstructorIngredient =
+{
+   _id: "643d69a5c3f7b9001cfa094a",
+   name: "Сыр с астероидной плесенью",
+   type: "main",
+   proteins: 84,
+   fat: 48,
+   carbohydrates: 420,
+   calories: 3377,
+   price: 4142,
+   image: "https://code.s3.yandex.net/react/code/cheese.png",
+   image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
+   image_large: "https://code.s3.yandex.net/react/code/cheese-large.png",
+   qty: 1,
+   __v: 0
+}
+
+
 describe('constructor reducer', () => {
    it('should return initial state', () => {
       expect(constructorReducer(undefined, {})).toEqual(
-        initialState
+         initialState
       )
    })
    it('should handle REMOVE_INGREDIENT_FROM_CONSTRUCTOR', () => {
       expect(constructorReducer({
-         constructorIngredients: [{
-            _id: "643d69a5c3f7b9001cfa093c",
-            name: "Краторная булка N-200i",
-            type: "bun",
-            proteins: 80,
-            fat: 24,
-            carbohydrates: 53,
-            calories: 420,
-            price: 1255,
-            image: "https://code.s3.yandex.net/react/code/bun-02.png",
-            image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-            image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-            __v: 0,
-            qty: 2,
-            key: "",
-         },
-         { name: 'test', key: '123' }]
-      }, { type: constructorActions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR, ingredient: { name: 'test', key: '123' } })).toEqual(
-
-         {
-            constructorIngredients: [{
-               _id: "643d69a5c3f7b9001cfa093c",
-               name: "Краторная булка N-200i",
-               type: "bun",
-               proteins: 80,
-               fat: 24,
-               carbohydrates: 53,
-               calories: 420,
-               price: 1255,
-               image: "https://code.s3.yandex.net/react/code/bun-02.png",
-               image_mobile: "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
-               image_large: "https://code.s3.yandex.net/react/code/bun-02-large.png",
-               __v: 0,
-               qty: 2,
-               key: "",
-            },],
-         }
+         constructorIngredients: [testConstructorIngredient]
+      }, { type: constructorActions.REMOVE_INGREDIENT_FROM_CONSTRUCTOR, ingredient: testConstructorIngredient })).toEqual(
+         { constructorIngredients: [] }
       )
    })
 
@@ -60,19 +44,18 @@ describe('constructor reducer', () => {
       )
    })
    it('should handle ADD_INGREDIENT_TO_CONSTRUCTOR', () => {
-      expect(constructorReducer({ constructorIngredients: [{ name: 'test1', qty: 1 }] }, { type: constructorActions.ADD_INGREDIENT_TO_CONSTRUCTOR, ingredient: { name: 'test2', qty: 1 } })).toEqual(
+      expect(constructorReducer(initialState, { type: constructorActions.ADD_INGREDIENT_TO_CONSTRUCTOR, ingredient: testConstructorIngredient })).toEqual(
          {
-            constructorIngredients: [
-               { name: 'test1', qty: 1 },
-               { name: 'test2', qty: 1 }
+            ...initialState, constructorIngredients: [
+               testConstructorIngredient
             ],
          }
       )
    })
    it('should handle ADD_BUN_TO_CONSTRUCTOR', () => {
-      expect(constructorReducer({ bun: undefined }, { type: constructorActions.ADD_BUN_TO_CONSTRUCTOR, bun: { name: 'bun', type: 'bun' } })).toEqual(
+      expect(constructorReducer(initialState, { type: constructorActions.ADD_BUN_TO_CONSTRUCTOR, bun: testConstructorIngredient })).toEqual(
          {
-            bun: { name: 'bun', type: 'bun' },
+            ...initialState, bun: testConstructorIngredient,
          }
       )
    })

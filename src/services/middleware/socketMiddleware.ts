@@ -51,6 +51,7 @@ export const socketMiddleware = (
 
         socket.onclose = (event) => {
           dispatch({ type: wsClose, payload: event });
+          socket = null;
         };
 
         if (type === wsSendMessage) {
@@ -59,6 +60,7 @@ export const socketMiddleware = (
 
         if (type === wsClose) {
           socket.close();
+          socket = null;
         }
       }
 

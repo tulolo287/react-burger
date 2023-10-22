@@ -4,6 +4,7 @@ import {
   WS_CONNECTION_CLOSE,
   WS_CONNECTION_CLOSED,
   WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_GET_MESSAGE_FAILED,
   WS_GET_MESSAGE_SUCCESS,
@@ -35,11 +36,18 @@ export const wsReducer = (
   action: TWSActions | TWSAuthActions
 ): TWSState => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS:
+    case WS_CONNECTION_START:
       return {
         ...state,
         error: undefined,
         fetchMessages: true,
+        wsConnected: true,
+      };
+    case WS_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        error: undefined,
+        fetchMessages: false,
         wsConnected: true,
       };
 
@@ -76,18 +84,23 @@ export const wsReducer = (
       };
 
     case WS_GET_MESSAGE_FAILED:
-  
       return {
         ...state,
         fetchMessages: false,
         error: undefined,
       };
-
-    case wsActions.WS_AUTH_CONNECTION_SUCCESS:
+    case wsActions.WS_AUTH_CONNECTION_START:
       return {
         ...state,
         errorAuth: undefined,
         fetchMessagesAuth: true,
+        wsConnectedAuth: true,
+      };
+    case wsActions.WS_AUTH_CONNECTION_SUCCESS:
+      return {
+        ...state,
+        errorAuth: undefined,
+        fetchMessagesAuth: false,
         wsConnectedAuth: true,
       };
 
@@ -124,7 +137,6 @@ export const wsReducer = (
       };
 
     case wsActions.WS_AUTH_GET_MESSAGE_FAILED:
-  
       return {
         ...state,
         fetchMessagesAuth: false,

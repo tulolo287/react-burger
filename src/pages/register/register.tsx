@@ -5,7 +5,7 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../services/actions/auth";
 import { useAppDispatch } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
@@ -15,20 +15,27 @@ const Register = () => {
   const [passwordValue, setPasswordValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [nameValue, setNameValue] = useState("");
+  const navigate = useNavigate();
 
   const dispatch: AppDispatch = useAppDispatch();
 
   const handleRegister = (e: SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
-    if (nameValue && emailValue && passwordValue) {
-      dispatch(
-        register({
-          name: nameValue,
-          email: emailValue,
-          password: passwordValue,
-        })
-      );
-    }
+    const registerNewUser = async () => {
+      if (nameValue && emailValue && passwordValue) {
+        dispatch(
+          register({
+            name: nameValue,
+            email: emailValue,
+            password: passwordValue,
+          })
+        ).then((user) =>
+          user != null ? navigate("/") : navigate("/register")
+        );
+      }
+    };
+
+    registerNewUser();
   };
 
   return (

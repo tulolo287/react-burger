@@ -105,18 +105,9 @@ export const authReducer = (state = initialState, action: TAuthActions): TInitia
       };
     }
     case authActions.REGISTER_SUCCESS:
-      setCookie("token", JSON.stringify(action.response.accessToken), {});
-      localStorage.setItem(
-        "refreshToken",
-        JSON.stringify(action.response.refreshToken)
-      );
-      localStorage.setItem(
-        "accessToken",
-        JSON.stringify(action.response.accessToken)
-      );
       return {
         ...state,
-        user: action.response.user,
+        user: action.user,
         isAuth: true,
       };
     case authActions.REGISTER_FAILED:

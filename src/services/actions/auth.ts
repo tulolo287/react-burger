@@ -53,7 +53,7 @@ export interface IUpdateUserFailed {
 }
 export interface IRegister {
   readonly type: typeof authActions.REGISTER_SUCCESS;
-  readonly response: TResponseBody<"user", TUser>;
+  readonly user: TUser | null;
 }
 export interface IRegisterFailed {
   readonly type: typeof authActions.REGISTER_FAILED;
@@ -152,10 +152,10 @@ export const updateUserFailed = (err: TError): IUpdateUserFailed => ({
 });
 
 export const registerSuccess = (
-  response: TResponseBody<"user", TUser>
+  user: TUser | null
 ): IRegister => ({
   type: authActions.REGISTER_SUCCESS,
-  response,
+  user,
 });
 
 export const registerFailed = (err: TError): IRegisterFailed => ({
@@ -242,8 +242,9 @@ export const updateUser = (data: TUser) => async (dispatch: AppDispatch) => {
 
 export const register = (request: TUser) => async (dispatch: AppDispatch) => {
   return registerApi(request)
-    .then((response) => {
-      dispatch(registerSuccess(response));
+    .then((user) => {
+      dispatch(registerSuccess(user));
+      return user;
     })
     .catch((err) => {
       dispatch(registerFailed(err));
