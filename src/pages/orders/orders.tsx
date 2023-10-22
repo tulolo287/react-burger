@@ -5,10 +5,11 @@ import { getUser, logout } from "../../services/actions/auth";
 import { wsAuthStart } from "../../services/actions/wsActions";
 import { actions } from "../../services/constants";
 import { useAppDispatch, useAppSelector } from "../../services/hooks";
-import { wsAuthUrl } from "../../utils/consts";
 import styles from "./orders.module.css";
 
 const Orders = () => {
+  const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+  const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
   const user = useAppSelector((state) => state.authReducer.user);
   const dispatch = useAppDispatch();
   const messagesAuth = useAppSelector((state) => state.wsReducer.messagesAuth);
