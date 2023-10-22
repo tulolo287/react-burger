@@ -45,7 +45,9 @@ const BurgerConstructor = () => {
   const { isModal, openModal, closeModal } = useModal();
 
   const totalOrderPrice = useMemo(() => {
-    constructorIngredients[0] ? setDisableOrder(false) : setDisableOrder(true);
+    constructorIngredients[0] && bun
+      ? setDisableOrder(false)
+      : setDisableOrder(true);
     let sumPrice = constructorIngredients.reduce(
       (val: number, acc: TIngredient) =>
         (val += acc.qty ? acc.qty * acc.price : 0),
