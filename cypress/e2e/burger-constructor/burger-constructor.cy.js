@@ -19,6 +19,9 @@ describe('service is available', function () {
       cy.get('button').contains('Оформить заказ').should('have.attr', 'disabled');
    });
    it('should set ingredient to constructor', function () {
+      cy.get('@ingredientsContainer').contains('Test булка N-200i').trigger('dragstart').trigger('drag', {})
+      cy.get('@constructorContainer').trigger('dragover')
+      cy.get('@constructorContainer').trigger('drop')
       cy.get('@ingredientsContainer').contains('Соус Spicy-X').trigger('dragstart').trigger('drag', {})
       cy.get('@constructorContainer').trigger('dragover')
       cy.get('@constructorContainer').trigger('drop')
