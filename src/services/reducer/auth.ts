@@ -1,18 +1,25 @@
 import { deleteCookie, setCookie } from "../../utils/api";
+import { TUser } from "../../utils/types";
 import { TAuthActions } from "../actions/auth";
-import { actions } from "../constants";
 import { authActions } from "../constants/auth";
 
-export const initialState = {
+type TInitialState = {
+  user: TUser | null,
+  isAuth: boolean,
+  isLoading: boolean,
+  isPasswordReset: boolean,
+  isForgotPassword: boolean,
+}
+
+export const initialState: TInitialState = {
   user: null,
   isAuth: false,
   isLoading: false,
   isPasswordReset: false,
   isForgotPassword: false,
-  ordersHistory: null,
 };
 
-export const authReducer = (state = initialState, action: TAuthActions) => {
+export const authReducer = (state = initialState, action: TAuthActions): TInitialState => {
   switch (action.type) {
     case authActions.GET_USER_FETCHING: {
       return {
@@ -61,7 +68,7 @@ export const authReducer = (state = initialState, action: TAuthActions) => {
     case authActions.FORGOT_PASSWORD_SUCCESS:
       return {
         ...state,
-        isForgotPassword: action.response,
+        isForgotPassword: false,
       };
     case authActions.FORGOT_PASSWORD_FAILED:
       return {
@@ -98,18 +105,9 @@ export const authReducer = (state = initialState, action: TAuthActions) => {
       };
     }
     case authActions.REGISTER_SUCCESS:
-      setCookie("token", JSON.stringify(action.response.accessToken), {});
-      localStorage.setItem(
-        "refreshToken",
-        JSON.stringify(action.response.refreshToken),
-      );
-      localStorage.setItem(
-        "accessToken",
-        JSON.stringify(action.response.accessToken),
-      );
       return {
         ...state,
-        user: action.response,
+        user: action.user,
         isAuth: true,
       };
     case authActions.REGISTER_FAILED:

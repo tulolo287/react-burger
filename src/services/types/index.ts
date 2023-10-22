@@ -7,9 +7,12 @@ export type IMessage = {};
 
 export type State = ReturnType<typeof store.getState>;
 export type AppDispatch = ThunkDispatch<State, unknown, Actions>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  State,
-  unknown,
-  Actions
+
+
+// Типизация thunk'ов в нашем приложении
+export type AppThunk<TReturn = void> = ActionCreator<
+    ThunkAction<TReturn, Action, State, Actions>
 >;
+
+// Типизация метода dispatch для проверки на валидность отправляемого экшена
+

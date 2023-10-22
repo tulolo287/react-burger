@@ -1,18 +1,20 @@
 import { Fragment, useEffect, useState } from "react";
-import { useSelector } from "../../services/hooks";
+import { useAppSelector } from "../../services/hooks";
 import { TOrder } from "../../utils/types";
 import styles from "./order-total.module.css";
 
 const OrdersTotal = () => {
-  const messages = useSelector((state) => state.wsReducer.messages);
-  const fetchMessages = useSelector((state) => state.wsReducer.fetchMessages);
+  const messages = useAppSelector((state) => state.wsReducer.messages);
+  const fetchMessages = useAppSelector(
+    (state) => state.wsReducer.fetchMessages
+  );
   const [ordersDone, setOrdersDone] = useState<TOrder[]>();
   const [ordersInWork, setOrdersInWork] = useState<TOrder[]>();
 
   useEffect(() => {
     const done = messages?.orders?.filter((order) => order?.status === "done");
     const inWork = messages?.orders?.filter(
-      (order) => order?.status === "inWork",
+      (order) => order?.status === "inWork"
     );
     setOrdersDone(done);
     setOrdersInWork(inWork);

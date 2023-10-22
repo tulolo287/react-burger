@@ -11,13 +11,13 @@ type TInitialState = {
 export const initialState: TInitialState = {
   ingredients: null,
   sortedIngredients: undefined,
-  isLoading: true,
+  isLoading: false,
   fetchError: false,
 };
 
 export const ingredientsReducer = (
   state = initialState,
-  action: TIngredientsActions,
+  action: TIngredientsActions
 ): TInitialState => {
   switch (action.type) {
     case ingredientsActions.GET_INGREDIENTS_SUCCESS:
@@ -28,7 +28,7 @@ export const ingredientsReducer = (
         fetchError: false,
       };
     case ingredientsActions.GET_INGREDIENTS_FAILED:
-      return { ...state, fetchError: action.err };
+      return { ...state, isLoading: false, fetchError: action.err };
     case ingredientsActions.SET_SORTED_INGREDIENTS:
       return { ...state, sortedIngredients: action.ingredients };
     case ingredientsActions.DECREASE_INGREDIENT_QTY: {
@@ -43,7 +43,7 @@ export const ingredientsReducer = (
                   ? item.qty - 1
                   : undefined,
             }
-          : item,
+          : item
       );
       return {
         ...state,

@@ -1,25 +1,25 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
   getIngredients,
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { SORT_ORDER } from "../../utils/consts";
 import { TIngredient } from "../../utils/types";
 import styles from "./ingredient-detail-page.module.css";
 
 const IngredientDetailPage = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const ingredients = useSelector(getIngredientsSelector);
-  const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError,
+  const dispatch: AppDispatch = useAppDispatch();
+  const ingredients = useAppSelector(getIngredientsSelector);
+  const fetchError = useAppSelector(
+    (state) => state.ingredientsReducer.fetchError
   );
-  const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading,
+  const isLoading = useAppSelector(
+    (state) => state.ingredientsReducer.isLoading
   );
 
   let ingredientDetails;
@@ -37,15 +37,19 @@ const IngredientDetailPage = () => {
   }, []);
 
   const sortData = (ingredients: TIngredient[]) => {
-    const sortedData = ingredients.sort((a, b) => {
-      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-    });
+    const bun = ingredients.find((item) => item.type === "bun");
+    dispatch(addBuntToConstructor(bun!));
+    const sortedData = ingredients
+      ?.sort((a, b) => {
+        return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+      })
+      .map((item) => (item._id === bun?._id ? { ...item, qty: 2 } : item));
     dispatch(setSortedIngredients(sortedData));
   };
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id,
+      (item: TIngredient) => item._id === id
     );
   }
 

@@ -1,24 +1,23 @@
+import { TOrder } from "../../utils/types";
 import { TOrderDetailsActions } from "../actions/order-details";
 import { orderActions } from "../constants/order-details";
 
 type TOrderDetailsState = {
-  orderDetails: any;
+  orderDetails: TOrder | undefined;
   isOrderFetching: boolean;
   postOrderError: boolean;
-  allOrders: any;
 };
 
-export const initialState = {
-  orderDetails: null,
+export const initialState: TOrderDetailsState = {
+  orderDetails: undefined,
   isOrderFetching: false,
   postOrderError: false,
-  allOrders: null,
 };
 
 export const orderDetailsReducer = (
   state = initialState,
-  action: TOrderDetailsActions,
-): TOrderDetailsState => {
+  action: TOrderDetailsActions
+) => {
   switch (action.type) {
     case orderActions.POST_ORDER_SUCCESS:
       return {
@@ -29,12 +28,11 @@ export const orderDetailsReducer = (
       };
     case orderActions.SET_ORDER_FEED:
       const orderInfo = action?.payload.orders.find(
-        (item) => item?._id === action.payload.id,
+        (item) => item?._id === action.payload.id
       );
 
       return {
         ...state,
-
         isOrderFetching: false,
         postOrderError: false,
       };

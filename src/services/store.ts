@@ -6,6 +6,7 @@ import {
 import thunk from "redux-thunk";
 import { socketMiddleware } from "./middleware/socketMiddleware";
 import { rootReducer } from "./reducer";
+import { wsActionsAuthMiddleware, wsActionsMiddleware } from "./constants/wsConsts";
 
 declare global {
   interface Window {
@@ -16,12 +17,8 @@ declare global {
 export const composeEnhancers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware()));
+
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsActionsMiddleware), socketMiddleware(wsActionsAuthMiddleware)));
 
 export const store = createStore(rootReducer, enhancer);
 
-/*export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk, socketMiddleware())) 
-);
-*/

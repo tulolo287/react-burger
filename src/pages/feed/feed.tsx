@@ -1,35 +1,40 @@
 import { memo, useEffect } from "react";
 import CardOrder from "../../components/card-order/card-order";
 import OrdersTotal from "../../components/orders-total/orders-total";
-import Loader from "../../components/ui/loader/loader";
-import { actions } from "../../services/constants";
-import { useDispatch, useSelector } from "../../services/hooks";
-import { startWS } from "../../utils";
+import { wsStart } from "../../services/actions/wsActions";
+import { wsActions } from "../../services/constants/wsConsts";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { wsAllUrl } from "../../utils/consts";
 import styles from "./feed.module.css";
 
 const Feed = memo(() => {
-  const dispatch = useDispatch();
-  const fetchMessages = useSelector((state) => state.wsReducer.fetchMessages);
-  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const dispatch = useAppDispatch();
+  const wsConnected = useAppSelector((state) => state.wsReducer.wsConnected);
+  const messages = useAppSelector((state) => state.wsReducer.messages);
+  const fetchMessages = useAppSelector(
+    (state) => state.wsReducer.fetchMessages
+  );
 
   useEffect(() => {
-    dispatch(startWS(wsAllUrl));
+    !wsConnected && dispatch(wsStart(wsAllUrl));
     return () => {
-      dispatch({ type: actions.WS_CONNECTION_CLOSE });
+      wsConnected && dispatch({ type: wsActions.WS_CONNECTION_CLOSE });
     };
-  }, []);
+  }, [wsConnected]);
+
   return (
     <div className={styles.content}>
-
-        <>
-          <h2 className={styles.header}>Лента заказов</h2>
-          <section className={`${styles.orders}`}>
-            <CardOrder />
-            <OrdersTotal />
-          </section>
-        </>
-  
+      <>
+        <h2 className={styles.header}>Лента заказов</h2>
+        <section className={`${styles.orders}`}>
+          <CardOrder
+            fetchMessages={fetchMessages}
+            wsConnected={wsConnected}
+            messages={messages}
+          />
+          <OrdersTotal />
+        </section>
+      </>
     </div>
   );
 });

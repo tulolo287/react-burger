@@ -2,28 +2,33 @@ import { useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import CardOrder from "../../components/card-order/card-order";
 import { getUser, logout } from "../../services/actions/auth";
+import { wsAuthStart } from "../../services/actions/wsActions";
 import { actions } from "../../services/constants";
-import { useDispatch, useSelector } from "../../services/hooks";
-import { AppDispatch, State } from "../../services/types";
-import { startWS } from "../../utils";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import styles from "./orders.module.css";
 
 const Orders = () => {
-  const user = useSelector((state: State) => state.authReducer.user);
-  const dispatch: AppDispatch = useDispatch();
+  const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
+  const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
+  const user = useAppSelector((state) => state.authReducer.user);
+  const dispatch = useAppDispatch();
+  const messagesAuth = useAppSelector((state) => state.wsReducer.messagesAuth);
+  const fetchMessagesAuth = useAppSelector(
+    (state) => state.wsReducer.fetchMessagesAuth
+  );
+  const wsConnectedAuth = useAppSelector(
+    (state) => state.wsReducer.wsConnectedAuth
+  );
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken")?.split(" ")[1];
-    const wsAuthUrl = `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
-
-    dispatch(startWS(wsAuthUrl));
+    !wsConnectedAuth && dispatch(wsAuthStart(wsAuthUrl));
     if (!user) {
       dispatch(getUser());
     }
     return () => {
-      dispatch({ type: actions.WS_CONNECTION_CLOSE });
+      wsConnectedAuth && dispatch({ type: actions.WS_AUTH_CONNECTION_CLOSE });
     };
-  }, []);
+  }, [wsConnectedAuth]);
 
   return (
     <section className={styles.content}>
@@ -63,8 +68,11 @@ const Orders = () => {
         </div>
       </div>
 
-        <CardOrder />
-    
+      <CardOrder
+        fetchMessages={fetchMessagesAuth}
+        wsConnected={wsConnectedAuth}
+        messages={messagesAuth}
+      />
     </section>
   );
 };

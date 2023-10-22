@@ -12,7 +12,7 @@ export interface IGetIngredientsSuccess {
 }
 export interface IGetIngredientsFailed {
   readonly type: typeof ingredientsActions.GET_INGREDIENTS_FAILED;
-  readonly err: any;
+  readonly err: boolean;
 }
 export interface IIncreaseIngredientQty {
   readonly type: typeof ingredientsActions.INCREASE_INGREDIENT_QTY;
@@ -45,14 +45,14 @@ export type TIngredientsActions =
   | ISetSortedIngredients;
 
 export const setSortedIngredients = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): ISetSortedIngredients => ({
   type: ingredientsActions.SET_SORTED_INGREDIENTS,
   ingredients,
 });
 
 export const decreaseIngredientQty = (
-  item: TIngredient,
+  item: TIngredient
 ): IDecreaseIngredientQty => ({
   type: ingredientsActions.DECREASE_INGREDIENT_QTY,
   item,
@@ -67,19 +67,19 @@ export const ingredientsFetching = (): IIngredientsFetching => ({
 });
 
 export const getIngredientsSuccess = (
-  ingredients: TIngredient[],
+  ingredients: TIngredient[]
 ): IGetIngredientsSuccess => ({
   type: ingredientsActions.GET_INGREDIENTS_SUCCESS,
   ingredients,
 });
 
-export const getIngredientsFailed = (err: any): IGetIngredientsFailed => ({
+export const getIngredientsFailed = (err: boolean): IGetIngredientsFailed => ({
   type: ingredientsActions.GET_INGREDIENTS_FAILED,
   err,
 });
 
 export const increaseIngredientQty = (
-  ingredient: TIngredient,
+  ingredient: TIngredient
 ): IIncreaseIngredientQty => ({
   type: ingredientsActions.INCREASE_INGREDIENT_QTY,
   ingredient,
@@ -102,10 +102,7 @@ export const getIngredients = () => async (dispatch: AppDispatch) => {
     });
 };
 
-const ingredients = (state: State) => state.ingredientsReducer.ingredients;
 export const getIngredientsSelector = (state: State) =>
   state.ingredientsReducer.ingredients;
 export const getSortedIngredientsSelector = (state: State) =>
   state.ingredientsReducer.sortedIngredients;
-export const getIngredientDetailSelector = (state: State) =>
-  state.ingredientDetailsReducer.ingredientDetails;

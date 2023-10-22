@@ -1,10 +1,10 @@
 import {
-  CurrencyIcon,
-  FormattedDate,
+    CurrencyIcon,
+    FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, Fragment, useEffect, useState } from "react";
 import { getIngredientsSelector } from "../../services/actions/ingredients";
-import { useSelector } from "../../services/hooks";
+import { useAppSelector } from "../../services/hooks";
 import { getOrderStatus } from "../../utils";
 import { TOrder } from "../../utils/types";
 import styles from "./card-order-item.module.css";
@@ -14,7 +14,7 @@ type CardOrderItemProps = {
 };
 
 const CardOrderItem: FC<CardOrderItemProps> = ({ order }) => {
-  const ingredients = useSelector(getIngredientsSelector);
+  const ingredients = useAppSelector(getIngredientsSelector);
   const lastIngredientCount: number = 5;
   const [totalPrice, setTotalPrice] = useState<number>(0);
 

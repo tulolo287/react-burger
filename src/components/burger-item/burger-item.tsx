@@ -35,6 +35,7 @@ const BurgerItem: FC<TBurgerItemProps> = ({ item }) => {
         borderRadius: "22px",
       }}
       ref={dragRef}
+      data-cy="burger_item"
       onClick={onItemHandler}
       className={styles.burgerItem}
     >

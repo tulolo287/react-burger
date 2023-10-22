@@ -31,7 +31,7 @@ const Modal: FC<IModalProps> = memo(
         <section style={{ height }} className={styles.modal}>
           <div className={styles.title_button}>
             {title && <h2 className={styles.title}>{title}</h2>}
-            <i>
+            <i data-cy="modal_close">
               <CloseIcon onClick={() => closeModal()} type="primary" />
             </i>
           </div>

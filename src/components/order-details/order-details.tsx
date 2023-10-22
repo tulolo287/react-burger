@@ -1,17 +1,16 @@
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "../../services/hooks";
-import { State } from "../../services/types";
+import { useAppSelector } from "../../services/hooks";
 import styles from "./order-details.module.css";
 
 const OrderDetails = () => {
-  const orderDetails = useSelector(
-    (state: State) => state.orderDetailsReducer.orderDetails,
+  const orderDetails = useAppSelector(
+    (state) => state.orderDetailsReducer.orderDetails
   );
-  const isOrderFetching = useSelector(
-    (state: State) => state.orderDetailsReducer.isOrderFetching,
+  const isOrderFetching = useAppSelector(
+    (state) => state.orderDetailsReducer.isOrderFetching
   );
-  const postOrderError = useSelector(
-    (state: State) => state.orderDetailsReducer.postOrderError,
+  const postOrderError = useAppSelector(
+    (state) => state.orderDetailsReducer.postOrderError
   );
 
   return (
@@ -19,9 +18,9 @@ const OrderDetails = () => {
       {(isOrderFetching && "Sending order...") ||
         (postOrderError && "Send order error") ||
         (orderDetails && (
-          <div className={styles.orderDetails}>
+          <div data-cy="order_details" className={styles.orderDetails}>
             <p className="text text_type_digits-large mt-10">
-              {orderDetails?.order.number}
+              {orderDetails?.number}
             </p>
             <p className="text text_type_main-medium mt-15 mb-15">
               идентификатор заказа

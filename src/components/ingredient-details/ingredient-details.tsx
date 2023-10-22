@@ -1,20 +1,19 @@
 import { memo, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import useModal from "../../hooks/useModal";
 import {
   getIngredients,
   getIngredientsSelector,
 } from "../../services/actions/ingredients";
-import { useSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
 import { TIngredient } from "../../utils/types";
 import Modal from "../modal/modal";
 import styles from "./ingredient-details.module.css";
 
 const IngredientDetails = memo(() => {
-  const ingredients = useSelector(getIngredientsSelector);
-  const dispatch: AppDispatch = useDispatch();
+  const ingredients = useAppSelector(getIngredientsSelector);
+  const dispatch: AppDispatch = useAppDispatch();
   const { id } = useParams();
   const { title, setTitle, navBack } = useModal();
   let ingredientDetails;
@@ -31,7 +30,7 @@ const IngredientDetails = memo(() => {
 
   if (ingredients) {
     ingredientDetails = ingredients.find(
-      (item: TIngredient) => item._id === id,
+      (item: TIngredient) => item._id === id
     );
   }
 

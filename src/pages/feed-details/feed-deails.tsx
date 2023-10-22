@@ -2,53 +2,41 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { memo, useEffect, useState } from "react";
 
 import { useLocation, useParams } from "react-router-dom";
-import { v4 } from "uuid";
 import {
   getIngredients,
   getIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { actions } from "../../services/constants";
-import { useDispatch, useSelector } from "../../services/hooks";
-import { startWS } from "../../utils";
+import { wsAuthStart, wsStart } from "../../services/actions/wsActions";
+import { wsActions } from "../../services/constants/wsConsts";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { SORT_ORDER, wsAllUrl, wsAuthUrl } from "../../utils/consts";
 import { TIngredient, TOrder } from "../../utils/types";
 import styles from "./feed-details.module.css";
 
-type TOrderInfo = {
-  _id: string;
-  ingredients: Array<TIngredient>;
-  status: string;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  number: number;
-};
-
-type TOrderIngredient = {
-  img: string;
-
-  qty: number;
-  price: number;
-};
-
 const FeedDetails = memo(() => {
-  const dispatch = useDispatch();
-  const ingredients: Array<TIngredient> | null = useSelector(
-    getIngredientsSelector,
-  );
-  const messages = useSelector((state) => state.wsReducer.messages);
-
+  const { pathname } = useLocation();
+  const profile = pathname.includes("/profile") ? true : false;
   const params = useParams();
-  const wsConnected = useSelector((state) => state.wsReducer.wsConnected);
+  const dispatch = useAppDispatch();
+  const ingredients: Array<TIngredient> | null = useAppSelector(
+    getIngredientsSelector
+  );
+  const wsConnected = useAppSelector((state) =>
+    profile ? state.wsReducer.wsConnectedAuth : state.wsReducer.wsConnected
+  );
+  const messages = useAppSelector((state) =>
+    profile ? state.wsReducer.messagesAuth : state.wsReducer.messages
+  );
   const [orderInfo, setOrderInfo] = useState<TOrder>();
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [orderIngredients, setOrderIngredients] = useState<
     TIngredient[] | null
   >(null);
-  const isLoading = useSelector((state) => state.ingredientsReducer.isLoading);
-  const { pathname } = useLocation();
-  const url = pathname.includes("/profile") ? wsAuthUrl : wsAllUrl;
+  const isLoading = useAppSelector(
+    (state) => state.ingredientsReducer.isLoading
+  );
+
   const color = orderInfo?.status === "done" ? "#0CC" : "white";
 
   useEffect(() => {
@@ -62,11 +50,18 @@ const FeedDetails = memo(() => {
       };
       fetchData();
     }
-    !wsConnected && dispatch(startWS(url));
+    if (!wsConnected) {
+      profile ? dispatch(wsAuthStart(wsAuthUrl)) : dispatch(wsStart(wsAllUrl));
+    }
     return function () {
-      dispatch({ type: actions.WS_CONNECTION_CLOSED });
+      if (wsConnected) {
+        profile
+          ? dispatch({ type: wsActions.WS_AUTH_CONNECTION_CLOSE })
+          : dispatch({ type: wsActions.WS_CONNECTION_CLOSE });
+      }
     };
   }, []);
+
   const sortData = (ingredients: TIngredient[]) => {
     const sortedData = ingredients?.sort((a, b) => {
       return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
@@ -112,8 +107,8 @@ const FeedDetails = memo(() => {
 
             <div className={styles.ingredients}>
               <ul>
-                {orderIngredients?.map((item) => (
-                  <li key={v4()}>
+                {orderIngredients?.map((item, idx) => (
+                  <li key={`${item._id}_${idx}`}>
                     <div className={styles.ingredientsInfo}>
                       <div className={styles.ingredient_preview}>
                         <img src={item.image} />

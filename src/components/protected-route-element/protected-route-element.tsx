@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { getUser } from "../../services/actions/auth";
-import { useSelector } from "../../services/hooks";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
 
 const ProtectedRouteElement = ({
@@ -10,8 +9,8 @@ const ProtectedRouteElement = ({
 }: {
   element: React.ReactElement;
 }) => {
-  const user = useSelector((state) => state.authReducer.user);
-  const dispatch: AppDispatch = useDispatch();
+  const user = useAppSelector((state) => state.authReducer.user);
+  const dispatch: AppDispatch = useAppDispatch();
   const [isUserLoaded, setUserLoaded] = useState(false);
 
   const checkUser = async () => {

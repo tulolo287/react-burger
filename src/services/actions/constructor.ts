@@ -21,17 +21,13 @@ export interface IInitConstructor {
   readonly type: typeof constructorActions.INIT_CONSTRUCTOR;
   readonly bun: TIngredient;
 }
-export interface ISetOrderDetails {
-  readonly type: typeof constructorActions.SET_ORDER_DETAILS;
-  readonly orderDetails: any;
-}
+
 export interface IClearOrder {
   readonly type: typeof constructorActions.CLEAR_ORDER;
 }
 
 export type TConstructorActions =
   | IAddIngredientToConstructor
-  | ISetOrderDetails
   | IClearOrder
   | IAddBuntToConstructor
   | IChangeConstructorIngredient
@@ -69,11 +65,6 @@ export const addBuntToConstructor = (
 export const initConstructor = (bun: TIngredient): IAddBuntToConstructor => ({
   type: constructorActions.ADD_BUN_TO_CONSTRUCTOR,
   bun,
-});
-
-export const setOrderDetails = (orderDetails: any): ISetOrderDetails => ({
-  type: constructorActions.SET_ORDER_DETAILS,
-  orderDetails,
 });
 
 export const clearOrder = (): IClearOrder => ({

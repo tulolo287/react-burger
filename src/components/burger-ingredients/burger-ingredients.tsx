@@ -1,15 +1,14 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Fragment, memo, useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "../../services/hooks";
-
+import { addBuntToConstructor } from "../../services/actions/constructor";
 import {
   getIngredients,
   getIngredientsSelector,
   getSortedIngredientsSelector,
   setSortedIngredients,
 } from "../../services/actions/ingredients";
-import { AppDispatch, State } from "../../services/types";
+import { useAppDispatch, useAppSelector } from "../../services/hooks";
+import { AppDispatch } from "../../services/types";
 import { SORT_ORDER, TYPES } from "../../utils/consts";
 import { AssociativeArray, TIngredient } from "../../utils/types";
 import BurgerItem from "../burger-item/burger-item";
@@ -17,15 +16,15 @@ import Loader from "../ui/loader/loader";
 import styles from "./burger-ingredients.module.css";
 
 const BurgerIngredients = memo(() => {
-  const ingredients = useSelector(getIngredientsSelector);
-  const sortedIngredients = useSelector(getSortedIngredientsSelector);
-  const dispatch: AppDispatch = useDispatch();
+  const ingredients = useAppSelector(getIngredientsSelector);
+  const sortedIngredients = useAppSelector(getSortedIngredientsSelector);
+  const dispatch: AppDispatch = useAppDispatch();
   const [current, setCurrent] = useState<string>("bun");
-  const fetchError = useSelector(
-    (state: State) => state.ingredientsReducer.fetchError
+  const fetchError = useAppSelector(
+    (state) => state.ingredientsReducer.fetchError
   );
-  const isLoading = useSelector(
-    (state: State) => state.ingredientsReducer.isLoading
+  const isLoading = useAppSelector(
+    (state) => state.ingredientsReducer.isLoading
   );
 
   let currentType: string = "";
@@ -43,9 +42,10 @@ const BurgerIngredients = memo(() => {
   }, []);
 
   const sortData = (ingredients: TIngredient[]) => {
-    const sortedData = ingredients?.sort((a, b) => {
-      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-    });
+    const sortedData = ingredients
+      ?.sort((a, b) => {
+        return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+      })
     dispatch(setSortedIngredients(sortedData));
   };
 
@@ -101,7 +101,10 @@ const BurgerIngredients = memo(() => {
               </Tab>
             ))}
           </div>
-          <ul className={styles.burgerItems + " mt-10 pr-5"}>
+          <ul
+            data-cy="ingredients_container"
+            className={styles.burgerItems + " mt-10 pr-5"}
+          >
             {sortedIngredients?.map((item: TIngredient) => {
               let showTitle = false;
               if (currentType !== item.type) {
