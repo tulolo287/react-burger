@@ -14,7 +14,7 @@ const OrdersTotal = () => {
   useEffect(() => {
     const done = messages?.orders?.filter((order) => order?.status === "done");
     const inWork = messages?.orders?.filter(
-      (order) => order?.status === "inWork"
+      (order) => order?.status === "created" || order?.status === "pending"
     );
     setOrdersDone(done);
     setOrdersInWork(inWork);
