@@ -85,7 +85,7 @@ const Profile = () => {
               </NavLink>
             </div>
             <div className={styles.navItem}>
-              <Link to="" onClick={onLogout}>
+              <Link to="" className={styles.link} onClick={onLogout}>
                 Выход
               </Link>
             </div>
