@@ -15,7 +15,15 @@
   width: 30%;
   margin-right: 60px;
 }
-
+.link {
+  color: var(--text-dark-grey-secondary-text, #8585ad);
+  /* desktop/display small */
+  font-family: JetBrains Mono;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30px; /* 125% */
+}
 .navItem {
   display: flex;
   width: 320px;
