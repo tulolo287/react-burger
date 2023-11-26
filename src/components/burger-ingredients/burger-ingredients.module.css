@@ -20,6 +20,18 @@
 .burgerIngredients_tab {
   display: flex;
   justify-content: space-around;
+
+}
+.burgerIngredients_tab div {
+  min-width: 10px;
+}
+.tab {
+  min-width: 10px !important;
+}
+@media screen and (min-width: 768px) {
+  .burgerIngredients_tab > div {
+    min-width: none;
+  }
 }
 .burgerItems {
   scrollbar-color: #8585ad #2f2f37;
