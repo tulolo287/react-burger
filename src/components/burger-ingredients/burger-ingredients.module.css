@@ -28,11 +28,19 @@
 .tab {
   min-width: 10px !important;
 }
-@media screen and (min-width: 768px) {
+
+@media screen and (max-width: 410px) {
   .burgerIngredients_tab > div {
     min-width: none;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .burgerItems {
+    
   }
 }
+
+
 .burgerItems {
   scrollbar-color: #8585ad #2f2f37;
 }
