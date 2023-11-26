@@ -1,0 +1,23 @@
+.burger_mobile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.addToOrderBtn {
+  margin-bottom: 50px;
+  cursor: pointer;
+}
+.burgerItem {
+  list-style: none;
+  position: relative;
+  max-width: 300px;
+  cursor: pointer;
+}
+.burgerItem img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+.burgerItem_price {
+  display: flex;
+  justify-content: center;
+}

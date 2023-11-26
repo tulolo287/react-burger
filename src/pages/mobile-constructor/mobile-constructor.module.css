@@ -1,0 +1,10 @@
+.info {
+   display: flex;
+   justify-content: space-around;
+  
+}
+.price {
+   display: flex;
+   justify-content: space-around;
+   align-items: center;
+}

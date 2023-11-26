@@ -29,6 +29,7 @@ export const path = {
   ORDERS: "/profile/orders",
   FEED: "/feed",
   FEED_DETAILS: "/feed/:id",
+  MOBILE_CONSTRUCTOR: "/mobile-constructor",
 };
 
 export type TPath = typeof path;

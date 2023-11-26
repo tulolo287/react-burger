@@ -1,25 +1,117 @@
-.appHeader_nav ul {
+.desktop {
+  display: flex;
   background-color: #1c1c21;
+}
+.mobile {
+  position: relative;
+  background-color: #1c1c21;
+  justify-content: space-between;
+  padding: 20px;
+  z-index: 50;
+}
+.mobile li:hover {
+  background-color: khaki;
+}
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  gap: 5px;
+}
+.hamburger:hover {
+  cursor: pointer;
+}
+.mobile_nav {
+  position: absolute;
+  background-color: #1c1c21;
+  width: 100%;
+  left: 0;
+  top: -500px;
+  z-index: 10;
+  transition: 0.3s ease-out;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.mobile_nav li {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  padding-left: 36%;
+  height: 60px;
+}
+.mobile_nav li:hover {
+  background-color: #292930;
+}
+.profile-info {
+  background-color: #111114;
+  display: none;
+}
+.profile-info li::before {
+  content: "";
+  width: 30px;
+  height: 30px;
+}
+.profile-info_active {
+  display: block;
+}
+.isActive {
+  top: 95px;
+  z-index: 10;
+}
+.hamburgerRotate::after {
+  transform: rotate(45deg) translateY(-5px);
+}
+.hamburgerRotate::before {
+  transform: rotate(-45deg) translateY(5px);
+}
+.hamburgerRotate div {
+  display: none;
+}
+.hamburger div,
+.hamburger::after,
+.hamburger::before {
+  content: "";
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  transition: 0.3s ease;
+}
+.desktop ul {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-grow: 1;
   width: 33%;
 }
-.appHeader_nav li {
+.desktop li {
   padding: 10px;
 }
-.appHeader_nav a {
+.desktop a {
   text-decoration: none;
   display: flex;
 }
-.appHeader_nav span {
+.desktop span {
   display: flex;
   align-items: center;
   text-align: center;
 }
-.appHeader_nav div {
-  display: flex;
+@media (max-width: 768px) {
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    display: flex;
+  }
+}
+@media (min-width: 768px) {
+  .desktop {
+    display: flex;
+  }
+  .mobile {
+    display: none;
+  }
 }
 .secondaryColor {
   color: #8585ad;

@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { FC } from "react";
 import { useDrag } from "react-dnd";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import { TIngredient } from "../../utils/types";
 import styles from "./burger-item.module.css";
 

@@ -1,0 +1,51 @@
+.burgerConstructor {
+  min-width: 400px;
+}
+.burgerConstructor_drop {
+  border: 1px solid transparent;
+  border-radius: 25px;
+}
+.burgerConstructor_group {
+  display: flex;
+  flex-direction: column;
+
+  max-height: calc(100vh - 250px);
+  overflow-y: auto;
+  border: 1px solid transparent;
+  border-radius: 25px;
+  padding-left: 20px;
+}
+.burgerConstructor_group {
+  scrollbar-color: #8585ad #2f2f37;
+}
+.burgerConstructor_group::-webkit-scrollbar-thumb {
+  width: 30px;
+  background-color: #8585ad;
+  border: 3px;
+}
+.burgerConstructor_group::-webkit-scrollbar {
+  display: block;
+  width: 5px;
+}
+.burgerConstructor_group::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+.burgerConstructor_checkout {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.burgerConstructor_checkout i {
+  display: flex;
+  width: 33px;
+}
+.burgerConstructor_checkout svg {
+  width: 33px;
+  height: 33px;
+}
+.burgerConstructor ul {
+  padding-left: 30px;
+}
+.burgerConstructor li {
+  margin-top: 16px;
+}

@@ -1,6 +1,6 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Fragment, memo, useEffect, useMemo, useState } from "react";
-import { addBuntToConstructor } from "../../services/actions/constructor";
+import { useIsMobile } from "../../hooks/useIsMobile";
 import {
   getIngredients,
   getIngredientsSelector,
@@ -11,11 +11,13 @@ import { useAppDispatch, useAppSelector } from "../../services/hooks";
 import { AppDispatch } from "../../services/types";
 import { SORT_ORDER, TYPES } from "../../utils/consts";
 import { AssociativeArray, TIngredient } from "../../utils/types";
+import BurgerItemMobile from "../burger-item-mobile/burger-item-mobile";
 import BurgerItem from "../burger-item/burger-item";
 import Loader from "../ui/loader/loader";
 import styles from "./burger-ingredients.module.css";
 
 const BurgerIngredients = memo(() => {
+  var { isMobile } = useIsMobile();
   const ingredients = useAppSelector(getIngredientsSelector);
   const sortedIngredients = useAppSelector(getSortedIngredientsSelector);
   const dispatch: AppDispatch = useAppDispatch();
@@ -42,10 +44,9 @@ const BurgerIngredients = memo(() => {
   }, []);
 
   const sortData = (ingredients: TIngredient[]) => {
-    const sortedData = ingredients
-      ?.sort((a, b) => {
-        return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
-      })
+    const sortedData = ingredients?.sort((a, b) => {
+      return SORT_ORDER.indexOf(a.type) - SORT_ORDER.indexOf(b.type);
+    });
     dispatch(setSortedIngredients(sortedData));
   };
 
@@ -127,7 +128,11 @@ const BurgerIngredients = memo(() => {
                       </h3>
                     </li>
                   )}
-                  <BurgerItem item={item} />
+                  {isMobile ? (
+                    <BurgerItemMobile item={item} />
+                  ) : (
+                    <BurgerItem item={item} />
+                  )}
                 </Fragment>
               );
             })}

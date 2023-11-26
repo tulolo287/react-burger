@@ -11,6 +11,7 @@ import Register from "../../pages/register/register";
 import ResetPassword from "../../pages/reset-password/reset-password";
 import { path } from "../../utils/consts";
 import AppHeader from "../app-header/app-header";
+import BurgerConstructorMobile from "../burger-constructor-mobile/burger-constructor-mobile";
 import FeedDetailsModal from "../feed-details-modal/feed-details-modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
@@ -28,6 +29,10 @@ const App = () => {
         <Routes location={background || location}>
           <Route path={path.HOME} element={<Constructor />}></Route>
           <Route path={path.INGREDIENT} element={<IngredientDetailPage />} />
+          <Route
+            path={path.MOBILE_CONSTRUCTOR}
+            element={<BurgerConstructorMobile />}
+          />
           <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.REGISTER} element={<Register />} />
           <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
